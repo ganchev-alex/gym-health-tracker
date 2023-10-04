@@ -1,0 +1,13 @@
+:root {
+  --red-light: #e54c60;
+  --purple: #d385e6;
+  --gradient: linear-gradient(45deg, var(--purple), var(--red-light));
+}
+
+.navigation-bar {
+  display: flex;
+  flex-direction: column;
+
+  border-radius: 15px;
+  background-image: var(--gradient);
+}

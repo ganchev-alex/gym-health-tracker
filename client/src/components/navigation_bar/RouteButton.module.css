@@ -1,0 +1,45 @@
+:root {
+  --red-light: #e54c60;
+  --purple: #d385e6;
+  --icon-color-active: linear-gradient(-90deg, var(--red-light), var(--purple));
+}
+
+.link {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 45px;
+  height: 45px;
+}
+
+.label {
+  text-align: left;
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+}
+
+.hidden-label {
+  display: none;
+}
+
+.active-route {
+  padding: 14px 6px;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+}
+
+.active-route div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px;
+  width: 45px;
+}
+
+.active-route svg path {
+  stroke: var(--red-light);
+  stroke-width: 2.6;
+}

@@ -1,0 +1,68 @@
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 15px 0px 25px;
+  border-bottom: 1px solid white;
+  gap: 15px;
+}
+
+.profile-picture {
+  height: 75px;
+  width: 75px;
+  border-radius: 75px;
+  border: 2px solid white;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+  object-fit: cover;
+  pointer-events: none;
+}
+
+.toggle-button {
+  width: 25px;
+  height: 25px;
+  position: absolute;
+  left: 95px;
+  top: 110px;
+  background-color: white;
+  border: none;
+  border-radius: 100%;
+  z-index: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.toggle-button svg path {
+  stroke: #e54c60;
+  stroke-width: 2;
+}
+
+.toggle-button.toggled {
+  transform: rotate(-180deg);
+}
+
+.profile-label {
+  background-color: white;
+  border-radius: 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: flex-start;
+  padding: 0 1rem 0 1.2rem;
+  margin-right: 0.5rem;
+}
+
+.profile-label h6 {
+  font-size: 1.3em;
+  margin: 0.5rem 0 0.2rem;
+}
+
+.profile-label p {
+  font-size: 0.8em;
+  margin: 0.2rem 0 0.5rem;
+  color: #828282;
+}
+
+.profile-label.toggled {
+  display: none;
+}

@@ -4,15 +4,32 @@
   --icon-color-active: linear-gradient(-90deg, var(--red-light), var(--purple));
 }
 
-.link {
+li {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 45px;
+  width: 100%;
   height: 45px;
 }
 
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  gap: 1.9rem;
+}
+
+.untoggled-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 .label {
+  display: flex;
+  justify-content: center;
+  align-items: center;
   text-align: left;
   font-size: 1.2rem;
   font-style: normal;
@@ -24,9 +41,15 @@
   display: none;
 }
 
+a {
+  color: white;
+  text-decoration: none;
+}
+
 .active-route {
   padding: 14px 6px;
   background-color: white;
+  color: var(--red-light);
   border-radius: 15px;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
 }
@@ -42,4 +65,8 @@
 .active-route svg path {
   stroke: var(--red-light);
   stroke-width: 2.6;
+}
+
+.untoggled-wrapper.active-route div {
+  padding-left: 1rem;
 }

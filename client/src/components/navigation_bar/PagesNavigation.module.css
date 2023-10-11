@@ -1,9 +1,21 @@
+.wrapper {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
 ul {
   list-style-type: none;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  align-items: center;
   gap: 25px;
   padding: 30px 20px;
   margin: 0;
+}
+
+.untoggled {
+  width: 285px;
+  align-items: start;
 }

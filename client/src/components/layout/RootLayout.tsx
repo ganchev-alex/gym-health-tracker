@@ -9,8 +9,11 @@ function RootLayout() {
     <div className={styles["content-wrapper"]}>
       <NavigationBar />
       <main>
+        <h1>Welcome Back, Megan!</h1>
+        <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h3>
         <Outlet />
       </main>
+      {/* Add another side bar component for achievments here.*/}
     </div>
   );
 }

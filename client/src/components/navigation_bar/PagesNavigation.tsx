@@ -13,7 +13,7 @@ import DashboardIcon from "../../assets/svg_icon_components/DashboardIcon";
 import WorkoutIcon from "../../assets/svg_icon_components/WorkoutIcon";
 import HealthEssenscialsIcon from "../../assets/svg_icon_components/HealthEssensialsIcon";
 import ExploreIcon from "../../assets/svg_icon_components/ExploreIcon";
-import StatisticsIcon from "../../assets/svg_icon_components/Statistics";
+import StatisticsIcon from "../../assets/svg_icon_components/StatisticsIcon";
 
 const PagesNavigation = () => {
   const toggleState = useSelector(

@@ -17,7 +17,7 @@ li {
   justify-content: center;
   align-items: center;
   width: 100%;
-  gap: 1.9rem;
+  gap: 1.9em;
 }
 
 .untoggled-wrapper {

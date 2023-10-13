@@ -1,7 +1,9 @@
 import React from "react";
 
+import Categroies from "../../workouts_page/categories_widget/Categories";
+
 function WorkoutsPage() {
-  return <h1>Workouts Page!</h1>;
+  return <Categroies />;
 }
 
 export default WorkoutsPage;

@@ -1,0 +1,29 @@
+.button-holder {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 15px;
+  border-top: #e0e0e0 2.5px solid;
+}
+
+.main-button,
+.secondary-button {
+  width: 200px;
+  text-align: center;
+  font-size: 1rem;
+  font-weight: 600;
+  border-radius: 10px;
+  background-color: transparent;
+}
+
+.main-button {
+  background-image: linear-gradient(90deg, #d385e6, #e54c60);
+  border: none;
+  padding: 20px 10px;
+  color: #fff;
+}
+
+.secondary-button {
+  border: #e54c60 3px solid;
+  color: #e54c60;
+}

@@ -1,0 +1,20 @@
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h6 {
+  color: #e54c60;
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.header a {
+  color: #828282;
+  font-size: 0.8rem;
+  font-style: normal;
+  font-weight: 700;
+  text-decoration: underline;
+  margin: 0;
+}

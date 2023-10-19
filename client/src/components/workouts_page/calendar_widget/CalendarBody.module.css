@@ -1,0 +1,65 @@
+.calendar-body {
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+}
+
+.calendar-body ul {
+  display: flex;
+  flex-wrap: wrap;
+  list-style: none;
+  text-align: center;
+  padding: 0;
+  margin-bottom: 0;
+}
+
+.calendar-body li {
+  width: calc(100% / 7);
+  padding: 15px 0px;
+}
+
+.weeks li {
+  cursor: default;
+  color: #e54c60;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.days li {
+  z-index: 1;
+  cursor: pointer;
+  position: relative;
+  margin-bottom: 15px;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.days .today {
+  color: #e54c60;
+  font-weight: 800;
+}
+
+.days .active {
+  color: white;
+}
+
+.days li::before {
+  position: absolute;
+  content: "";
+  left: 50%;
+  top: 50%;
+  height: 40px;
+  width: 40px;
+  z-index: -1;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.days li.active::before {
+  background-color: #e54c60;
+  border: #e54c60 3px solid;
+}
+
+.days .not-this-month {
+  color: #828282;
+}

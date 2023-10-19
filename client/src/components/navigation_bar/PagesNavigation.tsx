@@ -21,7 +21,9 @@ const PagesNavigation = () => {
   );
 
   return (
-    <ul className={`${!toggleState ? styles.untoggled : ""}`}>
+    <ul
+      className={`${styles.wrapper} ${!toggleState ? styles.untoggled : ""} `}
+    >
       <RouteButton
         path="dashboard"
         label="Dashboard"

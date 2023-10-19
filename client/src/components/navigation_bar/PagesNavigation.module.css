@@ -1,10 +1,4 @@
 .wrapper {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-ul {
   list-style-type: none;
   display: flex;
   flex-direction: column;

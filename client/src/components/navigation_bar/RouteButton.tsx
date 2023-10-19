@@ -25,7 +25,7 @@ const RouteButton: React.FC<{
   };
 
   return (
-    <li>
+    <li className={styles.button}>
       <NavLink className={activeClassSelector} to={props.path}>
         <div>{props.icon}</div>
         <span

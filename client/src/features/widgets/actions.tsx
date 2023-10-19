@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { act } from "react-dom/test-utils";
 
 const workoutsWidget: { selectedFilters: string[]; isAll: boolean } = {
   selectedFilters: [],
@@ -20,6 +19,40 @@ const workoutWidgetManager = createSlice({
     },
     selectAll: (state) => {
       state.selectedFilters = [];
+    },
+  },
+});
+
+const calendarWidget: { currantYear: number; currantMonth: number } = {
+  currantYear: new Date().getFullYear(),
+  currantMonth: new Date().getMonth(),
+};
+
+const calendarWidgetManager = createSlice({
+  name: "calendarWidget",
+  initialState: calendarWidget,
+  reducers: {
+    renderCalendar: (state) => {
+      const firstDayMonth = new Date(
+        state.currantYear,
+        state.currantMonth,
+        1
+      ).getDate();
+      const lastDateMonth = new Date(
+        state.currantYear,
+        state.currantMonth + 1,
+        0
+      ).getDate();
+      const lastDayMonth = new Date(
+        state.currantYear,
+        state.currantMonth,
+        lastDateMonth
+      ).getDay();
+      const lastDateLastMonth = new Date(
+        state.currantYear,
+        state.currantMonth,
+        0
+      ).getMonth();
     },
   },
 });

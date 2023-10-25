@@ -1,7 +1,7 @@
 import { useState } from "react";
 import CalendarBody from "./CalendarBody";
 import CalendarHeader from "./CalendarHeader";
-import Widget from "../Widget";
+import Widget from "../../layout/Widget";
 
 import styles from "./Calendar.module.css";
 

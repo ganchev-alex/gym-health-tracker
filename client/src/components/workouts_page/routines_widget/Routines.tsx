@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import Widget from "../Widget";
+import Widget from "../../layout/Widget";
 import CardsHolder from "./CardsHolder";
 import CategoriesFilter from "./CategoriesFilter";
 

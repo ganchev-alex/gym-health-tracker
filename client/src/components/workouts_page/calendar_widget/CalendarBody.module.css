@@ -15,7 +15,7 @@
 
 .calendar-body li {
   width: calc(100% / 7);
-  padding: 15px 0px;
+  padding: 10px 0px;
 }
 
 .weeks li {

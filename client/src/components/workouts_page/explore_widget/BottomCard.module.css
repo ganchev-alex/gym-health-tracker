@@ -1,0 +1,43 @@
+.bottom-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.time-wrapper {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 25%;
+  padding: 10px 7px;
+
+  border-radius: 15px;
+  background-color: #e54c60;
+}
+
+.time-wrapper svg path {
+  stroke: white;
+}
+
+.time-wrapper p {
+  margin: 0;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.category {
+  margin: 0;
+  margin-left: 20px;
+  color: #e54c60;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.bottom-wrapper a {
+  color: #828282;
+  margin-left: auto;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-decoration-line: underline;
+}

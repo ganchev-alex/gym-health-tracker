@@ -1,7 +1,7 @@
 .widget {
-  margin: 25px; /* Remove this*/
+  margin: 20px;
   padding: 25px;
-  width: 500px;
+  max-width: 500px;
   height: auto;
   border-radius: 15px;
   background: white;

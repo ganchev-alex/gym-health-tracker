@@ -1,0 +1,50 @@
+.content-card {
+  display: flex;
+  height: 40vh;
+  flex-direction: column;
+  margin: 35px 10px 10px;
+  cursor: grab;
+}
+
+.image-slot {
+  max-height: 60%;
+  width: 100%;
+  position: relative;
+  box-shadow: 0px 0px 8px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  overflow: hidden;
+  transition: 0.2s;
+}
+
+.gradient {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(211, 133, 230, 0) 0%,
+    rgba(229, 76, 96, 0.3) 100%
+  );
+  border-radius: 15px;
+}
+
+.image-slot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 15px;
+}
+
+.content-wrapper h4 {
+  font-size: 1.1rem;
+  margin: 25px 0px 10px;
+}
+
+.content-wrapper p {
+  color: #828282;
+  font-size: 1rem;
+  margin: 0px 0px 20px;
+}

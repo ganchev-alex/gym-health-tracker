@@ -6,9 +6,9 @@ import styles from "./RootLayout.module.css";
 
 function RootLayout() {
   return (
-    <div className={styles["content-wrapper"]}>
+    <div className={styles["display-wrapper"]}>
       <NavigationBar />
-      <main>
+      <main className={styles["content-wrapper"]}>
         <h1>Welcome Back, Megan!</h1>
         <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h3>
         <Outlet />

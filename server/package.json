@@ -1,0 +1,23 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "This is the server behind my gym health tracker application.",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "node dist/app.js"
+  },
+  "author": "Alex Ganchev",
+  "license": "ISC",
+  "dependencies": {
+    "@types/node": "^20.8.10",
+    "express": "^4.18.2",
+    "mongodb": "^6.2.0",
+    "mongoose": "^8.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.20",
+    "typescript": "^5.2.2"
+  }
+}

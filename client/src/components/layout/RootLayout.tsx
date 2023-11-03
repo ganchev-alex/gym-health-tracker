@@ -9,8 +9,8 @@ function RootLayout() {
     <div className={styles["display-wrapper"]}>
       <NavigationBar />
       <main className={styles["content-wrapper"]}>
-        <h1>Welcome Back, Megan!</h1>
-        <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h3>
+        {/* <h1>Welcome Back, Megan!</h1>
+        <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h3> */}
         <Outlet />
       </main>
       {/* Add another side bar component for achievments here.*/}

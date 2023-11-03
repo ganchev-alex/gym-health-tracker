@@ -1,0 +1,111 @@
+.widget {
+  width: 100%;
+  height: 80%;
+  margin-top: 2em;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+}
+
+.gradient {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(229, 76, 96, 0.4) 0%,
+    rgba(211, 133, 230, 0.4) 78.12%,
+    rgba(211, 133, 230, 0.4) 100%
+  );
+  border-radius: 15px;
+}
+
+.image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 15px;
+}
+
+.timer-display {
+  position: absolute;
+  top: 20%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #fff;
+}
+
+.timer-display span {
+  text-align: center;
+  font-size: 2.5rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+.timer-display p {
+  text-align: center;
+  transform: translateY(-20%);
+  font-size: 7rem;
+  margin: 0;
+  font-weight: 700;
+}
+
+.controlls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 115%;
+  transform: translateY(-30%);
+}
+
+.controlls button {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: 600;
+  height: fit-content;
+  width: fit-content;
+  background-color: transparent;
+  border: none;
+  color: white;
+}
+
+.controlls svg {
+  width: 90px;
+  height: 90px;
+}
+
+.controlls svg path {
+  stroke: white;
+}
+
+.duration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: white;
+}
+
+.duration span {
+  text-align: center;
+  font-size: 1.7rem;
+  font-weight: 600;
+  margin-bottom: 0.3em;
+}
+
+.duration p {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 400;
+  margin: 0;
+}

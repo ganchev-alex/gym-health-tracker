@@ -1,13 +1,10 @@
 import express = require("express");
 
-import Exercise from "../models/exercises";
-
-const router = express.Router();
+import Exercise from "../models/exercise";
 
 export const exercises = async (
   req: express.Request,
-  res: express.Response,
-  next: express.NextFunction
+  res: express.Response
 ) => {
   try {
     const exercises = await Exercise.find();

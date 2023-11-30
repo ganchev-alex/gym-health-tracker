@@ -6,15 +6,47 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
+const multer = require("multer");
+const crypto = require("crypto");
+const path = require("path");
 const exercises_1 = __importDefault(require("./routes/exercises"));
+const auth_1 = __importDefault(require("./routes/auth"));
 const app = express();
+const fileStorage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, "userData/profilePictures");
+    },
+    filename: (req, file, callback) => {
+        crypto.randomBytes(10, (error, buffer) => {
+            if (error) {
+                throw error;
+            }
+            const parts = file.originalname.split(".");
+            const extension = parts[parts.length - 1];
+            const fileName = buffer.toString("hex") + "." + extension;
+            callback(null, fileName);
+        });
+    },
+});
+const fileFilter = (req, file, callback) => {
+    const allowedExtensions = ["image/jpg", "image/jpeg", "image/png"];
+    if (allowedExtensions.includes(file.mimetype)) {
+        callback(null, true);
+    }
+    else {
+        return callback(null, false);
+    }
+};
 app.use(bodyParser.json());
+app.use("/userData/profilePictures", express.static(path.join(__dirname, "/userData/profilePictures")));
+app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("profilePicture"));
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
     next();
 });
+app.use("/auth", auth_1.default);
 app.use("/exercises", exercises_1.default);
 mongoose
     .connect("mongodb+srv://aganchev:vytLbwSQFjvAZqoJ@projectmanager.jjnszh2.mongodb.net/WorkoutTrackerApplication?retryWrites=true&w=majority")

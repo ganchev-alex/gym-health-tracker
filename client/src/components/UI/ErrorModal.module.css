@@ -1,0 +1,76 @@
+.backdrop {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(0, 0, 0, 0.36) 58.33%,
+    rgba(0, 0, 0, 0.54) 100%
+  );
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.modal {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 4;
+  width: 500px;
+  height: fit-content;
+  background-color: white;
+  padding: 2em;
+  display: flex;
+  flex-direction: column;
+  border-radius: 20px;
+}
+
+.modal h4 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.modal.male h4 {
+  color: #472ed8;
+}
+
+.modal.female h4 {
+  color: #e54c60;
+}
+
+.modal p {
+  font-size: 1rem;
+  text-align: justify;
+  margin-bottom: 1.7em;
+}
+
+.modal footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.modal footer button {
+  width: fit-content;
+  height: fit-content;
+  margin-left: 1em;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 0.5em 2em;
+  background: transparent;
+  border-radius: 50px;
+}
+
+.modal.male footer button {
+  background-color: #472ed8;
+  border: #472ed8 2px solid;
+  color: white;
+}
+
+.modal.female footer button {
+  background-color: #e54c60;
+  border: #e54c60 2px solid;
+  color: white;
+}

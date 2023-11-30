@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { RootState } from "../../features/store";
-import { toggle } from "../../features/styles-manager/actions";
+import { toggle } from "../../features/styles-manager-actions";
 
 import ToggleIcon from "../../assets/svg_icon_components/ToggleIcon";
 

@@ -1,0 +1,151 @@
+.wrapper {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+
+.image-slot {
+  width: 70%;
+  height: 100%;
+  position: relative;
+}
+
+.image-slot img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.hidden {
+  display: none !important;
+}
+
+.male-gradient,
+.female-gradient {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+}
+
+.male-gradient {
+  background: linear-gradient(
+    180deg,
+    rgba(38, 21, 71, 0.3) 0%,
+    rgba(71, 46, 216, 0.3) 97.4%
+  );
+}
+
+.female-gradient {
+  background: linear-gradient(
+    180deg,
+    rgba(211, 133, 230, 0.3) 0%,
+    rgba(229, 76, 96, 0.3) 100%
+  );
+}
+
+.form-holder {
+  position: relative;
+  width: 30%;
+  height: 100%;
+}
+
+.form-holder form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: fit-content;
+  padding: 5em 6em 0em;
+}
+
+.loading-plane {
+  height: 100%;
+  width: 100%;
+  background-color: rgba(224, 224, 224, 0.5);
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-plane svg {
+  animation: loading-animation 1s ease-in-out infinite;
+}
+
+@keyframes loading-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+/* --- Male Styles -----*/
+
+.male a {
+  color: #472ed8;
+  font-weight: 500;
+}
+
+.male input:focus {
+  background-color: #e2e1e9;
+}
+
+.male input[type="text"],
+.male input[type="email"],
+.male input[type="password"] {
+  border-bottom: #472ed8 1.5px solid;
+}
+
+/* .male input[type="text"] .input-error,
+.male input[type="email"] .input-error,
+.male input[type="password"] .input-error {
+  border-bottom: #ef233c 3px solid;
+} */
+
+.male .submit-button {
+  background-color: #472ed8;
+}
+
+.male input[type="number"] {
+  background-color: #472ed8;
+}
+
+.male button[type="submit"] {
+  background-color: #472ed8;
+}
+
+/* --- Female Styles -----*/
+
+.female a {
+  color: #e54c60;
+  font-weight: 500;
+}
+
+.female input:focus {
+  background-color: #e9e1e3;
+}
+
+.female input[type="text"],
+.female input[type="email"],
+.female input[type="password"] {
+  border-bottom: #e54c60 1.5px solid;
+}
+
+.female .submit-button {
+  background-color: #e54c60;
+}
+
+.female input[type="number"] {
+  background-color: #e54c60;
+}
+
+.female button[type="submit"] {
+  background-color: #e54c60;
+}

@@ -1,0 +1,116 @@
+.header-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 4em;
+}
+
+.header-wrapper h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin: 0;
+}
+
+.header-wrapper p {
+  color: #828282;
+  font-size: 1.1rem;
+  font-weight: 400;
+  margin: 0;
+}
+
+.header-wrapper a {
+  text-decoration: underline;
+}
+
+.google-button {
+  width: 100%;
+  height: fit-content;
+  padding: 0.8em;
+  margin: 3em 0 0;
+  font-size: 1rem;
+  color: #000;
+  font-weight: 600;
+  background-color: transparent;
+  border: #828282 1.5px solid;
+  border-radius: 30px;
+}
+
+.google-button svg {
+  width: fit-content;
+  margin-right: 0.7em;
+}
+
+.divider {
+  display: flex;
+  flex-direction: row;
+  color: #828282;
+  width: 100%;
+  font-size: 1rem;
+  margin-top: 1.5em;
+}
+
+.divider:before,
+.divider:after {
+  content: "";
+  flex: 1 1;
+  border-bottom: #d9d9d9 1px solid;
+  margin: auto;
+}
+.divider:before {
+  margin-right: 10px;
+}
+.divider:after {
+  margin-left: 10px;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 85%;
+}
+
+.inputs label {
+  color: #828282;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 1.2em 0.3em 0.3em;
+}
+
+.inputs input {
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.5em 0.3em 0.3em;
+}
+
+/* .inputs input[name="lastName"] {
+  margin-bottom: 1.5em;
+} */
+
+.submit-button {
+  border-radius: 30px;
+  border: none;
+  font-size: 1rem;
+  padding: 0.8em;
+  margin-top: 3em;
+  height: fit-content;
+  width: 90%;
+  font-weight: 500;
+  color: white;
+}
+
+.input-error {
+  border-bottom: #ef233c 2.5px solid !important;
+}
+
+.error-message {
+  color: #ef233c;
+  font-size: 0.8rem;
+  margin: 0.5em 0.3em 0;
+  font-weight: 600;
+}

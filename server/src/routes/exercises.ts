@@ -5,6 +5,6 @@ import exerciseController from "../controllers/exercises";
 const router = express.Router();
 
 // get: /exercises
-router.get("/", exerciseController.exercises);
+router.post("/", exerciseController.exercises);
 
 export default router;

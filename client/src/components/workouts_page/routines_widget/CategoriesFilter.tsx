@@ -4,17 +4,17 @@ import {
   addFilter,
   removeFilter,
   selectAll,
-} from "../../../features/widgets/actions";
+} from "../../../features/widgets-actions";
 
 import styles from "./CategoriesFilter.module.css";
 
 const CategoriesFilter: React.FC<{ categories: string[] }> = (props) => {
   const filterLabels = [...new Set(props.categories)];
 
+  const dispatch = useDispatch();
   const selectedFilters = useSelector((state: RootState) => {
     return state.workoutWidget.selectedFilters;
   });
-  const dispatch = useDispatch();
   let isAll = useSelector((state: RootState) => {
     return state.workoutWidget.isAll;
   });

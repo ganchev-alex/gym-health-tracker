@@ -1,7 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { redirect } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 
 import { RootState } from "../../features/store";
 import { changeVisibility } from "../../features/error-module";
@@ -24,19 +24,22 @@ const ModalOverlay: React.FC<{
   properties: ModalOverlayProperties;
 }> = function (props) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { responseCode, title, details, label, redirectionRoute } =
     props.properties;
 
   const selectedTheme = useSelector((state: RootState) => {
-    return state.userActions.personalDetails.sex;
+    return state.userActions.sex;
   });
 
+  const styleChecker = localStorage.getItem("userSex") || selectedTheme;
+
   const classes = `${styles.modal} ${
-    selectedTheme === "male" ? styles.male : styles.female
+    styleChecker === "male" ? styles.male : styles.female
   }`;
 
   const clickHandler = function () {
-    redirect(redirectionRoute);
+    navigate(redirectionRoute);
     dispatch(changeVisibility(false));
   };
 

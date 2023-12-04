@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import useInput from "../../../hooks/useInput";
 
 import { RootState } from "../../../features/store";
@@ -21,6 +21,7 @@ import defaultPic1 from "../../../assets/images/default_pic_1.png";
 import defaultPic2 from "../../../assets/images/default_pic_2.png";
 import defaultPic3 from "../../../assets/images/default_pic_3.png";
 import defaultPic4 from "../../../assets/images/default_pic_4.png";
+import { deleteToken, setToken } from "../../../util/auth";
 
 const defaultPictures = [defaultPic1, defaultPic2, defaultPic3, defaultPic4];
 
@@ -32,7 +33,7 @@ const ProfileForm: React.FC = function () {
 
   const dispatch = useDispatch();
   const sex = useSelector((state: RootState) => {
-    return state.userActions.personalDetails.sex;
+    return state.userActions.sex;
   });
 
   const [customProfilePicture, setCustomProfilePicture] = useState<
@@ -80,10 +81,15 @@ const ProfileForm: React.FC = function () {
     if (authData.email == "") {
       navigate("/auth");
     }
+    const localSex = localStorage.getItem("userSex");
+    if (localSex) {
+      dispatch(selectMode(localSex));
+    }
   }, [sex]);
 
   const sexHandler = function (event: React.ChangeEvent<HTMLInputElement>) {
     dispatch(selectMode(event.target.checked ? "female" : "male"));
+    localStorage.setItem("userSex", event.target.checked ? "female" : "male");
   };
 
   const onPicSelect = function (event: React.ChangeEvent<HTMLInputElement>) {
@@ -164,11 +170,41 @@ const ProfileForm: React.FC = function () {
           method: "POST",
           body: userData,
         });
-
         const data = await response.json();
-        navigate("/auth/personalization");
+        console.log(data);
+        if (response.status == 201) {
+          setToken(data.token);
+          navigate("/auth/personalization");
+        } else if (response.status == 422) {
+          const validationErrors: string[] = data.errors;
+          let detailsDescription = "";
+          validationErrors.forEach((error) => {
+            detailsDescription += error + " ";
+          });
+          dispatch(
+            setModuleData({
+              responseCode: 422,
+              title: "Compromized Validation!",
+              details: `It seems like you've made a request with invalid data. Please make a new request following the provided steps of the forms you are filling in. Details: ${detailsDescription}`,
+              label: "Try Again",
+              redirectionRoute: "/auth",
+            })
+          );
+          dispatch(setAuth({ email: "", password: "" }));
+          dispatch(changeVisibility(true));
+        }
       } catch (error) {
-        console.log(error);
+        dispatch(
+          setModuleData({
+            responseCode: 400,
+            title: "Failed connection",
+            details:
+              "It seems like your request didn't go through. Make sure you are connected to the internet and try again.",
+            label: "Try Again",
+            redirectionRoute: "/auth",
+          })
+        );
+        dispatch(changeVisibility(true));
       } finally {
         dispatch(setLoadingState(false));
       }
@@ -194,7 +230,16 @@ const ProfileForm: React.FC = function () {
       <header className={enheritedStyles["header-wrapper"]}>
         <h3>Create Profile</h3>
         <p>
-          Changed your mind? <a>Cancel</a>
+          Changed your mind?
+          <Link
+            to={"/auth"}
+            onClick={() => {
+              dispatch(setAuth({ email: "", password: "" }));
+              deleteToken();
+            }}
+          >
+            Cancel
+          </Link>
         </p>
       </header>
       <div className={styles["pic-selector"]}>

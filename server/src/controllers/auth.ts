@@ -2,9 +2,11 @@ import express = require("express");
 import bcrypt = require("bcryptjs");
 import jwt = require("jsonwebtoken");
 
-import User from "../models/user";
+const { validationResult } = require("express-validator");
+const { ObjectId } = require("mongodb");
 
-const TOKEN_SECRET_KEY = "c!q1^g5Zt%y@r*3B";
+import User from "../models/user";
+import { TOKEN_SECRET_KEY } from "../middleware/authValidation";
 
 interface checkEmailRequest {
   email: string;
@@ -21,17 +23,36 @@ interface singInRequest {
   height: string;
 }
 
+interface setPreferencesRequest {
+  selectedActivities: string[];
+  fitnessLevel: string;
+  frequencyStatus: string;
+  fitnessGoal: string;
+  userId: string;
+}
+
+interface loginRequest {
+  email: string;
+  password: string;
+}
+
 export const checkEmail = async (
   req: express.Request<{}, {}, checkEmailRequest>,
   res: express.Response
 ) => {
   try {
     const { email } = req.body;
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      return res.status(422).json({
+        message: "Please provide a valid email!",
+        error: validationErrors.array()[0].msg,
+      });
+    }
 
     const userMatch = await User.findOne({ "auth.email": email });
-    console.log("User match: ", userMatch);
     if (userMatch) {
-      console.log(409);
       return res.status(409).json({
         message: "Email already in use!",
         email: userMatch.auth.email,
@@ -43,6 +64,7 @@ export const checkEmail = async (
       });
     }
   } catch (error) {
+    console.log(error);
     return res.status(500).json({
       message: "Internal server error! Something went wrong.",
       error,
@@ -55,22 +77,45 @@ export const signIn = async (
   res: express.Response
 ) => {
   try {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      const errorMessages = validationErrors.array().map((error) => {
+        return error.msg;
+      });
+
+      return res.status(422).json({
+        message:
+          "Invalid validation! The provided data was not validated on the front end!",
+        errors: errorMessages,
+      });
+    }
+
     const { email, password } = req.body;
     const { firstName, lastName, age, sex, weight, height } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 12);
     const userAuthData = { email, password: hashedPassword };
-    // req.file.path.replace('\\', '/')
-    const personalDetails = {
-      firstName,
-      lastName,
-      age: Number(age),
-      sex,
-      profilePicture: req.file.path.replace("\\", "/"),
-      weight: Number(weight),
-      height: Number(height),
+
+    const userData = {
+      auth: userAuthData,
+      personalDetails: {
+        firstName,
+        lastName,
+        age,
+        sex,
+        profilePicture: req.file.path.replace("\\", "/"),
+        weight: weight,
+        height: height,
+      },
+      preferences: {
+        selectedActivities: [],
+        fitnessLevel: "",
+        frequencyStatus: "",
+        fitnessGoal: "",
+      },
     };
-    const user = new User({ auth: userAuthData, personalDetails });
+    const user = new User(userData);
     const result = await user.save();
 
     const token = jwt.sign(
@@ -99,9 +144,109 @@ export const signIn = async (
   }
 };
 
+const setPreferences = async (
+  req: express.Request<{}, {}, setPreferencesRequest>,
+  res: express.Response
+) => {
+  const userId = (req as any).userId;
+  if (!userId) {
+    return res.status(500).json({
+      message:
+        "Server side authentication error! UserId was not found on the request",
+    });
+  }
+  const { selectedActivities, fitnessLevel, frequencyStatus, fitnessGoal } =
+    req.body;
+  try {
+    const result = await User.updateOne(
+      { _id: new ObjectId(userId) },
+      {
+        $set: {
+          preferences: {
+            selectedActivities,
+            fitnessLevel,
+            frequencyStatus,
+            fitnessGoal,
+          },
+        },
+      }
+    );
+
+    if (result.modifiedCount > 0) {
+      return res.status(204).json({
+        message: `The preferences for user ${userId} were succesfully added.`,
+      });
+    } else if (result.matchedCount === 0) {
+      return res.status(404).json({
+        message: `No such user was found! Provided id: ${userId}`,
+      });
+    } else {
+      return res.status(304).json({
+        message: "No changes were made!",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      message: "Something went wrong!",
+      error: error.message,
+    });
+  }
+};
+
+const login = async (
+  req: express.Request<{}, {}, loginRequest>,
+  res: express.Response
+) => {
+  try {
+    const validationErrors = validationResult(req);
+
+    if (!validationErrors.isEmpty()) {
+      return res.status(422).json({
+        message:
+          "Invalid validation! The provided data was not validated on the front end!",
+      });
+    }
+
+    const { email, password } = req.body;
+    const userMatch = await User.findOne({ "auth.email": email });
+    if (!userMatch) {
+      return res.status(401).json({
+        message: "A user with this email was not found.",
+      });
+    }
+
+    const result = await bcrypt.compare(password, userMatch.auth.password);
+    if (!result) {
+      return res.status(401).json({
+        message: "You have provided a wrong password",
+      });
+    }
+
+    const token = jwt.sign(
+      {
+        email: userMatch.auth.email,
+        userId: userMatch._id.toString(),
+      },
+      TOKEN_SECRET_KEY,
+      { expiresIn: "1h" }
+    );
+    return res.status(200).json({
+      token: token,
+      userData: userMatch,
+    });
+  } catch (error) {
+    return res
+      .status(error.statusCode || 500)
+      .json({ message: "A server side error has occured" });
+  }
+};
+
 const authController = {
   signIn,
   checkEmail,
+  setPreferences,
+  login,
 };
 
 export default authController;

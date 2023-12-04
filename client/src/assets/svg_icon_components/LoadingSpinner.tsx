@@ -3,10 +3,11 @@ import { RootState } from "../../features/store";
 
 const LoadingSpinner = function () {
   const selectedTheme = useSelector((state: RootState) => {
-    return state.userActions.personalDetails.sex;
+    return state.userActions.sex;
   });
 
-  const selectedColor = selectedTheme == "male" ? "#472ED8" : "#E54C60";
+  const styleChecker = localStorage.getItem("userSex") || selectedTheme;
+  const selectedColor = styleChecker == "male" ? "#472ED8" : "#E54C60";
 
   return (
     <svg

@@ -5,45 +5,17 @@ interface Auth {
   password: string;
 }
 
-interface PersonalDetails {
-  firstName: string;
-  lastName: string;
-  age: number;
-  sex: string;
-  weight: number;
-  height: number;
-}
-
-interface ActivitiesPreference {
-  fitnessLevel: string;
-  frequencyStatus: string;
-  fitnessGoal: string;
-}
-
 const initialUser: {
   auth: Auth;
-  personalDetails: PersonalDetails;
+  sex: string;
   selectedActivities: string[];
-  activitiesPreference: ActivitiesPreference;
 } = {
   auth: {
     email: "",
     password: "",
   },
-  personalDetails: {
-    firstName: "",
-    lastName: "",
-    age: 0,
-    sex: "male",
-    weight: 0,
-    height: 0,
-  },
+  sex: "male",
   selectedActivities: [],
-  activitiesPreference: {
-    fitnessLevel: "",
-    frequencyStatus: "",
-    fitnessGoal: "",
-  },
 };
 
 const userManager = createSlice({
@@ -53,11 +25,8 @@ const userManager = createSlice({
     setAuth: (state, action: PayloadAction<Auth>) => {
       state.auth = { ...action.payload };
     },
-    setPersonalDetails: (state, action: PayloadAction<PersonalDetails>) => {
-      state.personalDetails = { ...action.payload };
-    },
     selectMode: (state, action: PayloadAction<string>) => {
-      state.personalDetails.sex = action.payload;
+      state.sex = action.payload;
     },
     addActivite: (state, action: PayloadAction<{ label: string }>) => {
       state.selectedActivities.push(action.payload.label);
@@ -70,19 +39,14 @@ const userManager = createSlice({
     selectAllActivities: (state) => {
       state.selectedActivities = [];
     },
-    setPreferences: (state, action: PayloadAction<ActivitiesPreference>) => {
-      state.activitiesPreference = { ...action.payload };
-    },
   },
 });
 
 export const {
   setAuth,
-  setPersonalDetails,
   selectMode,
   addActivite,
   removeActivite,
   selectAllActivities,
-  setPreferences,
 } = userManager.actions;
 export default userManager.reducer;

@@ -16,8 +16,8 @@ interface IUser {
     weight: number;
     height: number;
   };
-  selectedActivities: string[];
-  activitiesPreference: {
+  preferences: {
+    selectedActivities: string[];
     fitnessLevel: string;
     frequencyStatus: string;
     fitnessGoal: string;
@@ -38,8 +38,8 @@ const userSchema = new Schema<IUser>({
     weight: Number,
     height: Number,
   },
-  selectedActivities: [String],
-  activitiesPreference: {
+  preferences: {
+    selectedActivities: [String],
     fitnessLevel: String,
     frequencyStatus: String,
     fitnessGoal: String,

@@ -5,15 +5,16 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./components/layout/RootLayout";
 import FormLayout from "./components/layout/FormLayout";
 
+import SignInForm from "./components/pages/auth/SignInForm";
+import ProfileForm from "./components/pages/auth/ProfileForm";
+import PersonalizationForm from "./components/pages/auth/PersonalizationForm";
+import LogInForm from "./components/pages/auth/LogInForm";
+
 import Dashboard from "./components/pages/app/DashboardPage";
 import Workouts from "./components/pages/app/WorkoutsPage";
 import HealthEssencialsPage from "./components/pages/app/HealthEssencialsPage";
 import ExplorePage from "./components/pages/app/ExplorePage";
 import StatisticsPage from "./components/pages/app/StatisticsPage";
-
-import SignInForm from "./components/pages/auth/SignInForm";
-import ProfileForm from "./components/pages/auth/ProfileForm";
-import PersonalizationForm from "./components/pages/auth/PersonalizationForm";
 
 // TODO: Add children to path /auth
 /* //   children: [
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
           {
             path: "personalization",
             element: <PersonalizationForm />,
+          },
+          {
+            path: "login",
+            element: <LogInForm />,
           },
         ],
       },
@@ -73,4 +78,5 @@ const router = createBrowserRouter([
 function App() {
   return <RouterProvider router={router} />;
 }
+export const mainAPIPath = "http://localhost:8080";
 export default App;

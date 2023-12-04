@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 import { setAuth } from "../../../features/user-actions";
 import { setLoadingState } from "../../../features/loading-actions";
@@ -12,6 +12,7 @@ import {
   changeVisibility,
   setModuleData,
 } from "../../../features/error-module";
+import { mainAPIPath } from "../../../App";
 
 import styles from "./SignInForm.module.css";
 
@@ -25,7 +26,7 @@ const SignInForm: React.FC = function () {
     return state.userActions.auth;
   });
 
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorCode, setErrorCode] = useState<number | null>(null);
   const [usedEmail, setUsedEmail] = useState("");
 
   const {
@@ -48,7 +49,7 @@ const SignInForm: React.FC = function () {
     setValue: setPassword,
     reset: resetPassword,
   } = useInput((value) => {
-    return value.trim().length >= 12;
+    return value.trim().length >= 8 && value.trim().length <= 20;
   });
 
   useEffect(() => {
@@ -57,7 +58,7 @@ const SignInForm: React.FC = function () {
       setEmail(email);
       setPassword(password);
     }
-  });
+  }, []);
 
   const submissionHandler = function (event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -71,7 +72,7 @@ const SignInForm: React.FC = function () {
       dispatch(setLoadingState(true));
 
       try {
-        const response = await fetch("http://localhost:8080/auth/check-email", {
+        const response = await fetch(`${mainAPIPath}/auth/check-email`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -87,7 +88,10 @@ const SignInForm: React.FC = function () {
         } else if (response.status === 409) {
           console.log(data);
           setUsedEmail(data.email);
-          setErrorMessage(data.message);
+          setErrorCode(response.status);
+          resetPassword();
+        } else if (response.status === 422) {
+          setErrorCode(response.status);
           resetPassword();
         } else {
           dispatch(setAuth({ email: "", password: "" }));
@@ -97,7 +101,7 @@ const SignInForm: React.FC = function () {
               title: "Something went wrong!",
               details:
                 "It is not you, it's us! A server side error has occured. Please try again and if you continue to encounter this issue, don't hesitate and contact us.\n\nDetails: " +
-                data.error,
+                data.error.msg,
               label: "Try Again",
               redirectionRoute: "/auth",
             })
@@ -112,13 +116,12 @@ const SignInForm: React.FC = function () {
             responseCode: 400,
             title: "Failed connection",
             details:
-              "It seems like you request didn't go through. Make sure you are connected to the internet and try again.",
+              "It seems like your request didn't go through. Make sure you are connected to the internet and try again.",
             label: "Try Again",
             redirectionRoute: "/auth",
           })
         );
         dispatch(changeVisibility(true));
-        console.log("400. Failed fetching procedure: ", error);
       } finally {
         dispatch(setLoadingState(false));
       }
@@ -138,7 +141,7 @@ const SignInForm: React.FC = function () {
       <header className={styles["header-wrapper"]}>
         <h3>Get Started</h3>
         <p>
-          Already have an account? <a>Log in</a>
+          Already have an account? <Link to="/auth/login">Log in</Link>
         </p>
       </header>
       <button className={styles["google-button"]}>
@@ -162,9 +165,14 @@ const SignInForm: React.FC = function () {
             Please provide a valid email!
           </p>
         )}
-        {errorMessage != null && usedEmail === email && (
+        {errorCode === 409 && usedEmail === email && (
           <p className={styles["error-message"]}>
             This email is already in use. Please provide a different one!
+          </p>
+        )}
+        {errorCode === 422 && (
+          <p className={styles["error-message"]}>
+            The e-mail you have provided is not valid!
           </p>
         )}
         <label htmlFor="password">Password</label>
@@ -180,7 +188,7 @@ const SignInForm: React.FC = function () {
         />
         {passwordErrorState && (
           <p className={styles["error-message"]}>
-            Your password must be longer than 12 characters.
+            Your password must be 8-20 characters.
           </p>
         )}
       </div>

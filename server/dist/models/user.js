@@ -16,8 +16,8 @@ const userSchema = new Schema({
         weight: Number,
         height: Number,
     },
-    selectedActivities: [String],
-    activitiesPreference: {
+    preferences: {
+        selectedActivities: [String],
         fitnessLevel: String,
         frequencyStatus: String,
         fitnessGoal: String,

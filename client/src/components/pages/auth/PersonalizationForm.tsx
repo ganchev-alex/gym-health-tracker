@@ -1,19 +1,20 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { setLoadingState } from "../../../features/loading-actions";
 
 import { RootState } from "../../../features/store";
 import {
   addActivite,
   removeActivite,
   selectAllActivities,
-  setPreferences,
 } from "../../../features/user-actions";
+import { setLoadingState } from "../../../features/loading-actions";
 import {
   changeVisibility,
   setModuleData,
 } from "../../../features/error-module";
+import { getToken } from "../../../util/auth";
+import { mainAPIPath } from "../../../App";
 
 import enheritedStyles from "./SignInForm.module.css";
 import styles from "./PersonalizationForm.module.css";
@@ -61,35 +62,34 @@ const goalsOptions = [
 ];
 
 const PersonalDetails: React.FC = function () {
-  const navigate = useNavigate();
   const dispatch = useDispatch();
-  const userData = useSelector((state: RootState) => {
-    return state.userActions;
-  });
-
-  const profileDataVerifier = useSelector((state: RootState) => {
-    return state.userActions.personalDetails.firstName;
-  });
+  const navigate = useNavigate();
 
   const [fitnessLevel, setFitnessLevel] = useState("");
   const [frequencyStatus, setFrequencyStatus] = useState("");
   const [fitnessGoal, setFitnessGoal] = useState("");
 
-  useEffect(() => {
-    if (profileDataVerifier == "") {
-      navigate("/auth");
-    }
-
-    dispatch(setPreferences({ fitnessLevel, frequencyStatus, fitnessGoal }));
-  }, [fitnessLevel, frequencyStatus, fitnessGoal]);
-
   const selectedActivities = useSelector((state: RootState) => {
     return state.userActions.selectedActivities;
   });
   let isAllActivites = !(selectedActivities.length !== 0);
+
   const themeMode = useSelector((state: RootState) => {
-    return state.userActions.personalDetails.sex;
+    return state.userActions.sex;
   });
+
+  const styleChecker = localStorage.getItem("userSex") || themeMode;
+
+  const token = getToken();
+  const authDataValidator = useSelector((state: RootState) => {
+    return state.userActions.auth.email;
+  });
+
+  useEffect(() => {
+    if (!token || token == "TOKEN_EXPIRED" || authDataValidator === "") {
+      navigate("/auth");
+    }
+  }, [token]);
 
   const onSelectActivity = function (label: string) {
     if (selectedActivities.includes(label)) {
@@ -112,7 +112,6 @@ const PersonalDetails: React.FC = function () {
         break;
       case "fitnessGoal":
         setFitnessGoal(event.target.value);
-        console.log("Changed value: ", fitnessGoal);
     }
   };
 
@@ -120,68 +119,57 @@ const PersonalDetails: React.FC = function () {
     dispatch(selectAllActivities());
   };
 
-  // On form submission create a profile on the backend and provide a loading spinner for the user.
   const submissionHandler = function (event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-
-    dispatch(setPreferences({ fitnessLevel, frequencyStatus, fitnessGoal }));
-    // const sharedModuleData = {
-    //   label1: "React Out",
-    //   label2: "Try Again",
-    //   action1: () => {
-    //     navigate("/auth");
-    //     dispatch(changeVisibility(false));
-    //   },
-    //   action2: () => {
-    //     navigate("/auth");
-    //     dispatch(changeVisibility(false));
-    //   },
-    // };
+    const userPreferences = {
+      selectedActivities,
+      fitnessLevel,
+      frequencyStatus,
+      fitnessGoal,
+    };
     const sendUserData = async function () {
       dispatch(setLoadingState(true));
       try {
-        const response = await fetch("http://localhost:8080/auth/signin", {
+        const response = await fetch(`${mainAPIPath}/auth/set-preferences`, {
           method: "POST",
           headers: {
-            "Content-Type": "multipart/form-data",
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify(userData),
+          body: JSON.stringify(userPreferences),
         });
-        const data = await response.json();
 
-        if (response.status === 201) {
-          console.log(data.message, "User ID", data.userId);
-        } else if (response.status === 400) {
-          // TODO: Wrong Validation input error Module.
-          console.log(data.message, data.details);
-        } else {
-          // const moduleData = {
-          //   responseCode: response.status,
-          //   title: "Something went wrong!",
-          //   details:
-          //     "Unexpected server error! Please try again!\nIf you are continuing to experience this problem contact us",
-          //   ...sharedModuleData,
-          // };
-          // dispatch(setModuleData(moduleData));
-          // dispatch(changeVisibility(true));
-          // console.log(data.error);
+        if (response.status == 204) {
+          navigate("/app");
+        } else if (response.status == 404) {
+          dispatch(
+            setModuleData({
+              responseCode: 404,
+              title: "User not found!",
+              details:
+                "The token stored on your machine is invalid or missing. Try to login again and if you continue to experience this error reach out to us.",
+              label: "Log In",
+              redirectionRoute: "/auth/login",
+            })
+          );
+          dispatch(changeVisibility(true));
         }
       } catch (error) {
-        // const moduleData = {
-        //   responseCode: 500,
-        //   title: "Something went wrong!",
-        //   details:
-        //     "It is not you, it is us! Please try again, and if you are continueing to experience this issue, check your e-mail for any notification related to the problem. Otherwise, please contact us!",
-        //   ...sharedModuleData,
-        // };
-        // dispatch(setModuleData(moduleData));
-        // dispatch(changeVisibility(true));
-        console.log(error);
+        dispatch(
+          setModuleData({
+            responseCode: 400,
+            title: "Failed connection",
+            details:
+              "It seems like your request didn't go through. Make sure you are connected to the internet and try again.",
+            label: "Try Again",
+            redirectionRoute: "/auth",
+          })
+        );
+        dispatch(changeVisibility(true));
       } finally {
         dispatch(setLoadingState(false));
       }
     };
-
     sendUserData();
   };
 
@@ -189,9 +177,7 @@ const PersonalDetails: React.FC = function () {
     <form onSubmit={submissionHandler}>
       <header className={enheritedStyles["header-wrapper"]}>
         <h3>Personalize</h3>
-        <p>
-          Changed your mind? <a>Cancel</a>
-        </p>
+        <p>You are almost finished!</p>
       </header>
       <p className={styles.description}>
         Help us manage your profile better! By setting up preferences GymPal
@@ -202,7 +188,9 @@ const PersonalDetails: React.FC = function () {
       <p className={enheritedStyles.divider}>personal details</p>
       <div
         className={`${styles["survey-wrapper"]} ${
-          themeMode === "male" ? styles["male-theme"] : styles["female-theme"]
+          styleChecker === "male"
+            ? styles["male-theme"]
+            : styles["female-theme"]
         }`}
       >
         <label htmlFor="fitnessLevel">

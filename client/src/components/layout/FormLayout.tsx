@@ -1,8 +1,9 @@
-import React from "react";
+import { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { RootState } from "../../features/store";
+import { deleteToken, getExpiryRate, getToken } from "../../util/auth";
 
 import styles from "./FormLayout.module.css";
 
@@ -13,9 +14,16 @@ import maleBackground from "../../assets/images/male_background_signin_form.jpg"
 import femaleBackground from "../../assets/images/female_background_signin_form.jpg";
 
 const FormLayout: React.FC = function () {
-  const selectedMode = useSelector(
-    (state: RootState) => state.userActions.personalDetails.sex
-  );
+  const token = getToken();
+  useEffect(() => {
+    const expiryRate = getExpiryRate();
+    setTimeout(() => {
+      deleteToken();
+    }, expiryRate);
+  }, [token]);
+
+  const selectedMode = useSelector((state: RootState) => state.userActions.sex);
+  const styleChecker = localStorage.getItem("userSex") || selectedMode;
 
   const loadingState = useSelector(
     (state: RootState) => state.loadingManager.isLoading
@@ -26,11 +34,11 @@ const FormLayout: React.FC = function () {
   );
 
   const mainClasses = `${styles["wrapper"]} ${
-    selectedMode === "male" ? styles.male : styles.female
+    styleChecker === "male" ? styles.male : styles.female
   }`;
 
   const selectedGradient = `${
-    selectedMode === "male"
+    styleChecker === "male"
       ? styles["male-gradient"]
       : styles["female-gradient"]
   }`;
@@ -41,11 +49,11 @@ const FormLayout: React.FC = function () {
       <div className={styles["image-slot"]}>
         <img
           src={maleBackground}
-          className={selectedMode == "male" ? "" : styles.hidden}
+          className={styleChecker == "male" ? "" : styles.hidden}
         />
         <img
           src={femaleBackground}
-          className={selectedMode == "female" ? "" : styles.hidden}
+          className={styleChecker == "female" ? "" : styles.hidden}
         />
         <div className={selectedGradient} />
       </div>

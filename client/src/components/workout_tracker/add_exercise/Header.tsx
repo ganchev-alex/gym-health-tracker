@@ -2,7 +2,7 @@ import { ChangeEvent, useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import {
-  setAddExerciseVisibility,
+  setAddExerciseState,
   setFilterValue,
   setFitlerState,
   setSearchExercise,
@@ -50,7 +50,7 @@ const Header = function () {
   };
 
   const onClose = function () {
-    dispatch(setAddExerciseVisibility(false));
+    dispatch(setAddExerciseState({ visibility: false }));
   };
 
   const availableFilter = keyEquipment || keyMuscle;

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import CheckBoxIcon from "../../../assets/svg_icon_components/CheckboxIcon";
-import RemoveSetIcon from "../../../assets/svg_icon_components/RemoveSetIcon";
+import RemoveIcon from "../../../assets/svg_icon_components/RemoveIcon";
 
 import styles from "./SetsTable.module.css";
 import setStyles from "./Set.module.css";
@@ -27,7 +27,7 @@ const Set: React.FC<{
           className={setStyles["remove-button"]}
           onClick={() => props.setRemover(props.setIndex - 1)}
         >
-          <RemoveSetIcon />
+          <RemoveIcon />
         </button>
       </td>
       <td>{props.previos}</td>

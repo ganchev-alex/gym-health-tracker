@@ -3,34 +3,45 @@ import NextArrowIcon from "../../../assets/svg_icon_components/NextArrowIcon";
 import {
   Exercise,
   addExercise,
-  setAddExerciseVisibility,
+  replaceExercise,
+  setAddExerciseState,
   setExerciseData,
-  setExerciseVisibility,
+  setExerciseSummaryVisibility,
+  setOptionsMenuState,
 } from "../../../features/workout";
 import styles from "./ExerciseResult.module.css";
 import { RootState } from "../../../features/store";
-import { useEffect, useState } from "react";
 
 const ExerciseResult: React.FC<{ exerciseData: Exercise }> = function (props) {
   const data = props.exerciseData;
 
   const dispatch = useDispatch();
-  const { exercises } = useSelector((state: RootState) => {
-    return state.workoutState;
-  });
+  const { optionsMenuState, addExerciseState } = useSelector(
+    (state: RootState) => {
+      return state.workoutState;
+    }
+  );
 
   const showSummary = function () {
-    dispatch(setExerciseVisibility(true));
+    dispatch(setExerciseSummaryVisibility(true));
     dispatch(setExerciseData(data));
   };
 
   const onAddExercise = function () {
-    dispatch(addExercise(props.exerciseData));
-    dispatch(setAddExerciseVisibility(false));
-  };
+    if (addExerciseState.mode === "ADD" || !addExerciseState.mode) {
+      dispatch(addExercise(props.exerciseData));
+    } else if (addExerciseState.mode === "REPLACE") {
+      console.log("Replaced Exercise: ", optionsMenuState.exerciseId);
+      dispatch(
+        replaceExercise({
+          currant: optionsMenuState.exerciseId || "",
+          replaceWith: props.exerciseData,
+        })
+      );
+      dispatch(setOptionsMenuState({ visibility: false }));
+    }
 
-  const checkPresense = function () {
-    return exercises.some((exercise) => exercise._id === data._id);
+    dispatch(setAddExerciseState({ visibility: false }));
   };
 
   return (

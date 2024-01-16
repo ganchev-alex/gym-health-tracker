@@ -1,7 +1,7 @@
 import ExerciseResult from "./ExerciseResult";
 import Header from "./Header";
 
-import React, { useCallback } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 
 import styles from "./AddExerciseForm.module.css";
@@ -9,21 +9,20 @@ import { useEffect, useState } from "react";
 import { mainAPIPath } from "../../../App";
 import {
   Exercise,
-  setAddExerciseVisibility,
-  setExerciseVisibility,
+  setAddExerciseState,
+  setExerciseSummaryVisibility,
 } from "../../../features/workout";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../features/store";
 import { setLoadingState } from "../../../features/loading-actions";
 import LoadingSpinner from "../../../assets/svg_icon_components/LoadingSpinner";
-import ExersiceSummaryModal from "./ExersiceSummary";
 import Filter from "./Filter";
 
-const Backdrop = function () {
+export const Backdrop = function () {
   const dispatch = useDispatch();
   const clickHandler = function () {
-    dispatch(setAddExerciseVisibility(false));
-    dispatch(setExerciseVisibility(false));
+    dispatch(setAddExerciseState({ visibility: false }));
+    dispatch(setExerciseSummaryVisibility(false));
   };
 
   return <div className={styles.backdrop} onClick={clickHandler} />;
@@ -219,10 +218,6 @@ const AddExerciseForm = function () {
 };
 
 const AddExercisesModal = function () {
-  const exersiceSummaryVisibility = useSelector((state: RootState) => {
-    return state.workoutState.exerciseSummaryVisibility;
-  });
-
   const backdropRoot = document.getElementById("backdrop-root");
   const overlayRoot = document.getElementById("overlay-root");
   if (!backdropRoot || !overlayRoot) {
@@ -231,8 +226,6 @@ const AddExercisesModal = function () {
   return (
     <React.Fragment>
       {ReactDOM.createPortal(<Backdrop />, backdropRoot)}
-      {exersiceSummaryVisibility &&
-        ReactDOM.createPortal(<ExersiceSummaryModal />, overlayRoot)}
       {ReactDOM.createPortal(<AddExerciseForm />, overlayRoot)}
     </React.Fragment>
   );

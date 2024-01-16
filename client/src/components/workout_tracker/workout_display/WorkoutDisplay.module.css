@@ -5,6 +5,7 @@
   border-radius: 15px;
   background: white;
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
+  position: relative;
 }
 
 .display {
@@ -57,4 +58,69 @@
   font-size: 500;
   color: #828282;
   margin: 0;
+}
+
+.exercise-menu {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(130, 130, 130, 0.36) 58.33%,
+    rgba(130, 130, 130, 0.54) 100%,
+    rgba(130, 130, 130, 0.54) 100%
+  );
+  border-radius: 15px;
+  z-index: 0;
+}
+
+.exercise-menu button {
+  font-size: 1.1rem;
+  padding: 0.9em 1.4em;
+  font-weight: 600;
+  height: fit-content;
+  color: #e54c60;
+  border: none;
+}
+
+.options {
+  display: flex;
+  flex-direction: column;
+  width: 85%;
+  background-color: white;
+  border-radius: 15px;
+  margin-bottom: 1.2em;
+  z-index: 1;
+}
+
+.options svg {
+  width: 40px;
+  height: 40px;
+}
+
+.options button {
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  text-align: left;
+}
+
+.options button:nth-child(2) {
+  border-top: #e0e0e0 1.5px solid;
+  color: #d90429;
+}
+
+.close-button {
+  width: 85%;
+  background-color: white;
+  margin-bottom: 1.2em;
+  border-radius: 15px;
+  text-align: center;
 }

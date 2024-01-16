@@ -12,17 +12,21 @@ export type Exercise = {
 
 type Workout = {
   exercises: Exercise[];
-  addExerciseVisibility: boolean;
+  addExerciseState: { visibility: boolean; mode?: String };
   exerciseSummaryVisibility: boolean;
   singleExerciseData: Exercise;
   searchExercise: string | null;
   filterState: { visibility: boolean; type?: string };
   filterValue: { equipment?: string; muscle?: string };
+  optionsMenuState: {
+    visibility: boolean;
+    exerciseId?: string;
+  };
 };
 
 const initialState: Workout = {
   exercises: [],
-  addExerciseVisibility: false,
+  addExerciseState: { visibility: false, mode: "ADD" },
   exerciseSummaryVisibility: false,
   singleExerciseData: {
     _id: "",
@@ -36,6 +40,7 @@ const initialState: Workout = {
   searchExercise: null,
   filterState: { visibility: false },
   filterValue: {},
+  optionsMenuState: { visibility: false },
 };
 
 const workoutState = createSlice({
@@ -56,10 +61,26 @@ const workoutState = createSlice({
         (exersice) => exersice._id !== action.payload
       );
     },
-    setAddExerciseVisibility: (state, action: PayloadAction<boolean>) => {
-      state.addExerciseVisibility = action.payload;
+    replaceExercise: (
+      state,
+      action: PayloadAction<{ currant: string; replaceWith: Exercise }>
+    ) => {
+      const currantExericeIndex = state.exercises.findIndex(
+        (exercise) => exercise._id === action.payload.currant
+      );
+      if (currantExericeIndex >= 0) {
+        state.exercises[currantExericeIndex] = {
+          ...action.payload.replaceWith,
+        };
+      }
     },
-    setExerciseVisibility: (state, action: PayloadAction<boolean>) => {
+    setAddExerciseState: (
+      state,
+      action: PayloadAction<{ visibility: boolean; mode?: string }>
+    ) => {
+      state.addExerciseState = { ...action.payload };
+    },
+    setExerciseSummaryVisibility: (state, action: PayloadAction<boolean>) => {
       state.exerciseSummaryVisibility = action.payload;
     },
     setExerciseData: (state, action: PayloadAction<Exercise>) => {
@@ -84,17 +105,25 @@ const workoutState = createSlice({
     ) => {
       state.filterValue = { ...state.filterValue, ...action.payload };
     },
+    setOptionsMenuState: (
+      state,
+      action: PayloadAction<{ visibility: boolean; exerciseId?: string }>
+    ) => {
+      state.optionsMenuState = { ...action.payload };
+    },
   },
 });
 
 export const {
   addExercise,
   removeExercise,
-  setAddExerciseVisibility,
-  setExerciseVisibility,
+  replaceExercise,
+  setAddExerciseState,
+  setExerciseSummaryVisibility,
   setExerciseData,
   setSearchExercise,
   setFitlerState,
   setFilterValue,
+  setOptionsMenuState,
 } = workoutState.actions;
 export default workoutState.reducer;

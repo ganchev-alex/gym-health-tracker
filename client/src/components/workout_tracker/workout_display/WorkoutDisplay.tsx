@@ -4,29 +4,55 @@ import ExerciseSlot from "./ExerciseSlot";
 import styles from "./WorkoutDisplay.module.css";
 import { RootState } from "../../../features/store";
 import AddExercisesModal from "../add_exercise/AddExerciseForm";
-import { setAddExerciseVisibility } from "../../../features/workout";
+import {
+  removeExercise,
+  setAddExerciseState,
+  setOptionsMenuState,
+} from "../../../features/workout";
 import { useEffect } from "react";
+import ReplaceIcon from "../../../assets/svg_icon_components/ReplaceIcon";
+import RemoveIcon from "../../../assets/svg_icon_components/RemoveIcon";
+import ExersiceSummaryModal from "../add_exercise/ExersiceSummary";
 
 const WorkoutDisplay: React.FC = function () {
-  const { exercises, addExerciseVisibility } = useSelector(
-    (state: RootState) => {
-      return state.workoutState;
-    }
-  );
+  const {
+    exercises,
+    addExerciseState,
+    optionsMenuState,
+    exerciseSummaryVisibility,
+  } = useSelector((state: RootState) => {
+    return state.workoutState;
+  });
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     console.log(exercises);
-  }, [exercises]);
+    console.log(optionsMenuState);
+  }, [exercises, optionsMenuState]);
 
   const clickHandler = function () {
-    dispatch(setAddExerciseVisibility(true));
+    dispatch(setAddExerciseState({ visibility: true, mode: "ADD" }));
+  };
+
+  const closeOptions = function () {
+    dispatch(setOptionsMenuState({ visibility: false }));
+  };
+
+  const replace = function (event: React.MouseEvent<HTMLButtonElement>) {
+    event.stopPropagation();
+    console.log("Replace Activated: ", optionsMenuState);
+    dispatch(setAddExerciseState({ visibility: true, mode: "REPLACE" }));
+  };
+
+  const remove = function () {
+    dispatch(removeExercise(optionsMenuState.exerciseId || ""));
   };
 
   return (
     <div className={styles.widget}>
-      {addExerciseVisibility && <AddExercisesModal />}
+      {addExerciseState.visibility && <AddExercisesModal />}
+      {exerciseSummaryVisibility && <ExersiceSummaryModal />}
       <div className={styles.display}>
         {exercises.length ? (
           exercises.map((exercise) => {
@@ -42,7 +68,22 @@ const WorkoutDisplay: React.FC = function () {
           + Add Exercise
         </button>
       </div>
-      <div>{/* Exercise Settings opened from the exercise itself */}</div>
+      {optionsMenuState.visibility && (
+        <div className={styles["exercise-menu"]} onClick={closeOptions}>
+          <div className={styles["options"]}>
+            <button onClick={replace}>
+              <ReplaceIcon /> Replace Exercise
+            </button>
+            <button onClick={remove}>
+              <RemoveIcon />
+              Remove Exercise
+            </button>
+          </div>
+          <button className={styles["close-button"]} onClick={closeOptions}>
+            Close
+          </button>
+        </div>
+      )}
     </div>
   );
 };

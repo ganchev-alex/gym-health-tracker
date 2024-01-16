@@ -13,6 +13,7 @@
 .details {
   display: flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .details img {

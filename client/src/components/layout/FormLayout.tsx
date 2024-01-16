@@ -7,7 +7,7 @@ import { deleteToken, getExpiryRate, getToken } from "../../util/auth";
 
 import styles from "./FormLayout.module.css";
 
-import ErrorModal from "../UI/ErrorModal";
+import ErrorModal from "../UI/ErrorModal/ErrorModal";
 
 import LoadingSpinner from "../../assets/svg_icon_components/LoadingSpinner";
 import maleBackground from "../../assets/images/male_background_signin_form.jpg";

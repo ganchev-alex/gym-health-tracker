@@ -50,7 +50,7 @@ const LogInForm: React.FC = function () {
     if (token && token != "TOKEN_EXPIRED") {
       navigate("/app");
     }
-  });
+  }, [token]);
 
   const submissionHandler = function (event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();

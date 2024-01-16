@@ -1,0 +1,36 @@
+.option {
+  display: flex;
+  align-items: center;
+  padding: 0.5em 2em;
+  border-bottom: #e0e0e0 1px solid;
+}
+
+.option img {
+  width: 60px;
+  height: 60px;
+  border-radius: 15px;
+  border: #e0e0e0 2px solid;
+  padding: 0.5em;
+}
+
+.option h6 {
+  font-size: 1rem;
+  margin-left: 1.5em;
+}
+
+.option img.muscle-image {
+  padding: 0;
+  width: 75px;
+  height: 75px;
+}
+
+.active {
+  background-color: #e54c60;
+  color: white;
+  border-radius: 10px;
+}
+
+.invert {
+  filter: invert(1);
+  border: black 2px solid !important;
+}

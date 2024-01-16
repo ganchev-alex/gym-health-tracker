@@ -1,0 +1,90 @@
+.modal {
+  width: 25vw;
+  height: 75vh;
+  background-color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 10px;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+  z-index: 6;
+}
+
+.results {
+  padding: 1.25em;
+  height: 70%;
+  max-height: 70%;
+  overflow: scroll;
+}
+
+.results::-webkit-scrollbar {
+  display: none;
+}
+
+.results {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.loading-plane {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading-plane svg {
+  animation: loading-animation 1s ease-in-out infinite;
+}
+
+@keyframes loading-animation {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(217, 217, 217, 0.5);
+  z-index: 5;
+}
+
+.error-wrapper {
+  width: auto;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.error-wrapper p {
+  font-size: 1.1rem;
+  font-weight: 500;
+  text-align: center;
+}
+
+.error-wrapper span {
+  font-size: 1rem;
+  font-weight: 400;
+  color: #828282;
+}
+
+.error-wrapper button {
+  padding: 0.5em 2em;
+  font-size: 1rem;
+  font-weight: 600;
+  color: #e54c60;
+  border: #e54c60 2.5px solid;
+  background-color: transparent;
+  border-radius: 10px;
+}

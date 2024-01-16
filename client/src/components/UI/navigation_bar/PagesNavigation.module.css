@@ -1,0 +1,15 @@
+.wrapper {
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 25px;
+  margin: 0;
+  padding: 0;
+}
+
+.untoggled {
+  width: 98%;
+  align-items: start;
+}

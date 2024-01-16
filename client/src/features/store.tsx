@@ -5,6 +5,7 @@ import navigationReducers from "./styles-manager-actions";
 import workoutWidgetReducers from "./widgets-actions";
 import loadingReducers from "./loading-actions";
 import errorModuleReducers from "./error-module";
+import workoutStateReducers from "./workout";
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     userActions: userReducers,
     loadingManager: loadingReducers,
     errorModuleManager: errorModuleReducers,
+    workoutState: workoutStateReducers,
   },
 });
 

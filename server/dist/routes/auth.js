@@ -33,7 +33,7 @@ const loginValidators = [
     check("password").isLength({ min: 8, max: 20 }).trim(),
 ];
 // Signing in: Steps & Follow Ups
-router.post("/check-email", check("email").isEmail(), auth_1.default.checkEmail);
+router.post("/check-email", check("email").isEmail().normalizeEmail(), auth_1.default.checkEmail);
 router.post("/sign-in", signInValidators, auth_1.default.signIn);
 router.post("/set-preferences", authValidation_1.default, auth_1.default.setPreferences);
 router.post("/login", loginValidators, auth_1.default.login);

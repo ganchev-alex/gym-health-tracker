@@ -7,12 +7,13 @@ import path = require("path");
 
 import exerciseRouter from "./routes/exercises";
 import authRouter from "./routes/auth";
+import applicationRouter from "./routes/application";
 
 const app = express();
 
 const fileStorage = multer.diskStorage({
   destination: (req, file, callback) => {
-    callback(null, "userData/profilePictures");
+    callback(null, "profilePictures");
   },
   filename: (req, file, callback) => {
     crypto.randomBytes(10, (error, buffer) => {
@@ -38,8 +39,8 @@ const fileFilter = (req, file, callback) => {
 
 app.use(bodyParser.json());
 app.use(
-  "/userData/profilePictures",
-  express.static(path.join(__dirname, "/userData/profilePictures"))
+  "/profilePictures",
+  express.static(path.join(__dirname, "../profilePictures"))
 );
 app.use(
   multer({ storage: fileStorage, fileFilter: fileFilter }).single(
@@ -58,11 +59,12 @@ app.use((req: express.Request, res: express.Response, next) => {
 });
 
 app.use("/auth", authRouter);
-app.use("/exercises", exerciseRouter);
+app.use("/app", applicationRouter);
+app.use("/get", exerciseRouter);
 
 mongoose
   .connect(
-    "mongodb+srv://aganchev:vytLbwSQFjvAZqoJ@projectmanager.jjnszh2.mongodb.net/WorkoutTrackerApplication?retryWrites=true&w=majority"
+    "mongodb+srv://aganchev:rwUBOOO79gI3DeN7@projectmanager.jjnszh2.mongodb.net/WorkoutTrackerApplication?retryWrites=true&w=majority"
   )
   .then((connectionResult) => {
     if (!connectionResult) {

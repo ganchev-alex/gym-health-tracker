@@ -2,7 +2,7 @@ import React from "react";
 
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
-import RootLayout from "./components/layout/RootLayout";
+import RootLayout, { appDataLoader } from "./components/layout/RootLayout";
 import FormLayout from "./components/layout/FormLayout";
 
 import SignInForm from "./components/pages/auth/SignInForm";
@@ -16,11 +16,7 @@ import HealthEssencialsPage from "./components/pages/app/HealthEssencialsPage";
 import ExplorePage from "./components/pages/app/ExplorePage";
 import StatisticsPage from "./components/pages/app/StatisticsPage";
 
-// TODO: Add children to path /auth
-/* //   children: [
-      //      {path: "signin", element: <SignInForm>}
-      //      {path: "login", element: <LoginForm>}
-      //   ] */
+export const mainAPIPath = "http://localhost:8080";
 
 const router = createBrowserRouter([
   {
@@ -53,6 +49,7 @@ const router = createBrowserRouter([
   {
     path: "/app",
     element: <RootLayout />,
+    loader: appDataLoader,
     children: [
       { path: "dashboard", element: <Dashboard /> },
       {
@@ -78,5 +75,5 @@ const router = createBrowserRouter([
 function App() {
   return <RouterProvider router={router} />;
 }
-export const mainAPIPath = "http://localhost:8080";
+
 export default App;

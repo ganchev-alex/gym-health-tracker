@@ -155,14 +155,12 @@ const login = async (req, res) => {
         if (!userMatch) {
             return res.status(401).json({
                 message: "A user with this email was not found.",
-                field: "email",
             });
         }
         const result = await bcrypt.compare(password, userMatch.auth.password);
         if (!result) {
             return res.status(401).json({
                 message: "You have provided a wrong password",
-                field: "password",
             });
         }
         const token = jwt.sign({

@@ -1,0 +1,64 @@
+.backdrop {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.filter {
+  background-color: white;
+  height: 65%;
+  width: 85%;
+  border-radius: 0 0 10px 10px;
+  border: none;
+  overflow: scroll;
+  padding: 0 1em;
+  margin-bottom: 1em;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  cursor: pointer;
+}
+
+.filter::-webkit-scrollbar {
+  display: none;
+}
+
+.ribbon {
+  height: fit-content;
+  width: 85%;
+  padding: 0.7em 1em;
+  display: flex;
+  background-color: white;
+  border-radius: 10px 10px 0 0;
+  border: none;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.ribbon h6 {
+  font-size: 1rem;
+  margin: 1em 0;
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
+}
+
+.ribbon button {
+  font-size: 0.9rem;
+  width: fit-content;
+  height: fit-content;
+  color: #e54c60;
+  font-weight: 600;
+  text-decoration: underline;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}

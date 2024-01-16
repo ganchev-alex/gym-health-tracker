@@ -5,10 +5,21 @@ interface Auth {
   password: string;
 }
 
+interface loadedUserData {
+  auth: { email: string };
+  personalDetails: {
+    firstName: string;
+    lastNamee: string;
+    sex: string;
+    profilePicture: string;
+  };
+}
+
 const initialUser: {
   auth: Auth;
   sex: string;
   selectedActivities: string[];
+  loadedUserData: loadedUserData;
 } = {
   auth: {
     email: "",
@@ -16,6 +27,15 @@ const initialUser: {
   },
   sex: "male",
   selectedActivities: [],
+  loadedUserData: {
+    auth: { email: "" },
+    personalDetails: {
+      firstName: "",
+      lastNamee: "",
+      sex: "",
+      profilePicture: "",
+    },
+  },
 };
 
 const userManager = createSlice({
@@ -28,6 +48,10 @@ const userManager = createSlice({
     selectMode: (state, action: PayloadAction<string>) => {
       state.sex = action.payload;
     },
+    setLoadedUserData: (state, action: PayloadAction<loadedUserData>) => {
+      state.loadedUserData = { ...action.payload };
+    },
+    // Extract and refactor this.
     addActivite: (state, action: PayloadAction<{ label: string }>) => {
       state.selectedActivities.push(action.payload.label);
     },
@@ -45,6 +69,8 @@ const userManager = createSlice({
 export const {
   setAuth,
   selectMode,
+  setLoadedUserData,
+  // Extract and refactor this.
   addActivite,
   removeActivite,
   selectAllActivities,

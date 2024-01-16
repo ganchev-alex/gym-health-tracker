@@ -1,0 +1,60 @@
+.widget {
+  padding: 2em 0;
+  margin: 2em 0;
+  width: 60%;
+  border-radius: 15px;
+  background: white;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
+}
+
+.display {
+  height: 100%;
+  width: 100%;
+  overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.display::-webkit-scrollbar {
+  display: none;
+}
+
+.display {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.add-button {
+  width: 70%;
+  height: fit-content;
+  font-size: 0.9rem;
+  padding: 0.5em 0;
+  color: white;
+  border: none;
+  border-radius: 10px;
+  background-color: #e54c60;
+}
+
+.start-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 1.5em 0;
+  width: 100%;
+  gap: 0.5em;
+}
+
+.start-message h4 {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: black;
+  margin: 0;
+}
+
+.start-message p {
+  font-size: 1rem;
+  font-size: 500;
+  color: #828282;
+  margin: 0;
+}

@@ -35,7 +35,7 @@ const loginValidators = [
 // Signing in: Steps & Follow Ups
 router.post(
   "/check-email",
-  check("email").isEmail(),
+  check("email").isEmail().normalizeEmail(),
   authController.checkEmail
 );
 router.post("/sign-in", signInValidators, authController.signIn);

@@ -1,0 +1,39 @@
+.cell-wrapper {
+  position: relative;
+}
+
+.set-index {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  z-index: 0;
+  cursor: pointer;
+}
+
+.remove-button {
+  display: none;
+}
+
+.set-index:hover {
+  display: none;
+}
+
+.set-index:hover + .remove-button {
+  display: inline-block;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 1;
+  background-color: transparent;
+  border: none;
+  padding: 0.5em 0;
+}
+
+.set-index:hover + .remove-button svg {
+  height: 100%;
+}

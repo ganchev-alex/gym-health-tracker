@@ -11,10 +11,11 @@ const crypto = require("crypto");
 const path = require("path");
 const exercises_1 = __importDefault(require("./routes/exercises"));
 const auth_1 = __importDefault(require("./routes/auth"));
+const application_1 = __importDefault(require("./routes/application"));
 const app = express();
 const fileStorage = multer.diskStorage({
     destination: (req, file, callback) => {
-        callback(null, "userData/profilePictures");
+        callback(null, "profilePictures");
     },
     filename: (req, file, callback) => {
         crypto.randomBytes(10, (error, buffer) => {
@@ -38,7 +39,7 @@ const fileFilter = (req, file, callback) => {
     }
 };
 app.use(bodyParser.json());
-app.use("/userData/profilePictures", express.static(path.join(__dirname, "/userData/profilePictures")));
+app.use("/profilePictures", express.static(path.join(__dirname, "../profilePictures")));
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("profilePicture"));
 app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
@@ -47,9 +48,10 @@ app.use((req, res, next) => {
     next();
 });
 app.use("/auth", auth_1.default);
-app.use("/exercises", exercises_1.default);
+app.use("/app", application_1.default);
+app.use("/get", exercises_1.default);
 mongoose
-    .connect("mongodb+srv://aganchev:vytLbwSQFjvAZqoJ@projectmanager.jjnszh2.mongodb.net/WorkoutTrackerApplication?retryWrites=true&w=majority")
+    .connect("mongodb+srv://aganchev:rwUBOOO79gI3DeN7@projectmanager.jjnszh2.mongodb.net/WorkoutTrackerApplication?retryWrites=true&w=majority")
     .then((connectionResult) => {
     if (!connectionResult) {
         throw new Error("The server is not working at the moment.");

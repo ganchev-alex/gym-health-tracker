@@ -10,6 +10,7 @@ const authValidation = (
 ) => {
   const authHeader = req.get("Authorization");
   if (!authHeader) {
+    console.log("Not authrozied: 401");
     return res.status(401).json({
       message: "Not Authorized!",
     });

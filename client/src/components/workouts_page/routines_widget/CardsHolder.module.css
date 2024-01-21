@@ -6,8 +6,8 @@
   align-items: center;
   overflow-y: scroll;
   overflow-x: hidden;
-  padding: 10px;
-  height: 55vh;
+  padding: 0.3em;
+  width: 100%;
 }
 
 .holder::-webkit-scrollbar {

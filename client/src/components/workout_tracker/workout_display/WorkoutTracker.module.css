@@ -1,9 +1,8 @@
 .modal {
   display: flex;
   height: 100%;
-  width: 98%;
+  width: 100%;
   justify-content: space-around;
-  border: black 1px solid;
 }
 
 .sidebar {
@@ -23,7 +22,7 @@
 
 .buttons-wrapper button {
   font-size: 1.1rem;
-  width: fit-content;
+  width: 40%;
   height: fit-content;
   font-weight: 600;
   border-radius: 10px;

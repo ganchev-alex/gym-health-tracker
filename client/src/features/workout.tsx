@@ -11,6 +11,8 @@ export type Exercise = {
 };
 
 type Workout = {
+  isActive: boolean;
+  isShown: boolean;
   exercises: Exercise[];
   addExerciseState: { visibility: boolean; mode?: String };
   exerciseSummaryVisibility: boolean;
@@ -25,6 +27,8 @@ type Workout = {
 };
 
 const initialState: Workout = {
+  isActive: true,
+  isShown: false,
   exercises: [],
   addExerciseState: { visibility: false, mode: "ADD" },
   exerciseSummaryVisibility: false,
@@ -111,6 +115,16 @@ const workoutState = createSlice({
     ) => {
       state.optionsMenuState = { ...action.payload };
     },
+    setWorkoutActiveState: (state, action: PayloadAction<boolean>) => {
+      state.isActive = action.payload;
+    },
+    setWorkoutVisibility: (state) => {
+      if (!state.isActive) {
+        state.isShown = false;
+      } else {
+        state.isShown = !state.isShown;
+      }
+    },
   },
 });
 
@@ -125,5 +139,7 @@ export const {
   setFitlerState,
   setFilterValue,
   setOptionsMenuState,
+  setWorkoutActiveState,
+  setWorkoutVisibility,
 } = workoutState.actions;
 export default workoutState.reducer;

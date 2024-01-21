@@ -8,16 +8,14 @@ import styles from "./Categories.module.css";
 
 const Categroies: React.FC = () => {
   return (
-    <Widget>
-      <div className={styles["content-wrapper"]}>
-        <div className={styles.header}>
-          <h6>Categories</h6>
-          <a>See all</a>
-        </div>
-        <Activities />
-        <WorkoutsButton />
+    <div className={styles.widget}>
+      <div className={styles.header}>
+        <h6>Categories</h6>
+        <a>See all</a>
       </div>
-    </Widget>
+      <Activities />
+      <WorkoutsButton />
+    </div>
   );
 };
 

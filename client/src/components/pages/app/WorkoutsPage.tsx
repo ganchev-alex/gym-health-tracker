@@ -6,6 +6,7 @@ import Calendar from "../../workouts_page/calendar_widget/Calendar";
 import ExploreWidget from "../../workouts_page/explore_widget/ExploreWidget";
 
 import styles from "./WorkoutsPage.module.css";
+import WorkoutPad from "../../workouts_page/workout_pad/WorkoutPad";
 
 function WorkoutsPage() {
   return (
@@ -15,7 +16,10 @@ function WorkoutsPage() {
         <Categroies />
         <ExploreWidget />
       </div>
-      <Calendar />
+      <div className={styles.right}>
+        <Calendar />
+        <WorkoutPad />
+      </div>
     </div>
   );
 }

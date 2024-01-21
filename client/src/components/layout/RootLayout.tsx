@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import NavigationBar from "../UI/navigation_bar/NavigationBar";
 
@@ -8,11 +8,27 @@ import styles from "./RootLayout.module.css";
 import { getToken } from "../../util/auth";
 import { mainAPIPath } from "../../App";
 import { setLoadedUserData } from "../../features/user-actions";
+import { RootState } from "../../features/store";
+import WorkoutTracker from "../workout_tracker/workout_display/WorkoutTracker";
+import MinimizeIcon from "../../assets/svg_icon_components/MinimizeIcon";
+import { setWorkoutVisibility } from "../../features/workout";
 
 function RootLayout() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const fetchedData = useLoaderData();
+
+  const { firstName } = useSelector(
+    (state: RootState) => state.userActions.loadedUserData.personalDetails
+  );
+
+  const toggleState = useSelector((state: RootState) => {
+    return state.navigation.toggleState;
+  });
+
+  const { isActive: isWorkoutActive, isShown } = useSelector(
+    (state: RootState) => state.workoutState
+  );
 
   useEffect(() => {
     switch (fetchedData) {
@@ -38,15 +54,41 @@ function RootLayout() {
         const appData = fetchedData as AppData;
         dispatch(setLoadedUserData(appData));
     }
-  }, [fetchedData, navigate, dispatch]);
+  }, [fetchedData, navigate, dispatch, toggleState]);
 
   return (
     <div className={styles["display-wrapper"]}>
       <NavigationBar />
-      <main className={styles["content-wrapper"]}>
-        {/* <h1>Welcome Back, Megan!</h1>
-        <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h3> */}
-        <Outlet />
+      <main
+        className={styles["content-wrapper"]}
+        style={{ width: !toggleState ? "80%" : "" }}
+      >
+        {isShown ? (
+          <div className={styles.tracker}>
+            <WorkoutTracker />
+          </div>
+        ) : (
+          <React.Fragment>
+            <div className={styles.headings}>
+              <h1>Welcome Back, {firstName}!</h1>
+              <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h3>
+            </div>
+            <div className={styles["page-content"]}>
+              <Outlet />
+            </div>
+          </React.Fragment>
+        )}
+        {isWorkoutActive && (
+          <button
+            className={styles["minimize-button"]}
+            onClick={() => {
+              navigate("/app/workouts");
+              dispatch(setWorkoutVisibility());
+            }}
+          >
+            <MinimizeIcon />
+          </button>
+        )}
       </main>
     </div>
   );

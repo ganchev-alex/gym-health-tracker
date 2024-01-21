@@ -46,7 +46,7 @@ const Routines: React.FC = () => {
   });
 
   return (
-    <Widget>
+    <div className={styles.widget}>
       <h6 className={styles.header}>My Routines</h6>
       <p className={styles.comment}>
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit iusto
@@ -54,7 +54,7 @@ const Routines: React.FC = () => {
       </p>
       <CategoriesFilter categories={categories} />
       <CardsHolder workouts={DUMMY_DATA} />
-    </Widget>
+    </div>
   );
 };
 

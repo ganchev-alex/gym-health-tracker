@@ -22,7 +22,7 @@ const Calendar = function () {
   const lastDateLastMonth = new Date(currantYear, currantMonth, 0).getDate();
 
   return (
-    <Widget>
+    <div className={styles.widget}>
       <div className={styles.calendar}>
         <CalendarHeader
           currantMonth={currantMonth}
@@ -42,7 +42,7 @@ const Calendar = function () {
           lastDateLastMonth={lastDateLastMonth}
         />
       </div>
-    </Widget>
+    </div>
   );
 };
 

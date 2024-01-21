@@ -4,6 +4,7 @@ import ContentCard from "./ContentCard";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectFade, Pagination, Autoplay, Mousewheel } from "swiper/modules";
 
+import styles from "./ExploreWidget.module.css";
 import "./swiper-pagination.css";
 
 const DUMMY_DATA = [
@@ -35,7 +36,7 @@ const DUMMY_DATA = [
 
 const ExploreWidget = function () {
   return (
-    <Widget>
+    <div className={styles.widget}>
       <div className="content-wrapper">
         <Swiper
           slidesPerView={1}
@@ -62,7 +63,7 @@ const ExploreWidget = function () {
           })}
         </Swiper>
       </div>
-    </Widget>
+    </div>
   );
 };
 

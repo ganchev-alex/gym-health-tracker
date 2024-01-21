@@ -10,8 +10,8 @@ const WorkoutTracker: React.FC = () => {
       <div className={styles.sidebar}>
         <Timer />
         <div className={styles["buttons-wrapper"]}>
-          <button>Discard Workout</button>
-          <button>Finish Workout</button>
+          <button>Discard</button>
+          <button>Finish</button>
         </div>
       </div>
     </div>

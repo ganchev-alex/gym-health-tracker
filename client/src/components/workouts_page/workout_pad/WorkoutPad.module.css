@@ -1,0 +1,63 @@
+.widget {
+  background: linear-gradient(-125deg, #e54c60 20.25%, #d385e6 100%);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  height: 70%;
+  border-radius: 15px;
+  padding: 1em 1.2em;
+  box-sizing: border-box;
+  width: 100%;
+  flex: 0 0 20%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.headings h5 {
+  margin: 0;
+  font-size: 1.2em;
+  color: white;
+  font-weight: 600;
+  max-width: 100%;
+}
+
+.headings h6,
+.headings p {
+  color: white;
+  font-size: 1em;
+  margin: 0;
+  font-weight: 500;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+  justify-content: space-evenly;
+  border: white 2px solid;
+  border-radius: 10px;
+  height: 40%;
+  width: 70%;
+  color: white;
+  padding: 0.5em;
+  box-sizing: border-box;
+}
+
+.timer button {
+  background-color: transparent;
+  border: none;
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: white;
+}
+
+.timer p {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.timer h6 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0;
+}

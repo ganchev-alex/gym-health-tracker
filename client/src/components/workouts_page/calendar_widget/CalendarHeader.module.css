@@ -4,7 +4,7 @@
   align-items: center;
   background-image: linear-gradient(-90deg, #e4516b, #d385e6);
   border-radius: 15px;
-  padding: 10px 25px 10px 40px;
+  padding: 0.5em 1em 0.5em 2.5em;
 }
 
 .calendar-header p {
@@ -15,21 +15,24 @@
 
 .buttons-wrapper {
   display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
 }
 
 .month-button {
   border: none;
   background: transparent;
-  width: 60px;
+  width: 20%;
 }
 
 .today-button {
   background-color: transparent;
   border-radius: 10px;
-  border: white 2.5px solid;
+  border: white 3px solid;
   color: white;
   font-size: 1rem;
   font-weight: 500;
-  padding: 5px 15px;
-  width: auto;
+  padding: 0.5em 1.5em;
+  width: fit-content;
 }

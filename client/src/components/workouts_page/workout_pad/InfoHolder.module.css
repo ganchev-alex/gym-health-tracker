@@ -1,0 +1,55 @@
+.widget {
+  background: linear-gradient(180deg, #e54c60 34%, #fff 67%);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+  width: 100%;
+  height: 70%;
+  border-radius: 15px;
+  padding: 1em 1.2em;
+  box-sizing: border-box;
+}
+
+.widget h5 {
+  margin: 0;
+  font-size: 1.2em;
+  color: white;
+  font-weight: 600;
+}
+
+.widget h6,
+.widget p {
+  color: white;
+  font-size: 0.9em;
+  margin: 0;
+  font-weight: 500;
+}
+
+.timer {
+  display: flex;
+  align-items: center;
+}
+
+.timer button {
+  background-color: transparent;
+  border: none;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.display {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.display p {
+  color: black;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.display h6 {
+  color: black;
+  font-size: 1.2rem;
+  font-weight: 800;
+}

@@ -3,27 +3,70 @@
   height: 100%;
   width: 100%;
   align-items: center;
+  position: relative;
 }
 
 .content-wrapper {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 90%;
+  height: 100%;
+  width: 90%;
+  box-sizing: border-box;
+  padding: 2em 1.5em;
 }
 
-.content-wrapper h1 {
+.headings {
+  height: 10%;
+  box-sizing: border-box;
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+}
+
+.headings h1 {
   color: #000;
-  font-size: 40px;
+  font-size: 2.3rem;
   font-style: normal;
   font-weight: 600;
-  margin: 10px 0 0 20px;
+  margin: 0;
 }
 
-.content-wrapper h3 {
+.headings h3 {
   color: #828282;
-  font-size: 20px;
+  font-size: 1.1rem;
   font-style: normal;
   font-weight: 500;
-  margin: 0px 0px 20px 20px;
+  margin: 0;
+}
+
+.page-content {
+  height: 90%;
+  width: 100%;
+}
+
+.tracker {
+  background-color: white;
+  height: 100%;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 1.2em;
+  border-radius: 15px;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+}
+
+.minimize-button {
+  background-color: white;
+  width: 70px;
+  height: 70px;
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+  border: none;
+  border-radius: 100%;
+  box-sizing: border-box;
+  padding: 1.2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  right: 4%;
+  bottom: 8%;
 }

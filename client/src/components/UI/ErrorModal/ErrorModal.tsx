@@ -7,6 +7,8 @@ import { RootState } from "../../../features/store";
 import { changeVisibility } from "../../../features/error-module";
 
 import styles from "./ErrorModal.module.css";
+import { restoreWidgetsInitialState } from "../../../features/widgets-actions";
+import { setLoadingState } from "../../../features/loading-actions";
 
 type ModalOverlayProperties = {
   responseCode: number;
@@ -41,6 +43,7 @@ const ModalOverlay: React.FC<{
   const clickHandler = function () {
     navigate(redirectionRoute);
     dispatch(changeVisibility(false));
+    dispatch(restoreWidgetsInitialState());
   };
 
   return (

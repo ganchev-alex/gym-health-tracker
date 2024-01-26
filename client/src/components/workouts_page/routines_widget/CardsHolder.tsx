@@ -15,7 +15,7 @@ const CardsHolder: React.FC<{
   }[];
 }> = (props) => {
   const filters = useSelector((state: RootState) => {
-    return state.workoutWidget.selectedFilters;
+    return state.widgetsManager.workoutWidget.selectedFilters;
   });
 
   let filteredWorkouts = [...props.workouts];

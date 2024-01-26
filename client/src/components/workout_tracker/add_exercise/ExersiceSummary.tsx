@@ -17,6 +17,10 @@ import modalStyles from "./AddExerciseForm.module.css";
 import styles from "./ExersiceSummary.module.css";
 
 import NextArrowIcon from "../../../assets/svg_icon_components/NextArrowIcon";
+import {
+  addToNewRoutine,
+  replaceExerciseFromRoutine,
+} from "../../../features/widgets-actions";
 
 const ExersiceSummary = function () {
   const dispatch = useDispatch();
@@ -27,18 +31,33 @@ const ExersiceSummary = function () {
     });
 
   const onAddExercise = function () {
-    if (addExerciseState.mode === "ADD" || !addExerciseState.mode) {
-      dispatch(addExercise(singleExerciseData));
-    } else if (addExerciseState.mode === "REPLACE") {
-      console.log("Replaced Exercise: ", optionsMenuState.exerciseId);
-      dispatch(
-        replaceExercise({
-          currant: optionsMenuState.exerciseId || "",
-          replaceWith: singleExerciseData,
-        })
-      );
-      dispatch(setOptionsMenuState({ visibility: false }));
-      dispatch(setAddExerciseState({ visibility: false }));
+    switch (addExerciseState.mode) {
+      case "REPLACE":
+        console.log("Replaced Exercise: ", optionsMenuState.exerciseId);
+        dispatch(
+          replaceExercise({
+            currant: optionsMenuState.exerciseId || "",
+            replaceWith: singleExerciseData,
+          })
+        );
+        dispatch(setOptionsMenuState({ visibility: false }));
+        break;
+      case "REPLACE_ROUTINE":
+        dispatch(
+          replaceExerciseFromRoutine({
+            currant: optionsMenuState.exerciseId || "",
+            replaceWith: singleExerciseData,
+          })
+        );
+        dispatch(setOptionsMenuState({ visibility: false }));
+        break;
+      case "ADD_ROUTINE":
+        dispatch(addToNewRoutine(singleExerciseData));
+        break;
+      case "ADD":
+      default:
+        dispatch(addExercise(singleExerciseData));
+        break;
     }
 
     onClose();

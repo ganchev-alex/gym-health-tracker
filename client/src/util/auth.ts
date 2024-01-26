@@ -1,3 +1,5 @@
+import { jwtDecode } from "jwt-decode";
+
 export const setToken = function (token: string) {
   localStorage.setItem("token", token);
   const expiration = new Date();
@@ -29,4 +31,14 @@ export const getToken = function () {
 export const deleteToken = function () {
   localStorage.removeItem("token");
   localStorage.removeItem("expiration");
+};
+
+export const getUserId = function () {
+  const token = getToken();
+  if (token != "TOKEN_EXPIRED" && token) {
+    const decodedToken: { userId: string; email: string } = jwtDecode(token);
+    return decodedToken.userId;
+  }
+
+  return null;
 };

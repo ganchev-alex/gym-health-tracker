@@ -21,6 +21,7 @@ const authValidation = (
 
   try {
     decodedToken = jwt.verify(token, TOKEN_SECRET_KEY);
+    console.log(decodedToken);
   } catch (error) {
     console.log(error);
     return res.status(500).json({

@@ -51,6 +51,13 @@ const Header = function () {
 
   const onClose = function () {
     dispatch(setAddExerciseState({ visibility: false }));
+    resetFilter();
+  };
+
+  const preventEnter = function (event: React.KeyboardEvent) {
+    if (event.keyCode == 13) {
+      event.preventDefault();
+    }
   };
 
   const availableFilter = keyEquipment || keyMuscle;
@@ -63,7 +70,7 @@ const Header = function () {
       </div>
       <form className={styles["search-form"]}>
         <div className={styles["search-bar"]}>
-          <button>
+          <button type="button">
             <Search />
           </button>
           <input
@@ -71,6 +78,7 @@ const Header = function () {
             placeholder="Search exercise..."
             onChange={onSearchChange}
             value={searchValue || ""}
+            onKeyDown={preventEnter}
           />
         </div>
         <div className={styles["filter-buttons"]}>

@@ -11,6 +11,10 @@ import {
 } from "../../../features/workout";
 import styles from "./ExerciseResult.module.css";
 import { RootState } from "../../../features/store";
+import {
+  addToNewRoutine,
+  replaceExerciseFromRoutine,
+} from "../../../features/widgets-actions";
 
 const ExerciseResult: React.FC<{ exerciseData: Exercise }> = function (props) {
   const data = props.exerciseData;
@@ -28,17 +32,33 @@ const ExerciseResult: React.FC<{ exerciseData: Exercise }> = function (props) {
   };
 
   const onAddExercise = function () {
-    if (addExerciseState.mode === "ADD" || !addExerciseState.mode) {
-      dispatch(addExercise(props.exerciseData));
-    } else if (addExerciseState.mode === "REPLACE") {
-      console.log("Replaced Exercise: ", optionsMenuState.exerciseId);
-      dispatch(
-        replaceExercise({
-          currant: optionsMenuState.exerciseId || "",
-          replaceWith: props.exerciseData,
-        })
-      );
-      dispatch(setOptionsMenuState({ visibility: false }));
+    switch (addExerciseState.mode) {
+      case "REPLACE":
+        console.log("Replaced Exercise: ", optionsMenuState.exerciseId);
+        dispatch(
+          replaceExercise({
+            currant: optionsMenuState.exerciseId || "",
+            replaceWith: props.exerciseData,
+          })
+        );
+        dispatch(setOptionsMenuState({ visibility: false }));
+        break;
+      case "REPLACE_ROUTINE":
+        dispatch(
+          replaceExerciseFromRoutine({
+            currant: optionsMenuState.exerciseId || "",
+            replaceWith: props.exerciseData,
+          })
+        );
+        dispatch(setOptionsMenuState({ visibility: false }));
+        break;
+      case "ADD_ROUTINE":
+        dispatch(addToNewRoutine(props.exerciseData));
+        break;
+      case "ADD":
+      default:
+        dispatch(addExercise(props.exerciseData));
+        break;
     }
 
     dispatch(setAddExerciseState({ visibility: false }));

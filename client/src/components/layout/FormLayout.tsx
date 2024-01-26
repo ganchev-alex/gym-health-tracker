@@ -12,6 +12,7 @@ import ErrorModal from "../UI/ErrorModal/ErrorModal";
 import LoadingSpinner from "../../assets/svg_icon_components/LoadingSpinner";
 import maleBackground from "../../assets/images/male_background_signin_form.jpg";
 import femaleBackground from "../../assets/images/female_background_signin_form.jpg";
+import LoadingPlane from "../UI/LoadingPlane/LoadingPlane";
 
 const FormLayout: React.FC = function () {
   const token = getToken();
@@ -58,11 +59,7 @@ const FormLayout: React.FC = function () {
         <div className={selectedGradient} />
       </div>
       <div className={styles["form-holder"]}>
-        {loadingState && (
-          <div className={styles["loading-plane"]}>
-            <LoadingSpinner />
-          </div>
-        )}
+        {loadingState && <LoadingPlane />}
         <Outlet />
       </div>
     </main>

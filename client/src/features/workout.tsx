@@ -8,6 +8,8 @@ export type Exercise = {
   secondaryMuscles: string[];
   instructions: string[];
   image: string;
+  sets?: number;
+  restTime?: number;
 };
 
 type Workout = {
@@ -73,9 +75,37 @@ const workoutState = createSlice({
         (exercise) => exercise._id === action.payload.currant
       );
       if (currantExericeIndex >= 0) {
+        const existingExercise = state.exercises.find(
+          (exercise) => exercise._id === action.payload.replaceWith._id
+        );
+        if (existingExercise) {
+          existingExercise._id += "-" + new Date().getTime();
+        }
         state.exercises[currantExericeIndex] = {
           ...action.payload.replaceWith,
         };
+      }
+    },
+    modifySetCount: (
+      state,
+      action: PayloadAction<{ id: string; count: number }>
+    ) => {
+      const exercise = state.exercises.find((exercise) => {
+        return exercise._id === action.payload.id;
+      });
+      if (exercise) {
+        exercise.sets = action.payload.count;
+      }
+    },
+    setResetTimer: (
+      state,
+      action: PayloadAction<{ id: string; time: number }>
+    ) => {
+      const exerciseIndex = state.exercises.findIndex((exercise) => {
+        return exercise._id === action.payload.id;
+      });
+      if (exerciseIndex > -1) {
+        state.exercises[exerciseIndex].restTime = action.payload.time;
       }
     },
     setAddExerciseState: (
@@ -132,6 +162,8 @@ export const {
   addExercise,
   removeExercise,
   replaceExercise,
+  modifySetCount,
+  setResetTimer,
   setAddExerciseState,
   setExerciseSummaryVisibility,
   setExerciseData,

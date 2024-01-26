@@ -12,6 +12,8 @@ import { RootState } from "../../features/store";
 import WorkoutTracker from "../workout_tracker/workout_display/WorkoutTracker";
 import MinimizeIcon from "../../assets/svg_icon_components/MinimizeIcon";
 import { setWorkoutVisibility } from "../../features/workout";
+import NotificationBar from "../UI/Notification/Notification";
+import { setNotificationState } from "../../features/widgets-actions";
 
 function RootLayout() {
   const navigate = useNavigate();
@@ -29,6 +31,10 @@ function RootLayout() {
   const { isActive: isWorkoutActive, isShown } = useSelector(
     (state: RootState) => state.workoutState
   );
+
+  const { visibility } = useSelector((state: RootState) => {
+    return state.widgetsManager.notificationManager;
+  });
 
   useEffect(() => {
     switch (fetchedData) {
@@ -54,11 +60,19 @@ function RootLayout() {
         const appData = fetchedData as AppData;
         dispatch(setLoadedUserData(appData));
     }
-  }, [fetchedData, navigate, dispatch, toggleState]);
+    if (visibility) {
+      const notificationDuration = setTimeout(() => {
+        dispatch(setNotificationState({ visibility: false }));
+      }, 6000);
+
+      return () => clearTimeout(notificationDuration);
+    }
+  }, [fetchedData, navigate, dispatch, toggleState, visibility]);
 
   return (
     <div className={styles["display-wrapper"]}>
       <NavigationBar />
+      {visibility && <NotificationBar />}
       <main
         className={styles["content-wrapper"]}
         style={{ width: !toggleState ? "80%" : "" }}
@@ -115,7 +129,7 @@ export async function appDataLoader(): Promise<string | AppData> {
   }
 
   try {
-    const response = await fetch(`${mainAPIPath}/app/userData`, {
+    const response = await fetch(`${mainAPIPath}/app/user-data`, {
       method: "GET",
       headers: { Authorization: `Bearer ${token}` },
     });

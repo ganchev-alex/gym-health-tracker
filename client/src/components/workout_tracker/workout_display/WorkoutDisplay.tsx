@@ -64,22 +64,30 @@ const WorkoutDisplay: React.FC = function () {
             <p>Add an exercise to start your workout.</p>
           </div>
         )}
-        <button className={styles["add-button"]} onClick={clickHandler}>
+        <button
+          type="button"
+          className={styles["add-button"]}
+          onClick={clickHandler}
+        >
           + Add Exercise
         </button>
       </div>
       {optionsMenuState.visibility && (
         <div className={styles["exercise-menu"]} onClick={closeOptions}>
           <div className={styles["options"]}>
-            <button onClick={replace}>
+            <button type="button" onClick={replace}>
               <ReplaceIcon /> Replace Exercise
             </button>
-            <button onClick={remove}>
+            <button type="button" onClick={remove}>
               <RemoveIcon />
               Remove Exercise
             </button>
           </div>
-          <button className={styles["close-button"]} onClick={closeOptions}>
+          <button
+            type="button"
+            className={styles["close-button"]}
+            onClick={closeOptions}
+          >
             Close
           </button>
         </div>

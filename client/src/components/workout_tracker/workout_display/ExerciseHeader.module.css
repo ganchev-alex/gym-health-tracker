@@ -68,12 +68,43 @@
   outline: none;
 }
 
-.rest-timer-button {
+.rest-timer {
+  display: flex;
+  width: fit-content;
+  height: fit-content;
+  justify-content: center;
+  color: #e54c60;
+  font-weight: 600;
+  font-size: 0.9rem;
+  padding: 0 1em 0.5em;
+}
+
+.rest-timer label {
+  height: fit-content;
+}
+
+.rest-timer select {
   color: #e54c60;
   font-weight: 600;
   width: fit-content;
   height: fit-content;
   background-color: transparent;
   border: none;
-  padding: 0.5em 1em;
+  padding: 0 1em;
+  box-sizing: border-box;
+  outline: none;
+}
+
+.rest-timer select {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.rest-timer select::-webkit-scrollbar {
+  width: 0;
+}
+
+.rest-timer option {
+  font-weight: 600;
+  border: none;
 }

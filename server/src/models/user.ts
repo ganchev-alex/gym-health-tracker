@@ -1,6 +1,6 @@
 import mongoose = require("mongoose");
 
-const Schema = mongoose.Schema;
+import { Schema } from "mongoose";
 
 interface IUser {
   auth: {
@@ -22,6 +22,7 @@ interface IUser {
     frequencyStatus: string;
     fitnessGoal: string;
   };
+  routines: mongoose.Types.ObjectId[];
 }
 
 const userSchema = new Schema<IUser>({
@@ -44,6 +45,7 @@ const userSchema = new Schema<IUser>({
     frequencyStatus: String,
     fitnessGoal: String,
   },
+  routines: [Schema.ObjectId],
 });
 
 const User = mongoose.model<IUser>("User", userSchema, "users");

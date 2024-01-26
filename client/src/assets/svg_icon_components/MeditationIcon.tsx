@@ -16,7 +16,7 @@ const MeditationIcon: React.FC = () => {
         height="57"
         rx="23.5"
         stroke="url(#paint0_linear_145_210)"
-        stroke-width="3"
+        strokeWidth="3"
       />
       <path
         d="M30.9287 24C33.5323 24 35.643 21.8893 35.643 19.2857C35.643 16.6821 33.5323 14.5714 30.9287 14.5714C28.325 14.5714 26.2144 16.6821 26.2144 19.2857C26.2144 21.8893 28.325 24 30.9287 24Z"
@@ -35,8 +35,8 @@ const MeditationIcon: React.FC = () => {
           y2="2.57143"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#D385E6" />
-          <stop offset="1" stop-color="#E54C60" />
+          <stop stopColor="#D385E6" />
+          <stop offset="1" stopColor="#E54C60" />
         </linearGradient>
         <linearGradient
           id="paint1_linear_145_210"
@@ -46,8 +46,8 @@ const MeditationIcon: React.FC = () => {
           y2="29.5714"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E54C60" />
-          <stop offset="1" stop-color="#D385E6" />
+          <stop stopColor="#E54C60" />
+          <stop offset="1" stopColor="#D385E6" />
         </linearGradient>
         <linearGradient
           id="paint2_linear_145_210"
@@ -57,8 +57,8 @@ const MeditationIcon: React.FC = () => {
           y2="44.5714"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stop-color="#E54C60" />
-          <stop offset="1" stop-color="#D385E6" />
+          <stop stopColor="#E54C60" />
+          <stop offset="1" stopColor="#D385E6" />
         </linearGradient>
       </defs>
     </svg>

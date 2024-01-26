@@ -49,9 +49,9 @@ const ExploreWidget = function () {
           pagination={{ clickable: true }}
           modules={[EffectFade, Pagination, Autoplay, Mousewheel]}
         >
-          {DUMMY_DATA.map((card) => {
+          {DUMMY_DATA.map((card, index) => {
             return (
-              <SwiperSlide>
+              <SwiperSlide key={index}>
                 <ContentCard
                   imageSrc={card.imageSrc}
                   title={card.title}

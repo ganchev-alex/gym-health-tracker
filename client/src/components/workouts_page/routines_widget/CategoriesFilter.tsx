@@ -13,10 +13,10 @@ const CategoriesFilter: React.FC<{ categories: string[] }> = (props) => {
 
   const dispatch = useDispatch();
   const selectedFilters = useSelector((state: RootState) => {
-    return state.workoutWidget.selectedFilters;
+    return state.widgetsManager.workoutWidget.selectedFilters;
   });
   let isAll = useSelector((state: RootState) => {
-    return state.workoutWidget.isAll;
+    return state.widgetsManager.workoutWidget.isAll;
   });
 
   if (selectedFilters.length !== 0) {

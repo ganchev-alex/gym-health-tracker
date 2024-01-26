@@ -11,6 +11,7 @@ import {
   Exercise,
   setAddExerciseState,
   setExerciseSummaryVisibility,
+  setFilterValue,
 } from "../../../features/workout";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../features/store";
@@ -23,6 +24,7 @@ export const Backdrop = function () {
   const clickHandler = function () {
     dispatch(setAddExerciseState({ visibility: false }));
     dispatch(setExerciseSummaryVisibility(false));
+    dispatch(setFilterValue({ equipment: undefined, muscle: undefined }));
   };
 
   return <div className={styles.backdrop} onClick={clickHandler} />;
@@ -218,6 +220,9 @@ const AddExerciseForm = function () {
 };
 
 const AddExercisesModal = function () {
+  const formVisibility = useSelector((state: RootState) => {
+    return state.widgetsManager.workoutWidget.newRoutine.formVisibility;
+  });
   const backdropRoot = document.getElementById("backdrop-root");
   const overlayRoot = document.getElementById("overlay-root");
   if (!backdropRoot || !overlayRoot) {
@@ -225,7 +230,10 @@ const AddExercisesModal = function () {
   }
   return (
     <React.Fragment>
-      {ReactDOM.createPortal(<Backdrop />, backdropRoot)}
+      {ReactDOM.createPortal(
+        <Backdrop />,
+        formVisibility ? overlayRoot : backdropRoot
+      )}
       {ReactDOM.createPortal(<AddExerciseForm />, overlayRoot)}
     </React.Fragment>
   );

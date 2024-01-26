@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import Set from "./Set";
 import styles from "./SetsTable.module.css";
-import { removeExercise } from "../../../features/workout";
+import { modifySetCount, removeExercise } from "../../../features/workout";
+import {
+  modifyStaticSetCount,
+  removeFromNewRoutine,
+} from "../../../features/widgets-actions";
 
-const SetTable: React.FC<{ _id: string }> = function (props) {
+const SetTable: React.FC<{ _id: string; staticMode?: boolean }> = function (
+  props
+) {
   const dispatch = useDispatch();
 
   const removeSet = function (index: number) {
@@ -37,6 +43,7 @@ const SetTable: React.FC<{ _id: string }> = function (props) {
         kg={25}
         reps={12}
         setRemover={() => removeSet(previousState.length)}
+        staticMode={props.staticMode}
       />,
     ]);
   };
@@ -49,6 +56,7 @@ const SetTable: React.FC<{ _id: string }> = function (props) {
       kg={25}
       reps={12}
       setRemover={removeSet}
+      staticMode={props.staticMode}
     />,
   ];
 
@@ -57,7 +65,19 @@ const SetTable: React.FC<{ _id: string }> = function (props) {
   useEffect(() => {
     if (!setsList.length) {
       console.log("Exercise Removed!");
-      dispatch(removeExercise(props._id));
+      if (props.staticMode) {
+        dispatch(removeFromNewRoutine(props._id));
+      } else {
+        dispatch(removeExercise(props._id));
+      }
+    } else {
+      if (props.staticMode) {
+        dispatch(
+          modifyStaticSetCount({ id: props._id, count: setsList.length })
+        );
+      } else {
+        dispatch(modifySetCount({ id: props._id, count: setsList.length }));
+      }
     }
   }, [setsList]);
 
@@ -79,7 +99,7 @@ const SetTable: React.FC<{ _id: string }> = function (props) {
           })}
         </tbody>
       </table>
-      <button className={styles["set-button"]} onClick={addSet}>
+      <button type="button" className={styles["set-button"]} onClick={addSet}>
         Add Set
       </button>
     </div>

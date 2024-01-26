@@ -12,11 +12,14 @@ const Set: React.FC<{
   kg: number;
   reps: number;
   setRemover: (index: number) => void;
+  staticMode?: boolean;
 }> = function (props) {
   const [isChecked, setIsChecked] = useState(false);
 
   const onCheck = function (event: React.ChangeEvent<HTMLInputElement>) {
-    setIsChecked(event.target.checked);
+    if (!props.staticMode) {
+      setIsChecked(event.target.checked);
+    }
   };
 
   return (

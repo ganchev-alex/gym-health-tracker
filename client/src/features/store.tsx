@@ -2,7 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 
 import userReducers from "./user-actions";
 import navigationReducers from "./styles-manager-actions";
-import workoutWidgetReducers from "./widgets-actions";
+import widgetsManager from "./widgets-actions";
 import loadingReducers from "./loading-actions";
 import errorModuleReducers from "./error-module";
 import workoutStateReducers from "./workout";
@@ -10,7 +10,7 @@ import workoutStateReducers from "./workout";
 const store = configureStore({
   reducer: {
     navigation: navigationReducers,
-    workoutWidget: workoutWidgetReducers,
+    widgetsManager: widgetsManager,
     userActions: userReducers,
     loadingManager: loadingReducers,
     errorModuleManager: errorModuleReducers,

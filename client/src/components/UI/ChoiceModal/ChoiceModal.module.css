@@ -1,0 +1,48 @@
+.modal {
+  background-color: white;
+  border-radius: 15px;
+  height: fit-content;
+  padding: 1.5em;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 30%;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal h6 {
+  font-size: 1.2rem;
+  margin: 0;
+}
+
+.modal p {
+  color: #828282;
+  font-size: 1rem;
+}
+
+.buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1em;
+}
+
+.buttons button {
+  font-size: 1rem;
+  padding: 0.3em 1.5em;
+  border-radius: 10px;
+  font-weight: 600;
+  border: #e54c60 2.5px solid;
+}
+
+.buttons button:first-child {
+  color: #e54c60;
+  background: transparent;
+}
+
+.buttons button:last-child {
+  background-color: #e54c60;
+  color: white;
+}

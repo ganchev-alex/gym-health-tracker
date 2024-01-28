@@ -9,9 +9,12 @@ import {
   removeFromNewRoutine,
 } from "../../../features/widgets-actions";
 
-const SetTable: React.FC<{ _id: string; staticMode?: boolean }> = function (
-  props
-) {
+const SetTable: React.FC<{
+  _id: string;
+  sets?: number;
+  staticMode?: boolean;
+  previewMode?: boolean;
+}> = function (props) {
   const dispatch = useDispatch();
 
   const removeSet = function (index: number) {
@@ -48,17 +51,29 @@ const SetTable: React.FC<{ _id: string; staticMode?: boolean }> = function (
     ]);
   };
 
-  const defaultSets = [
-    <Set
-      key={1}
-      setIndex={1}
-      previos="25kg x 12"
-      kg={25}
-      reps={12}
-      setRemover={removeSet}
-      staticMode={props.staticMode}
-    />,
-  ];
+  const defaultSets = props.sets
+    ? Array.from({ length: props.sets }, (_, index) => (
+        <Set
+          key={index + 1}
+          setIndex={index + 1}
+          previos="25kg x 12"
+          kg={25}
+          reps={12}
+          setRemover={removeSet}
+          staticMode={props.staticMode}
+        />
+      ))
+    : [
+        <Set
+          key={1}
+          setIndex={1}
+          previos="25kg x 12"
+          kg={25}
+          reps={12}
+          setRemover={removeSet}
+          staticMode={props.staticMode}
+        />,
+      ];
 
   const [setsList, setSetsList] = useState<JSX.Element[]>(defaultSets);
 
@@ -99,9 +114,11 @@ const SetTable: React.FC<{ _id: string; staticMode?: boolean }> = function (
           })}
         </tbody>
       </table>
-      <button type="button" className={styles["set-button"]} onClick={addSet}>
-        Add Set
-      </button>
+      {!props.previewMode && (
+        <button type="button" className={styles["set-button"]} onClick={addSet}>
+          Add Set
+        </button>
+      )}
     </div>
   );
 };

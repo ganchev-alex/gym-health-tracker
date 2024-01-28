@@ -10,9 +10,9 @@ import {
 } from "../../../features/user-actions";
 import { setLoadingState } from "../../../features/loading-actions";
 import {
-  changeVisibility,
-  setModuleData,
-} from "../../../features/error-module";
+  changeErrorModalVisibility,
+  setErrorModalState,
+} from "../../../features/modals";
 import { getToken } from "../../../util/auth";
 import { mainAPIPath } from "../../../App";
 
@@ -143,7 +143,7 @@ const PersonalDetails: React.FC = function () {
           navigate("/app");
         } else if (response.status == 404) {
           dispatch(
-            setModuleData({
+            setErrorModalState({
               responseCode: 404,
               title: "User not found!",
               details:
@@ -152,11 +152,11 @@ const PersonalDetails: React.FC = function () {
               redirectionRoute: "/auth/login",
             })
           );
-          dispatch(changeVisibility(true));
+          dispatch(changeErrorModalVisibility(true));
         }
       } catch (error) {
         dispatch(
-          setModuleData({
+          setErrorModalState({
             responseCode: 400,
             title: "Failed connection",
             details:
@@ -165,7 +165,7 @@ const PersonalDetails: React.FC = function () {
             redirectionRoute: "/auth",
           })
         );
-        dispatch(changeVisibility(true));
+        dispatch(changeErrorModalVisibility(true));
       } finally {
         dispatch(setLoadingState(false));
       }

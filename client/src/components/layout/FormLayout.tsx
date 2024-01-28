@@ -9,7 +9,6 @@ import styles from "./FormLayout.module.css";
 
 import ErrorModal from "../UI/ErrorModal/ErrorModal";
 
-import LoadingSpinner from "../../assets/svg_icon_components/LoadingSpinner";
 import maleBackground from "../../assets/images/male_background_signin_form.jpg";
 import femaleBackground from "../../assets/images/female_background_signin_form.jpg";
 import LoadingPlane from "../UI/LoadingPlane/LoadingPlane";
@@ -30,8 +29,8 @@ const FormLayout: React.FC = function () {
     (state: RootState) => state.loadingManager.isLoading
   );
 
-  const errorState = useSelector(
-    (state: RootState) => state.errorModuleManager
+  const errorModalState = useSelector(
+    (state: RootState) => state.modalsManager.errorModal
   );
 
   const mainClasses = `${styles["wrapper"]} ${
@@ -46,7 +45,9 @@ const FormLayout: React.FC = function () {
 
   return (
     <main className={mainClasses}>
-      {errorState.isShown && <ErrorModal properties={errorState.moduleData} />}
+      {errorModalState.visibility && (
+        <ErrorModal properties={errorModalState} />
+      )}
       <div className={styles["image-slot"]}>
         <img
           src={maleBackground}

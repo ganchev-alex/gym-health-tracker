@@ -10,7 +10,7 @@ import { RootState } from "../../../features/store";
 
 const Categroies: React.FC = () => {
   const formVisibility = useSelector((state: RootState) => {
-    return state.widgetsManager.workoutWidget.newRoutine.formVisibility;
+    return state.widgetsManager.routinesWidget.newRoutine.formVisibility;
   });
 
   return (

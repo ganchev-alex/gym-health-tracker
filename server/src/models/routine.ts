@@ -1,4 +1,5 @@
 import mongoose = require("mongoose");
+import mongodb = require("mongodb");
 
 import { Schema } from "mongoose";
 
@@ -7,11 +8,12 @@ export interface IRoutine {
   title: string;
   category: string;
   description: string;
+  duration: number;
   exercises: {
-    exerciseId: Schema.Types.ObjectId;
+    exerciseData: mongodb.ObjectId;
     sets: number;
-    resetTime: number;
-  };
+    restTime: number;
+  }[];
 }
 
 const routineSchema = new Schema<IRoutine>({
@@ -29,10 +31,11 @@ const routineSchema = new Schema<IRoutine>({
     required: true,
   },
   description: String,
+  duration: Number,
   exercises: [
     {
-      exerciseId: {
-        type: Schema.ObjectId,
+      exerciseData: {
+        type: Schema.Types.ObjectId,
         ref: "Exercise",
         required: true,
       },

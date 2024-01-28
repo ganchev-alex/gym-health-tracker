@@ -6,35 +6,33 @@ import WorkoutCard from "./WorkoutCard";
 
 import styles from "./CardsHolder.module.css";
 
-const CardsHolder: React.FC<{
-  workouts: {
-    name: string;
-    description: string;
-    duration: string;
-    category: string;
-  }[];
-}> = (props) => {
+const CardsHolder: React.FC = (props) => {
   const filters = useSelector((state: RootState) => {
-    return state.widgetsManager.workoutWidget.selectedFilters;
+    return state.widgetsManager.routinesWidget.selectedFilters;
   });
 
-  let filteredWorkouts = [...props.workouts];
+  const routines = useSelector((state: RootState) => {
+    return state.userActions.loadedUserData.routines;
+  });
+
+  let filteredWorkouts = [...routines];
   if (filters.length !== 0) {
-    filteredWorkouts = props.workouts.filter((workout) => {
-      return filters.includes(workout.category);
+    filteredWorkouts = routines.filter((routine) => {
+      return filters.includes(routine.category);
     });
   }
 
   return (
     <div className={styles.holder}>
-      {filteredWorkouts.map((workout, index) => {
+      {filteredWorkouts.map((routine) => {
         return (
           <WorkoutCard
-            key={index}
-            name={workout.name}
-            description={workout.description}
-            duration={workout.duration}
-            category={workout.category}
+            key={routine._id}
+            _id={routine._id}
+            name={routine.title}
+            description={routine.description}
+            duration={routine.duration}
+            category={routine.category}
           />
         );
       })}

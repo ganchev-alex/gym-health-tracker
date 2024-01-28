@@ -221,7 +221,7 @@ const AddExerciseForm = function () {
 
 const AddExercisesModal = function () {
   const formVisibility = useSelector((state: RootState) => {
-    return state.widgetsManager.workoutWidget.newRoutine.formVisibility;
+    return state.widgetsManager.routinesWidget.newRoutine.formVisibility;
   });
   const backdropRoot = document.getElementById("backdrop-root");
   const overlayRoot = document.getElementById("overlay-root");

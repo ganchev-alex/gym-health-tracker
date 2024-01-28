@@ -4,7 +4,7 @@ import userReducers from "./user-actions";
 import navigationReducers from "./styles-manager-actions";
 import widgetsManager from "./widgets-actions";
 import loadingReducers from "./loading-actions";
-import errorModuleReducers from "./error-module";
+import modalsReducers from "./modals";
 import workoutStateReducers from "./workout";
 
 const store = configureStore({
@@ -13,7 +13,7 @@ const store = configureStore({
     widgetsManager: widgetsManager,
     userActions: userReducers,
     loadingManager: loadingReducers,
-    errorModuleManager: errorModuleReducers,
+    modalsManager: modalsReducers,
     workoutState: workoutStateReducers,
   },
 });

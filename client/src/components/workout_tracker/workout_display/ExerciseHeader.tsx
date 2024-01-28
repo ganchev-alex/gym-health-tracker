@@ -8,10 +8,13 @@ import {
   setResetTimer,
 } from "../../../features/workout";
 import { setResetTimerRoutine } from "../../../features/widgets-actions";
+import { useEffect, useState } from "react";
 
 const ExerciseHeader: React.FC<{
   exerciseData: Exercise;
+  restTime?: number;
   staticMode?: boolean;
+  previewMode?: boolean;
 }> = function (props) {
   const dispatch = useDispatch();
 
@@ -42,29 +45,42 @@ const ExerciseHeader: React.FC<{
     <div className={styles["upper-wrapper"]}>
       <header className={styles["heading-wrapper"]}>
         <input type="hidden" value={exerciseData._id} />
-        <div className={styles.details} onClick={showSummary}>
+        <div
+          className={styles.details}
+          onClick={!props.previewMode ? showSummary : () => {}}
+          style={props.previewMode ? { cursor: "default" } : {}}
+        >
           <img src={exerciseData.image} alt="Exercise Image" />
           <h3>{exerciseData.name}</h3>
         </div>
-        <button
-          type="button"
-          className={styles["settings"]}
-          onClick={loadExeriseMenu}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
+        {!props.previewMode && (
+          <button
+            type="button"
+            className={styles["settings"]}
+            onClick={loadExeriseMenu}
+          >
+            <span />
+            <span />
+            <span />
+          </button>
+        )}
       </header>
       <textarea
         placeholder="Add notes here..."
         rows={2}
         maxLength={125}
         className={styles.notes}
+        disabled={props.staticMode}
       />
       <span className={styles["rest-timer"]}>
         <label htmlFor="restTime">Rest Time:</label>
-        <select name="restTime" id="restTime" onChange={onTimerSelect}>
+        <select
+          name="restTime"
+          id="restTime"
+          onChange={onTimerSelect}
+          value={props.restTime}
+          disabled={props.previewMode}
+        >
           <option value={0} defaultValue={0}>
             Off.
           </option>

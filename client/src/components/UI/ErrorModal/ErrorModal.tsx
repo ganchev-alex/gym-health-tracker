@@ -1,14 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import { RootState } from "../../../features/store";
-import { changeVisibility } from "../../../features/error-module";
+import { changeErrorModalVisibility } from "../../../features/modals";
 
 import styles from "./ErrorModal.module.css";
-import { restoreWidgetsInitialState } from "../../../features/widgets-actions";
-import { setLoadingState } from "../../../features/loading-actions";
+import { restoreRoutinesWidgetInitialState } from "../../../features/widgets-actions";
 
 type ModalOverlayProperties = {
   responseCode: number;
@@ -18,7 +17,7 @@ type ModalOverlayProperties = {
   redirectionRoute: string;
 };
 
-const Backdrop: React.FC = function () {
+export const Backdrop: React.FC = function () {
   return <div className={styles.backdrop} />;
 };
 
@@ -42,8 +41,8 @@ const ModalOverlay: React.FC<{
 
   const clickHandler = function () {
     navigate(redirectionRoute);
-    dispatch(changeVisibility(false));
-    dispatch(restoreWidgetsInitialState());
+    dispatch(changeErrorModalVisibility(false));
+    dispatch(restoreRoutinesWidgetInitialState());
   };
 
   return (

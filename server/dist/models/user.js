@@ -22,7 +22,7 @@ const userSchema = new mongoose_1.Schema({
         frequencyStatus: String,
         fitnessGoal: String,
     },
-    routines: [mongoose_1.Schema.ObjectId],
+    routines: [{ type: mongoose_1.Schema.ObjectId, ref: "Routine" }],
 });
 const User = mongoose.model("User", userSchema, "users");
 exports.default = User;

@@ -9,9 +9,9 @@ import { getToken, setToken } from "../../../util/auth";
 import { mainAPIPath } from "../../../App";
 
 import {
-  changeVisibility,
-  setModuleData,
-} from "../../../features/error-module";
+  changeErrorModalVisibility,
+  setErrorModalState,
+} from "../../../features/modals";
 
 import styles from "./SignInForm.module.css";
 
@@ -82,7 +82,7 @@ const LogInForm: React.FC = function () {
           resetPassword();
         } else if (response.status === 422) {
           dispatch(
-            setModuleData({
+            setErrorModalState({
               responseCode: 422,
               title: "Invalid Validation!",
               details: `It seems like you've made a request with invalid data. Please make sure you are providing a valid email and your password is 8-20 characters.`,
@@ -90,12 +90,12 @@ const LogInForm: React.FC = function () {
               redirectionRoute: "/auth",
             })
           );
-          dispatch(changeVisibility(true));
+          dispatch(changeErrorModalVisibility(true));
           resetEmail();
           resetPassword();
         } else {
           dispatch(
-            setModuleData({
+            setErrorModalState({
               responseCode: response.status,
               title: "Something went wrong!",
               details:
@@ -105,12 +105,12 @@ const LogInForm: React.FC = function () {
               redirectionRoute: "/auth",
             })
           );
-          dispatch(changeVisibility(true));
+          dispatch(changeErrorModalVisibility(true));
           console.log("500:", data);
         }
       } catch (error) {
         dispatch(
-          setModuleData({
+          setErrorModalState({
             responseCode: 400,
             title: "Failed connection",
             details:
@@ -119,7 +119,7 @@ const LogInForm: React.FC = function () {
             redirectionRoute: "/auth",
           })
         );
-        dispatch(changeVisibility(true));
+        dispatch(changeErrorModalVisibility(true));
       } finally {
         dispatch(setLoadingState(false));
       }
@@ -157,6 +157,7 @@ const LogInForm: React.FC = function () {
           onClick={() => setCredentialsError("")}
           onBlur={emailBlurHandler}
           className={emailErrorState ? styles["input-error"] : ""}
+          autoComplete="email"
           onKeyDown={preventEnter}
         />
         {emailErrorState && (
@@ -174,6 +175,7 @@ const LogInForm: React.FC = function () {
           onChange={passwordChangeHandler}
           onBlur={passwordBlurHandler}
           className={passwordErrorState ? styles["input-error"] : ""}
+          autoComplete="current-password"
           onKeyDown={preventEnter}
         />
         {passwordErrorState && (

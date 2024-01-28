@@ -17,32 +17,51 @@ import { useEffect } from "react";
 import {
   removeFromNewRoutine,
   restoreNewRoutineInitState,
-  setFormVisibility,
+  restoreRoutinesWidgetInitialState,
   setNotificationState,
+  setRoutineOptionsState,
 } from "../../../features/widgets-actions";
 import ReplaceIcon from "../../../assets/svg_icon_components/ReplaceIcon";
 import RemoveIcon from "../../../assets/svg_icon_components/RemoveIcon";
 import useInput from "../../../hooks/useInput";
 import { getToken } from "../../../util/auth";
-import ErrorModal from "../../UI/ErrorModal/ErrorModal";
 import { mainAPIPath } from "../../../App";
 import {
-  changeVisibility,
-  setModuleData,
-} from "../../../features/error-module";
+  changeChoiceModalVisibility,
+  setErrorModalState,
+} from "../../../features/modals";
 import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
 import { setLoadingState } from "../../../features/loading-actions";
+import {
+  Routine,
+  setRoutinesData,
+  updateRoutinesData,
+} from "../../../features/user-actions";
+import { fetchRoutines } from "../routines_widget/Routines";
+import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
 
 const Backdrop = function () {
   const dispatch = useDispatch();
   const clickHandler = function () {
-    dispatch(setFormVisibility(false));
+    dispatch(changeChoiceModalVisibility(true));
   };
-  return <div onClick={clickHandler} className={modalStyles.backdrop} />;
+  return (
+    <div
+      onClick={clickHandler}
+      className={modalStyles.backdrop}
+      style={{ zIndex: 4 }}
+    />
+  );
 };
 
 const RoutineForm = function () {
   const dispatch = useDispatch();
+
+  const { mode, title, category, description } = useSelector(
+    (state: RootState) => {
+      return state.widgetsManager.routinesWidget.routineEditForm;
+    }
+  );
 
   const {
     value: routineTitle,
@@ -50,7 +69,7 @@ const RoutineForm = function () {
     errorState: routineTitleErrorState,
     valueChangeHandler: routineTitleChangeHandler,
     inputBlurHandler: routineTitleBlurHandler,
-  } = useInput((value) => value.trim().length > 0);
+  } = useInput((value) => value.trim().length > 0, title);
 
   const {
     value: routineCategory,
@@ -58,12 +77,12 @@ const RoutineForm = function () {
     errorState: routineCategoryErrorState,
     valueChangeHandler: routineCategoryChangeHandler,
     inputBlurHandler: routineCategoryBlurHandler,
-  } = useInput((value) => value.trim().length > 0);
+  } = useInput((value) => value.trim().length > 0, category);
 
-  const [routineDescription, setRoutineDescription] = useState("");
+  const [routineDescription, setRoutineDescription] = useState(description);
 
-  const { isShown, moduleData } = useSelector((state: RootState) => {
-    return state.errorModuleManager;
+  const routineExercises = useSelector((state: RootState) => {
+    return state.widgetsManager.routinesWidget.newRoutine.exercises;
   });
 
   const addExerciseVisibility = useSelector((state: RootState) => {
@@ -74,12 +93,20 @@ const RoutineForm = function () {
     return state.workoutState.exerciseSummaryVisibility;
   });
 
-  const routineExercises = useSelector((state: RootState) => {
-    return state.widgetsManager.workoutWidget.newRoutine.exercises;
+  const choiceModalVisibility = useSelector((state: RootState) => {
+    return state.modalsManager.choiceModal.visibility;
+  });
+
+  const routineOptions = useSelector((state: RootState) => {
+    return state.widgetsManager.routinesWidget.routineOptions;
   });
 
   const optionsMenuState = useSelector((state: RootState) => {
     return state.workoutState.optionsMenuState;
+  });
+
+  const notificationState = useSelector((state: RootState) => {
+    return state.widgetsManager.notificationManager;
   });
 
   const isLoading = useSelector((state: RootState) => {
@@ -111,9 +138,8 @@ const RoutineForm = function () {
     dispatch(removeFromNewRoutine(optionsMenuState.exerciseId || ""));
   };
 
-  const close = function () {
-    dispatch(restoreNewRoutineInitState());
-    dispatch(setFormVisibility(false));
+  const cancel = function () {
+    dispatch(changeChoiceModalVisibility(true));
   };
 
   const onSubmitHandler = async function (
@@ -123,9 +149,9 @@ const RoutineForm = function () {
 
     const token = getToken();
     if (!token || token === "TOKEN_EXPIRED") {
-      dispatch(changeVisibility(true));
       dispatch(
-        setModuleData({
+        setErrorModalState({
+          visibility: true,
           responseCode: 403,
           title: "Failed Authentication.",
           details:
@@ -138,6 +164,7 @@ const RoutineForm = function () {
     }
 
     const newRoutineData = {
+      routineId: routineOptions.routineId,
       routineData: {
         title: routineTitle,
         category: routineCategory,
@@ -152,89 +179,146 @@ const RoutineForm = function () {
           };
         }
         return {
-          exerciseId: exercise._id,
+          exercise: exercise._id,
           sets: exercise.sets,
           restTime: exercise.restTime ? exercise.restTime : 0,
         };
       }),
     };
 
-    try {
-      dispatch(setLoadingState(true));
-      const response = await fetch(`${mainAPIPath}/app/new-routine`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify(newRoutineData),
-      });
+    if (mode === "ADD") {
+      try {
+        dispatch(setLoadingState(true));
 
-      if (response.status === 201) {
-        dispatch(
+        const response = await fetch(`${mainAPIPath}/app/new-routine`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newRoutineData),
+        });
+
+        if (response.status === 201) {
+          const fetchedRoutines = await fetchRoutines();
+          if (fetchedRoutines) {
+            dispatch(setRoutinesData(fetchedRoutines));
+          }
+          dispatch(
+            setNotificationState({
+              message: "🎉 Your routine was added successfully!",
+              visibility: true,
+            })
+          );
+          setTimeout(() => {
+            dispatch(setNotificationState({ visibility: false }));
+          }, 4000);
+        } else if (response.status === 422) {
+          dispatch(
+            setErrorModalState({
+              visibility: true,
+              responseCode: 422,
+              title: "Compromized Validation!",
+              details:
+                "It seems like you've made a request with invalid data. Please make a new request following the provided steps of the forms you are filling in.",
+              label: "Reset",
+              redirectionRoute: "/app/workouts",
+            })
+          );
+        } else {
           setNotificationState({
-            message: "🎉 Your routine was added successfully!",
+            message: "😢 Something went wrong!",
             visibility: true,
-          })
-        );
-        dispatch(restoreNewRoutineInitState());
-      } else if (response.status === 401) {
+          });
+          setTimeout(() => {
+            dispatch(setNotificationState({ visibility: false }));
+          }, 4000);
+        }
+      } catch (error) {
         dispatch(
-          setModuleData({
-            responseCode: 401,
-            title: "Not Aunthenticated!",
+          setErrorModalState({
+            visibility: true,
+            responseCode: 400,
+            title: "Network Error",
             details:
-              "It seems like you tried to access a route that requires authentication. Please log in and try again.",
-            label: "Log in",
-            redirectionRoute: "/auth/login",
-          })
-        );
-        dispatch(changeVisibility(true));
-      } else if (response.status === 404) {
-        dispatch(
-          setModuleData({
-            responseCode: 404,
-            title: "User not found.",
-            details:
-              "It seems like there is problem with sending your data. Please log in and try again. If you continue to encounter this issue reach out.",
-            label: "Log in",
-            redirectionRoute: "/auth/login",
-          })
-        );
-        dispatch(changeVisibility(true));
-      } else if (response.status === 422) {
-        dispatch(
-          setModuleData({
-            responseCode: 422,
-            title: "Compromized Validation!",
-            details:
-              "It seems like you've made a request with invalid data. Please make a new request following the provided steps of the forms you are filling in.",
-            label: "Reset",
+              "It seems like your request didn't go throgh. Please check your internet connection and try again.",
+            label: "Ok",
             redirectionRoute: "/app/workouts",
           })
         );
-        dispatch(changeVisibility(true));
-      } else if (response.status === 500) {
-        setNotificationState({
-          message: "😢 Something went wrong!",
-          visibility: true,
-        });
+      } finally {
         dispatch(restoreNewRoutineInitState());
+        dispatch(setLoadingState(false));
       }
-    } catch (error) {
-      dispatch(changeVisibility(true));
-      dispatch(
-        setModuleData({
-          responseCode: 400,
-          title: "Network Error",
-          details:
-            "It seems like your request didn't go throgh. Please check your internet connection and try again.",
-          label: "Ok",
-          redirectionRoute: "/app/workouts",
-        })
-      );
-    } finally {
-      dispatch(setLoadingState(false));
+    } else if (mode === "EDIT") {
+      try {
+        dispatch(setLoadingState(true));
+
+        const response = await fetch(`${mainAPIPath}/app/update-routine`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(newRoutineData),
+        });
+
+        if (response.status === 201) {
+          const data = await response.json();
+          const updatedRoutineData: Routine = data.updatedRoutine;
+          dispatch(
+            updateRoutinesData({
+              routineId: updatedRoutineData._id,
+              replaceWith: updatedRoutineData,
+            })
+          );
+          dispatch(
+            setNotificationState({
+              message: "🎉 Routine was updated succesfully!",
+              visibility: true,
+            })
+          );
+          setTimeout(() => {
+            dispatch(setNotificationState({ visibility: false }));
+          }, 4000);
+        } else if (response.status === 422) {
+          dispatch(
+            setErrorModalState({
+              visibility: true,
+              responseCode: 422,
+              title: "Compromized Validation!",
+              details:
+                "It seems like you've made a request with invalid data. Please make a new request following the provided steps of the forms you are filling in.",
+              label: "Reset",
+              redirectionRoute: "/app/workouts",
+            })
+          );
+        } else {
+          setNotificationState({
+            message: "😢 Something went wrong!",
+            visibility: true,
+          });
+          setTimeout(() => {
+            dispatch(setNotificationState({ visibility: false }));
+          }, 4000);
+        }
+      } catch (error) {
+        dispatch(
+          setErrorModalState({
+            visibility: true,
+            responseCode: 400,
+            title: "Network Error",
+            details:
+              "It seems like your request didn't go throgh. Please check your internet connection and try again.",
+            label: "Ok",
+            redirectionRoute: "/app/workouts",
+          })
+        );
+      } finally {
+        dispatch(setRoutineOptionsState({ visibility: false }));
+        dispatch(restoreNewRoutineInitState());
+        dispatch(setLoadingState(false));
+      }
     }
   };
 
@@ -242,10 +326,22 @@ const RoutineForm = function () {
     <form onSubmit={onSubmitHandler} className={styles.form}>
       {addExerciseVisibility && <AddExercisesModal />}
       {exerciseSummaryVisibility && <ExersiceSummaryModal />}
-      {isShown && <ErrorModal properties={moduleData} />}
+      {choiceModalVisibility && (
+        <ChoiceModal
+          message="Are you sure you want to discard your changes?"
+          description="If you procced with this action all changed data will be lost."
+          noButtonLable="Back"
+          yesButtonLable="Discard"
+          acceptAction={() => {
+            dispatch(restoreRoutinesWidgetInitialState());
+          }}
+        />
+      )}
       {isLoading && <LoadingPlane />}
       <header className={styles.header}>
-        <button onClick={close}>Cancel</button>
+        <button type="button" onClick={cancel}>
+          Cancel
+        </button>
         <h6>New Routine</h6>
       </header>
       <section className={styles.details}>
@@ -310,7 +406,7 @@ const RoutineForm = function () {
             )
           }
         >
-          Save Routine
+          {mode === "ADD" ? "Add Routine" : "Update Routine"}
         </button>
       </section>
       <main className={styles["exercise-wrapper"]}>
@@ -321,6 +417,8 @@ const RoutineForm = function () {
                 exerciseData={exercise}
                 key={exercise._id}
                 staticMode={true}
+                sets={exercise.sets}
+                restTime={exercise.restTime}
               />
             );
           })

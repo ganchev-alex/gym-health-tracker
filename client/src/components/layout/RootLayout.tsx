@@ -7,22 +7,29 @@ import NavigationBar from "../UI/navigation_bar/NavigationBar";
 import styles from "./RootLayout.module.css";
 import { getToken } from "../../util/auth";
 import { mainAPIPath } from "../../App";
-import { setLoadedUserData } from "../../features/user-actions";
+import {
+  FetchedExercise,
+  setLoadedUserData,
+} from "../../features/user-actions";
 import { RootState } from "../../features/store";
 import WorkoutTracker from "../workout_tracker/workout_display/WorkoutTracker";
 import MinimizeIcon from "../../assets/svg_icon_components/MinimizeIcon";
 import { setWorkoutVisibility } from "../../features/workout";
 import NotificationBar from "../UI/Notification/Notification";
-import { setNotificationState } from "../../features/widgets-actions";
+import ErrorModal from "../UI/ErrorModal/ErrorModal";
 
 function RootLayout() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const fetchedData = useLoaderData();
 
-  const { firstName } = useSelector(
-    (state: RootState) => state.userActions.loadedUserData.personalDetails
+  const loadedUserData = useSelector(
+    (state: RootState) => state.userActions.loadedUserData
   );
+
+  const { errorModal } = useSelector((state: RootState) => {
+    return state.modalsManager;
+  });
 
   const toggleState = useSelector((state: RootState) => {
     return state.navigation.toggleState;
@@ -32,8 +39,8 @@ function RootLayout() {
     (state: RootState) => state.workoutState
   );
 
-  const { visibility } = useSelector((state: RootState) => {
-    return state.widgetsManager.notificationManager;
+  const notificationVisibility = useSelector((state: RootState) => {
+    return state.widgetsManager.notificationManager.visibility;
   });
 
   useEffect(() => {
@@ -60,19 +67,13 @@ function RootLayout() {
         const appData = fetchedData as AppData;
         dispatch(setLoadedUserData(appData));
     }
-    if (visibility) {
-      const notificationDuration = setTimeout(() => {
-        dispatch(setNotificationState({ visibility: false }));
-      }, 6000);
-
-      return () => clearTimeout(notificationDuration);
-    }
-  }, [fetchedData, navigate, dispatch, toggleState, visibility]);
+  }, [fetchedData, navigate, dispatch, toggleState]);
 
   return (
     <div className={styles["display-wrapper"]}>
       <NavigationBar />
-      {visibility && <NotificationBar />}
+      {notificationVisibility && <NotificationBar />}
+      {errorModal.visibility && <ErrorModal properties={errorModal} />}
       <main
         className={styles["content-wrapper"]}
         style={{ width: !toggleState ? "80%" : "" }}
@@ -84,7 +85,7 @@ function RootLayout() {
         ) : (
           <React.Fragment>
             <div className={styles.headings}>
-              <h1>Welcome Back, {firstName}!</h1>
+              <h1>Welcome Back, {loadedUserData.personalDetails.firstName}!</h1>
               <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h3>
             </div>
             <div className={styles["page-content"]}>
@@ -118,6 +119,15 @@ interface AppData {
     sex: string;
     profilePicture: string;
   };
+  routines: {
+    _id: string;
+    userId: string;
+    title: string;
+    category: string;
+    description: string;
+    duration: number;
+    exercises: FetchedExercise[];
+  }[];
 }
 
 export async function appDataLoader(): Promise<string | AppData> {

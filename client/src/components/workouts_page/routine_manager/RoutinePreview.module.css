@@ -1,0 +1,42 @@
+.details {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 0 1.5em;
+  box-sizing: border-box;
+}
+
+.details h3 {
+  font-size: 1.4rem;
+  margin: 0;
+}
+
+.details p {
+  font-size: 1rem;
+  margin: 0.5em 0 1.5em;
+  color: #828282;
+  font-weight: 500;
+}
+
+.characteristics {
+  display: flex;
+  align-items: center;
+}
+
+.characteristics p {
+  font-size: 0.9rem;
+  padding: 0.3em 1em;
+  color: #e54c60;
+  font-weight: 600;
+  width: fit-content;
+  margin: 0;
+}
+
+.characteristics p:first-child {
+  background-color: white;
+  border-radius: 10px;
+  border: #e54c60 2px solid;
+  display: flex;
+  gap: 0.5em;
+  align-items: center;
+}

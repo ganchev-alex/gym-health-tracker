@@ -10,7 +10,7 @@ const Notification: React.FC<{ message: string }> = function (props) {
   const dispatch = useDispatch();
   return (
     <div className={styles.container}>
-      <p>{props.message}</p>
+      <p> {props.message}</p>
       <button
         onClick={() => dispatch(setNotificationState({ visibility: false }))}
       >

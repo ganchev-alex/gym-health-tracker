@@ -45,7 +45,7 @@ const userSchema = new Schema<IUser>({
     frequencyStatus: String,
     fitnessGoal: String,
   },
-  routines: [Schema.ObjectId],
+  routines: [{ type: Schema.ObjectId, ref: "Routine" }],
 });
 
 const User = mongoose.model<IUser>("User", userSchema, "users");

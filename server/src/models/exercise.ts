@@ -32,6 +32,10 @@ const exerciseSchema = new Schema<IExercise>({
     type: [String],
     required: true,
   },
+  image: {
+    type: String,
+    required: true,
+  },
 });
 
 const Exercise = mongoose.model<IExercise>(

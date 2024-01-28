@@ -1,8 +1,25 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
+import { Exercise } from "./workout";
 
 interface Auth {
   email: string;
   password: string;
+}
+
+export interface FetchedExercise {
+  exerciseData: Exercise;
+  sets: number;
+  restTime: number;
+}
+
+export interface Routine {
+  _id: string;
+  userId: string;
+  title: string;
+  category: string;
+  description: string;
+  duration: number;
+  exercises: FetchedExercise[];
 }
 
 interface loadedUserData {
@@ -13,6 +30,7 @@ interface loadedUserData {
     sex: string;
     profilePicture: string;
   };
+  routines: Routine[];
 }
 
 const initialUser: {
@@ -26,6 +44,7 @@ const initialUser: {
     password: "",
   },
   sex: "male",
+  // selectedActivities in only viable in the routine display widget. So extract the logic there.
   selectedActivities: [],
   loadedUserData: {
     auth: { email: "" },
@@ -35,6 +54,7 @@ const initialUser: {
       sex: "",
       profilePicture: "",
     },
+    routines: [],
   },
 };
 
@@ -50,6 +70,24 @@ const userManager = createSlice({
     },
     setLoadedUserData: (state, action: PayloadAction<loadedUserData>) => {
       state.loadedUserData = { ...action.payload };
+    },
+    setRoutinesData: (state, action: PayloadAction<Routine[]>) => {
+      state.loadedUserData.routines = action.payload;
+    },
+    updateRoutinesData: (
+      state,
+      action: PayloadAction<{ routineId: string; replaceWith: Routine }>
+    ) => {
+      const previosRoutineIndex = state.loadedUserData.routines.findIndex(
+        (routine) => {
+          return routine._id === action.payload.routineId;
+        }
+      );
+      if (previosRoutineIndex > -1) {
+        state.loadedUserData.routines[previosRoutineIndex] = {
+          ...action.payload.replaceWith,
+        };
+      }
     },
     // Extract and refactor this.
     addActivite: (state, action: PayloadAction<{ label: string }>) => {
@@ -70,6 +108,8 @@ export const {
   setAuth,
   selectMode,
   setLoadedUserData,
+  setRoutinesData,
+  updateRoutinesData,
   // Extract and refactor this.
   addActivite,
   removeActivite,

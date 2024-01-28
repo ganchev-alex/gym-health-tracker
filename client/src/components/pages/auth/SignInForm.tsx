@@ -9,9 +9,9 @@ import useInput from "../../../hooks/useInput";
 
 import { RootState } from "../../../features/store";
 import {
-  changeVisibility,
-  setModuleData,
-} from "../../../features/error-module";
+  changeErrorModalVisibility,
+  setErrorModalState,
+} from "../../../features/modals";
 import { mainAPIPath } from "../../../App";
 
 import styles from "./SignInForm.module.css";
@@ -96,7 +96,7 @@ const SignInForm: React.FC = function () {
         } else {
           dispatch(setAuth({ email: "", password: "" }));
           dispatch(
-            setModuleData({
+            setErrorModalState({
               responseCode: response.status,
               title: "Something went wrong!",
               details:
@@ -106,13 +106,13 @@ const SignInForm: React.FC = function () {
               redirectionRoute: "/auth",
             })
           );
-          dispatch(changeVisibility(true));
+          dispatch(changeErrorModalVisibility(true));
           console.log("500:", data);
         }
       } catch (error) {
         dispatch(setAuth({ email: "", password: "" }));
         dispatch(
-          setModuleData({
+          setErrorModalState({
             responseCode: 400,
             title: "Failed connection",
             details:
@@ -121,7 +121,7 @@ const SignInForm: React.FC = function () {
             redirectionRoute: "/auth",
           })
         );
-        dispatch(changeVisibility(true));
+        dispatch(changeErrorModalVisibility(true));
       } finally {
         dispatch(setLoadingState(false));
       }
@@ -158,6 +158,7 @@ const SignInForm: React.FC = function () {
           onChange={emailChangeHandler}
           onBlur={emailBlurHandler}
           className={emailErrorState ? styles["input-error"] : ""}
+          autoComplete="email"
           onKeyDown={preventEnter}
         />
         {emailErrorState && (
@@ -184,6 +185,7 @@ const SignInForm: React.FC = function () {
           onChange={passwordChangeHandler}
           onBlur={passwordBlurHandler}
           className={passwordErrorState ? styles["input-error"] : ""}
+          autoComplete="current-password"
           onKeyDown={preventEnter}
         />
         {passwordErrorState && (

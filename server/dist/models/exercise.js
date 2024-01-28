@@ -23,6 +23,10 @@ const exerciseSchema = new Schema({
         type: [String],
         required: true,
     },
+    image: {
+        type: String,
+        required: true,
+    },
 });
 const Exercise = mongoose.model("Exercise", exerciseSchema, "exercises");
 exports.default = Exercise;

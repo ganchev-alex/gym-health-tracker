@@ -7,9 +7,9 @@ import { RootState } from "../../../features/store";
 import { selectMode, setAuth } from "../../../features/user-actions";
 import { setLoadingState } from "../../../features/loading-actions";
 import {
-  changeVisibility,
-  setModuleData,
-} from "../../../features/error-module";
+  changeErrorModalVisibility,
+  setErrorModalState,
+} from "../../../features/modals";
 
 import enheritedStyles from "./SignInForm.module.css";
 import styles from "./ProfileForm.module.css";
@@ -119,7 +119,7 @@ const ProfileForm: React.FC = function () {
       } catch (error) {
         dispatch(setAuth({ email: "", password: "" }));
         dispatch(
-          setModuleData({
+          setErrorModalState({
             responseCode: 400,
             title: "Unexpected Error!",
             details:
@@ -128,7 +128,7 @@ const ProfileForm: React.FC = function () {
             redirectionRoute: "/auth",
           })
         );
-        dispatch(changeVisibility(true));
+        dispatch(changeErrorModalVisibility(true));
       } finally {
         dispatch(setLoadingState(false));
       }
@@ -182,7 +182,7 @@ const ProfileForm: React.FC = function () {
             detailsDescription += error + " ";
           });
           dispatch(
-            setModuleData({
+            setErrorModalState({
               responseCode: 422,
               title: "Compromized Validation!",
               details: `It seems like you've made a request with invalid data. Please make a new request following the provided steps of the forms you are filling in. Details: ${detailsDescription}`,
@@ -191,11 +191,11 @@ const ProfileForm: React.FC = function () {
             })
           );
           dispatch(setAuth({ email: "", password: "" }));
-          dispatch(changeVisibility(true));
+          dispatch(changeErrorModalVisibility(true));
         }
       } catch (error) {
         dispatch(
-          setModuleData({
+          setErrorModalState({
             responseCode: 400,
             title: "Failed connection",
             details:
@@ -204,7 +204,7 @@ const ProfileForm: React.FC = function () {
             redirectionRoute: "/auth",
           })
         );
-        dispatch(changeVisibility(true));
+        dispatch(changeErrorModalVisibility(true));
       } finally {
         dispatch(setLoadingState(false));
       }

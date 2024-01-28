@@ -46,7 +46,7 @@ const muscleGroups = [
   { label: "Glutes", img: glutes },
   { label: "Hamstrings", img: hamstrings },
   { label: "Lats", img: lats },
-  { label: "Quadriceeps", img: quadriceps },
+  { label: "Quadriceps", img: quadriceps },
   { label: "Shoulders", img: shoulders },
   { label: "Upper Back", img: upperBack },
   { label: "Triceps", img: triceps },

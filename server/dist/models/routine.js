@@ -17,10 +17,11 @@ const routineSchema = new mongoose_1.Schema({
         required: true,
     },
     description: String,
+    duration: Number,
     exercises: [
         {
-            exerciseId: {
-                type: mongoose_1.Schema.ObjectId,
+            exerciseData: {
+                type: mongoose_1.Schema.Types.ObjectId,
                 ref: "Exercise",
                 required: true,
             },

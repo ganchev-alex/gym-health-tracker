@@ -14,7 +14,12 @@ import {
 import { RootState } from "../../features/store";
 import WorkoutTracker from "../workout_tracker/workout_display/WorkoutTracker";
 import MinimizeIcon from "../../assets/svg_icon_components/MinimizeIcon";
-import { setWorkoutVisibility } from "../../features/workout";
+import {
+  decreaseRestTimer,
+  incrementWorkoutDuration,
+  setRestTimerState,
+  setWorkoutState,
+} from "../../features/workout";
 import NotificationBar from "../UI/Notification/Notification";
 import ErrorModal from "../UI/ErrorModal/ErrorModal";
 
@@ -35,12 +40,16 @@ function RootLayout() {
     return state.navigation.toggleState;
   });
 
-  const { isActive: isWorkoutActive, isShown } = useSelector(
+  const { workoutActivity, workoutVisibility } = useSelector(
     (state: RootState) => state.workoutState
   );
 
   const notificationVisibility = useSelector((state: RootState) => {
     return state.widgetsManager.notificationManager.visibility;
+  });
+
+  const { timer, active } = useSelector((state: RootState) => {
+    return state.workoutState.restTimer;
   });
 
   useEffect(() => {
@@ -67,7 +76,35 @@ function RootLayout() {
         const appData = fetchedData as AppData;
         dispatch(setLoadedUserData(appData));
     }
-  }, [fetchedData, navigate, dispatch, toggleState]);
+  }, [dispatch]);
+
+  useEffect(() => {
+    let durationInterval: any;
+    let restTimerInterval: any;
+    if (workoutActivity) {
+      durationInterval = setInterval(() => {
+        dispatch(incrementWorkoutDuration());
+      }, 1000);
+    }
+
+    if (active) {
+      restTimerInterval = setInterval(() => {
+        dispatch(decreaseRestTimer());
+      }, 1000);
+      if (timer <= 0) {
+        dispatch(setRestTimerState({ activity: false }));
+      }
+    }
+
+    return () => {
+      if (durationInterval) {
+        clearInterval(durationInterval);
+      }
+      if (restTimerInterval) {
+        clearInterval(restTimerInterval);
+      }
+    };
+  }, [dispatch, active, timer, workoutActivity]);
 
   return (
     <div className={styles["display-wrapper"]}>
@@ -78,7 +115,7 @@ function RootLayout() {
         className={styles["content-wrapper"]}
         style={{ width: !toggleState ? "80%" : "" }}
       >
-        {isShown ? (
+        {workoutVisibility ? (
           <div className={styles.tracker}>
             <WorkoutTracker />
           </div>
@@ -93,12 +130,12 @@ function RootLayout() {
             </div>
           </React.Fragment>
         )}
-        {isWorkoutActive && (
+        {workoutActivity && (
           <button
             className={styles["minimize-button"]}
             onClick={() => {
               navigate("/app/workouts");
-              dispatch(setWorkoutVisibility());
+              dispatch(setWorkoutState({ visibility: !workoutVisibility }));
             }}
           >
             <MinimizeIcon />

@@ -10,6 +10,7 @@ export interface FetchedExercise {
   exerciseData: Exercise;
   sets: number;
   restTime: number;
+  notes: string;
 }
 
 export interface Routine {

@@ -13,6 +13,7 @@ export interface IRoutine {
     exerciseData: mongodb.ObjectId;
     sets: number;
     restTime: number;
+    notes: string;
   }[];
 }
 
@@ -47,6 +48,7 @@ const routineSchema = new Schema<IRoutine>({
         type: Number,
         required: true,
       },
+      notes: String,
     },
   ],
 });

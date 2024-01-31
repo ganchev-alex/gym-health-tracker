@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../features/store";
 
 import styles from "./RouteButton.module.css";
-import { setWorkoutVisibility } from "../../../features/workout";
+import { setWorkoutState } from "../../../features/workout";
 
 const RouteButton: React.FC<{
   path: string;
@@ -16,7 +16,9 @@ const RouteButton: React.FC<{
     (state: RootState) => state.navigation.toggleState
   );
 
-  const { isShown } = useSelector((state: RootState) => state.workoutState);
+  const { workoutVisibility } = useSelector(
+    (state: RootState) => state.workoutState
+  );
 
   const activeClassSelector = function ({ isActive }: { isActive: boolean }) {
     let classes = styles.wrapper;
@@ -30,8 +32,8 @@ const RouteButton: React.FC<{
   };
 
   const onClickHandler = function () {
-    if (isShown) {
-      dispatch(setWorkoutVisibility());
+    if (workoutVisibility) {
+      dispatch(setWorkoutState({ visibility: false }));
     }
   };
 

@@ -10,11 +10,15 @@ export type Exercise = {
   image: string;
   sets?: number;
   restTime?: number;
+  notes?: string;
+  setsData?: { state: boolean; reps: number; kg: number }[];
 };
 
 type Workout = {
-  isActive: boolean;
-  isShown: boolean;
+  workoutActivity: boolean;
+  workoutVisibility: boolean;
+  workoutTitle: string;
+  workoutCategory: string;
   exercises: Exercise[];
   addExerciseState: { visibility: boolean; mode?: String };
   exerciseSummaryVisibility: boolean;
@@ -26,11 +30,24 @@ type Workout = {
     visibility: boolean;
     exerciseId?: string;
   };
+  duration: number;
+  totalVolume: number;
+  totalSets: number;
+  restTimer: {
+    timer: number;
+    active: boolean;
+  };
+  finishedWorkoutData: {
+    records: { exercise: string; kg: number }[];
+    number: number;
+  };
 };
 
 const initialState: Workout = {
-  isActive: true,
-  isShown: false,
+  workoutActivity: false,
+  workoutVisibility: false,
+  workoutTitle: "",
+  workoutCategory: "Gym & Weightlifting",
   exercises: [],
   addExerciseState: { visibility: false, mode: "ADD" },
   exerciseSummaryVisibility: false,
@@ -47,22 +64,78 @@ const initialState: Workout = {
   filterState: { visibility: false },
   filterValue: {},
   optionsMenuState: { visibility: false },
+  duration: 0,
+  totalVolume: 0,
+  totalSets: 0,
+  restTimer: {
+    timer: 0,
+    active: false,
+  },
+  finishedWorkoutData: {
+    records: [],
+    number: 0,
+  },
 };
 
 const workoutState = createSlice({
   name: "workoutState",
   initialState,
   reducers: {
+    setWorkoutState: (
+      state,
+      action: PayloadAction<{ visibility: boolean; activity?: boolean }>
+    ) => {
+      state.workoutVisibility = action.payload.visibility;
+      if (action.payload.visibility) {
+        state.workoutActivity = true;
+      }
+      state.workoutActivity = action.payload.activity || state.workoutActivity;
+    },
+    setWorkoutTitle: (state, action: PayloadAction<string | undefined>) => {
+      if (action.payload) {
+        state.workoutTitle = action.payload;
+      } else {
+        const date = new Date().toDateString();
+        state.workoutTitle = "Workout Session: " + date;
+      }
+    },
     addExercise: (state, action: PayloadAction<Exercise>) => {
       const existingExercise = state.exercises.find(
         (exercise) => exercise._id === action.payload._id
       );
       if (existingExercise) {
-        existingExercise._id += "-" + new Date().getTime();
+        action.payload._id += "-" + new Date().getTime();
       }
+      action.payload.restTime = 0;
+      action.payload.sets = 1;
+      action.payload.setsData = [{ state: false, reps: 0, kg: 0 }];
       state.exercises.push(action.payload);
     },
     removeExercise: (state, action: PayloadAction<string>) => {
+      if (state.workoutActivity) {
+        const exercise = state.exercises.find(
+          (exercise) => exercise._id === action.payload
+        );
+        if (exercise) {
+          const setsData = exercise.setsData;
+          if (setsData) {
+            state.totalSets -= setsData.reduce((accumalator, set) => {
+              if (set.state) {
+                return accumalator + 1;
+              } else {
+                return accumalator;
+              }
+            }, 0);
+            state.totalVolume -= setsData.reduce((accumalator, set) => {
+              if (set.state) {
+                return accumalator + set.kg * set.reps;
+              } else {
+                return accumalator;
+              }
+            }, 0);
+          }
+        }
+      }
       state.exercises = state.exercises.filter(
         (exersice) => exersice._id !== action.payload
       );
@@ -75,16 +148,44 @@ const workoutState = createSlice({
         (exercise) => exercise._id === action.payload.currant
       );
       if (currantExericeIndex >= 0) {
+        if (state.workoutActivity) {
+          const exercise = state.exercises[currantExericeIndex];
+          const setsData = exercise.setsData;
+          if (setsData) {
+            state.totalSets -= setsData.reduce((accumalator, set) => {
+              if (set.state) {
+                return accumalator + 1;
+              } else {
+                return accumalator;
+              }
+            }, 0);
+            state.totalVolume -= setsData.reduce((accumalator, set) => {
+              if (set.state) {
+                return accumalator + set.kg * set.reps;
+              } else {
+                return accumalator;
+              }
+            }, 0);
+          }
+        }
         const existingExercise = state.exercises.find(
           (exercise) => exercise._id === action.payload.replaceWith._id
         );
         if (existingExercise) {
-          existingExercise._id += "-" + new Date().getTime();
+          action.payload.replaceWith._id += "-" + new Date().getTime();
         }
+        action.payload.replaceWith.restTime = 0;
+        action.payload.replaceWith.sets = 1;
+        action.payload.replaceWith.setsData = [
+          { state: false, reps: 0, kg: 0 },
+        ];
         state.exercises[currantExericeIndex] = {
           ...action.payload.replaceWith,
         };
       }
+    },
+    setWorkoutExercises: (state, action: PayloadAction<Exercise[]>) => {
+      state.exercises = action.payload;
     },
     modifySetCount: (
       state,
@@ -97,7 +198,7 @@ const workoutState = createSlice({
         exercise.sets = action.payload.count;
       }
     },
-    setResetTimer: (
+    setRestTime: (
       state,
       action: PayloadAction<{ id: string; time: number }>
     ) => {
@@ -106,6 +207,86 @@ const workoutState = createSlice({
       });
       if (exerciseIndex > -1) {
         state.exercises[exerciseIndex].restTime = action.payload.time;
+      }
+    },
+    setExerciseNotes: (
+      state,
+      action: PayloadAction<{ exerciseIndex: number; notes: string }>
+    ) => {
+      state.exercises[action.payload.exerciseIndex].notes =
+        action.payload.notes;
+    },
+    setSetState: (
+      state,
+      action: PayloadAction<{
+        exerciseIndex: number;
+        setIndex: number;
+        setState: boolean;
+      }>
+    ) => {
+      if (state.exercises[action.payload.exerciseIndex].setsData) {
+        const setsData = state.exercises[action.payload.exerciseIndex].setsData;
+        if (setsData) {
+          setsData[action.payload.setIndex].state = action.payload.setState;
+        }
+      }
+    },
+    setSetData: (
+      state,
+      action: PayloadAction<{
+        exerciseIndex: number;
+        setIndex: number;
+        reps: number;
+        volume: number;
+      }>
+    ) => {
+      if (state.exercises[action.payload.exerciseIndex].setsData) {
+        const setsData = state.exercises[action.payload.exerciseIndex].setsData;
+        if (setsData) {
+          setsData[action.payload.setIndex].kg = action.payload.volume;
+          setsData[action.payload.setIndex].reps = action.payload.reps;
+        }
+      }
+    },
+    addSetData: (
+      state,
+      action: PayloadAction<{
+        exerciseIndex: number;
+        setData: { state: boolean; reps: number; kg: number };
+      }>
+    ) => {
+      const currantSetData =
+        state.exercises[action.payload.exerciseIndex].setsData;
+      if (currantSetData) {
+        currantSetData.push(action.payload.setData);
+        state.exercises[action.payload.exerciseIndex].setsData = [
+          ...currantSetData,
+        ];
+      }
+    },
+    removeSetData: (
+      state,
+      action: PayloadAction<{ exerciseIndex: number; setIndex: number }>
+    ) => {
+      const currantSetData =
+        state.exercises[action.payload.exerciseIndex].setsData;
+      if (currantSetData) {
+        currantSetData.splice(action.payload.setIndex, 1);
+        state.exercises[action.payload.exerciseIndex].setsData = [
+          ...currantSetData,
+        ];
+      }
+    },
+    setTotalValues: (
+      state,
+      action: PayloadAction<{ increasment: boolean; volume: number }>
+    ) => {
+      if (action.payload.increasment) {
+        state.totalSets++;
+        state.totalVolume += action.payload.volume;
+      } else {
+        state.totalSets--;
+        state.totalVolume -= action.payload.volume;
       }
     },
     setAddExerciseState: (
@@ -145,25 +326,65 @@ const workoutState = createSlice({
     ) => {
       state.optionsMenuState = { ...action.payload };
     },
-    setWorkoutActiveState: (state, action: PayloadAction<boolean>) => {
-      state.isActive = action.payload;
+    incrementWorkoutDuration: (state) => {
+      state.duration++;
     },
-    setWorkoutVisibility: (state) => {
-      if (!state.isActive) {
-        state.isShown = false;
-      } else {
-        state.isShown = !state.isShown;
+    setRestTimerState: (
+      state,
+      action: PayloadAction<{ activity: boolean; timer?: number }>
+    ) => {
+      state.restTimer.active = action.payload.activity;
+      if (!action.payload.activity) {
+        state.restTimer.timer = 0;
       }
+
+      if (action.payload.timer) {
+        state.restTimer.timer = action.payload.timer;
+      }
+    },
+    decreaseRestTimer: (state) => {
+      state.restTimer.timer--;
+    },
+    operateOnRestTimer: (
+      state,
+      action: PayloadAction<{ increment: boolean; value: number }>
+    ) => {
+      if (action.payload.increment) {
+        state.restTimer.timer += action.payload.value;
+      } else {
+        state.restTimer.timer -= action.payload.value;
+      }
+    },
+    finishedWorkoutData: (
+      state,
+      action: PayloadAction<{
+        records: { exercise: string; kg: number }[];
+        number: number;
+      }>
+    ) => {
+      state.finishedWorkoutData = { ...action.payload };
+    },
+    restoreWorkoutInitialState: (state) => {
+      return { ...initialState };
     },
   },
 });
 
 export const {
+  setWorkoutState,
+  setWorkoutTitle,
   addExercise,
   removeExercise,
   replaceExercise,
+  setWorkoutExercises,
   modifySetCount,
-  setResetTimer,
+  setRestTime,
+  setExerciseNotes,
+  setSetState,
+  setSetData,
+  addSetData,
+  removeSetData,
+  setTotalValues,
   setAddExerciseState,
   setExerciseSummaryVisibility,
   setExerciseData,
@@ -171,7 +392,11 @@ export const {
   setFitlerState,
   setFilterValue,
   setOptionsMenuState,
-  setWorkoutActiveState,
-  setWorkoutVisibility,
+  incrementWorkoutDuration,
+  setRestTimerState,
+  decreaseRestTimer,
+  operateOnRestTimer,
+  finishedWorkoutData,
+  restoreWorkoutInitialState,
 } = workoutState.actions;
 export default workoutState.reducer;

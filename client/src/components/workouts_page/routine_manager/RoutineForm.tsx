@@ -105,10 +105,6 @@ const RoutineForm = function () {
     return state.workoutState.optionsMenuState;
   });
 
-  const notificationState = useSelector((state: RootState) => {
-    return state.widgetsManager.notificationManager;
-  });
-
   const isLoading = useSelector((state: RootState) => {
     return state.loadingManager.isLoading;
   });
@@ -172,16 +168,15 @@ const RoutineForm = function () {
       },
       routineExercises: routineExercises.map((exercise) => {
         const indexModification = exercise._id.indexOf("-");
-        if (indexModification > -1) {
-          return {
-            exerciseId: exercise._id.substring(0, indexModification),
-            sets: exercise.sets,
-          };
-        }
+
         return {
-          exercise: exercise._id,
+          exercise:
+            indexModification > -1
+              ? exercise._id.substring(0, indexModification)
+              : exercise._id,
           sets: exercise.sets,
-          restTime: exercise.restTime ? exercise.restTime : 0,
+          restTime: exercise.restTime || 0,
+          notes: exercise.notes || "",
         };
       }),
     };
@@ -411,14 +406,16 @@ const RoutineForm = function () {
       </section>
       <main className={styles["exercise-wrapper"]}>
         {routineExercises.length ? (
-          routineExercises.map((exercise) => {
+          routineExercises.map((exercise, index) => {
             return (
               <ExerciseSlot
-                exerciseData={exercise}
                 key={exercise._id}
+                exerciseData={exercise}
+                index={index}
                 staticMode={true}
                 sets={exercise.sets}
                 restTime={exercise.restTime}
+                notes={exercise.notes}
               />
             );
           })

@@ -4,6 +4,10 @@ interface ChoiceModal {
   visibility: boolean;
 }
 
+interface WorkoutFinishedModal {
+  visibility: boolean;
+}
+
 interface ErrorModal {
   visibility?: boolean;
   responseCode: number;
@@ -13,8 +17,15 @@ interface ErrorModal {
   redirectionRoute: string;
 }
 
-const initialState: { choiceModal: ChoiceModal; errorModal: ErrorModal } = {
+const initialState: {
+  choiceModal: ChoiceModal;
+  errorModal: ErrorModal;
+  workoutFinishedModal: WorkoutFinishedModal;
+} = {
   choiceModal: {
+    visibility: false,
+  },
+  workoutFinishedModal: {
     visibility: false,
   },
   errorModal: {
@@ -40,6 +51,12 @@ const modalsState = createSlice({
     changeChoiceModalVisibility: (state, action: PayloadAction<boolean>) => {
       state.choiceModal.visibility = action.payload;
     },
+    changeFinishedWorkoutVisibility: (
+      state,
+      action: PayloadAction<boolean>
+    ) => {
+      state.workoutFinishedModal.visibility = action.payload;
+    },
   },
 });
 
@@ -47,5 +64,6 @@ export const {
   changeErrorModalVisibility,
   setErrorModalState,
   changeChoiceModalVisibility,
+  changeFinishedWorkoutVisibility,
 } = modalsState.actions;
 export default modalsState.reducer;

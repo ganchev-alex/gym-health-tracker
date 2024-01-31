@@ -99,7 +99,7 @@ const workoutWidgetManager = createSlice({
         (exercise) => exercise._id === action.payload._id
       );
       if (existingExercise) {
-        existingExercise._id += "-" + new Date().getTime();
+        action.payload._id += "-" + new Date().getTime();
       }
       state.routinesWidget.newRoutine.exercises.push(action.payload);
     },
@@ -115,6 +115,14 @@ const workoutWidgetManager = createSlice({
       if (exercise) {
         exercise.sets = action.payload.count;
       }
+    },
+    setRoutineNotes: (
+      state,
+      action: PayloadAction<{ exerciseIndex: number; notes: string }>
+    ) => {
+      state.routinesWidget.newRoutine.exercises[
+        action.payload.exerciseIndex
+      ].notes = action.payload.notes;
     },
     removeFromNewRoutine: (state, action: PayloadAction<string>) => {
       state.routinesWidget.newRoutine.exercises =
@@ -135,7 +143,7 @@ const workoutWidgetManager = createSlice({
           (exercise) => exercise._id === action.payload.replaceWith._id
         );
         if (existingExercise) {
-          existingExercise._id += "-" + new Date().getTime();
+          action.payload.replaceWith._id += "-" + new Date().getTime();
         }
         state.routinesWidget.newRoutine.exercises[currantExericeIndex] = {
           ...action.payload.replaceWith,
@@ -155,6 +163,14 @@ const workoutWidgetManager = createSlice({
         state.routinesWidget.newRoutine.exercises[exerciseIndex].restTime =
           action.payload.time;
       }
+    },
+    setRoutineNote: (
+      state,
+      action: PayloadAction<{ exerciseIndex: number; note: string }>
+    ) => {
+      state.routinesWidget.newRoutine.exercises[
+        action.payload.exerciseIndex
+      ].notes = action.payload.note;
     },
     setFormVisibility: (state, action: PayloadAction<boolean>) => {
       state.routinesWidget.newRoutine.formVisibility = action.payload;
@@ -204,6 +220,7 @@ export const {
   modifyStaticSetCount,
   removeFromNewRoutine,
   replaceExerciseFromRoutine,
+  setRoutineNotes,
   setResetTimerRoutine,
   setFormVisibility,
   setEditFormData,

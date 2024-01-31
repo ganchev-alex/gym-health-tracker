@@ -3,7 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 
 import Set from "./Set";
 import styles from "./SetsTable.module.css";
-import { modifySetCount, removeExercise } from "../../../features/workout";
+import {
+  addSetData,
+  modifySetCount,
+  removeExercise,
+  removeSetData,
+} from "../../../features/workout";
 import {
   modifyStaticSetCount,
   removeFromNewRoutine,
@@ -11,6 +16,7 @@ import {
 
 const SetTable: React.FC<{
   _id: string;
+  index?: number;
   sets?: number;
   staticMode?: boolean;
   previewMode?: boolean;
@@ -18,6 +24,10 @@ const SetTable: React.FC<{
   const dispatch = useDispatch();
 
   const removeSet = function (index: number) {
+    if (props.index != undefined && !props.staticMode) {
+      dispatch(removeSetData({ exerciseIndex: props.index, setIndex: index }));
+    }
+
     setSetsList((previousState) => {
       return previousState
         .filter((set, i) => {
@@ -37,41 +47,59 @@ const SetTable: React.FC<{
   };
 
   const addSet = function () {
-    setSetsList((previousState) => [
-      ...previousState,
-      <Set
-        key={previousState.length + 1}
-        setIndex={previousState.length + 1}
-        previos="25kg x 12"
-        kg={25}
-        reps={12}
-        setRemover={() => removeSet(previousState.length)}
-        staticMode={props.staticMode}
-      />,
-    ]);
+    if (props.index != undefined && !props.staticMode) {
+      dispatch(
+        addSetData({
+          exerciseIndex: props.index,
+          setData: { state: false, reps: 25, kg: 12 },
+        })
+      );
+    }
+    setSetsList((previousState) => {
+      return [
+        ...previousState,
+        <Set
+          key={previousState.length + 1}
+          exerciseId={props._id}
+          exerciseIndex={props.index}
+          setIndex={previousState.length + 1}
+          previos="25kg x 12"
+          kg={25}
+          reps={12}
+          setRemover={() => removeSet(previousState.length)}
+          staticMode={props.staticMode}
+        />,
+      ];
+    });
   };
 
   const defaultSets = props.sets
     ? Array.from({ length: props.sets }, (_, index) => (
         <Set
           key={index + 1}
+          exerciseId={props._id}
+          exerciseIndex={props.index}
           setIndex={index + 1}
           previos="25kg x 12"
           kg={25}
           reps={12}
-          setRemover={removeSet}
+          setRemover={() => removeSet(index)}
           staticMode={props.staticMode}
+          previewMode={props.previewMode}
         />
       ))
     : [
         <Set
           key={1}
+          exerciseId={props._id}
+          exerciseIndex={props.index}
           setIndex={1}
           previos="25kg x 12"
           kg={25}
           reps={12}
-          setRemover={removeSet}
+          setRemover={() => removeSet(0)}
           staticMode={props.staticMode}
+          previewMode={props.previewMode}
         />,
       ];
 
@@ -79,7 +107,6 @@ const SetTable: React.FC<{
 
   useEffect(() => {
     if (!setsList.length) {
-      console.log("Exercise Removed!");
       if (props.staticMode) {
         dispatch(removeFromNewRoutine(props._id));
       } else {

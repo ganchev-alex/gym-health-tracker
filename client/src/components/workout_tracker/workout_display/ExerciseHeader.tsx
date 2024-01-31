@@ -1,24 +1,31 @@
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./ExerciseHeader.module.css";
 import {
   Exercise,
   setExerciseData,
   setExerciseSummaryVisibility,
   setOptionsMenuState,
-  setResetTimer,
+  setRestTime,
+  setExerciseNotes,
 } from "../../../features/workout";
-import { setResetTimerRoutine } from "../../../features/widgets-actions";
+import {
+  setResetTimerRoutine,
+  setRoutineNotes,
+} from "../../../features/widgets-actions";
 import { useEffect, useState } from "react";
 
 const ExerciseHeader: React.FC<{
   exerciseData: Exercise;
+  index?: number;
   restTime?: number;
+  notes?: string;
   staticMode?: boolean;
   previewMode?: boolean;
 }> = function (props) {
   const dispatch = useDispatch();
 
   const { exerciseData } = props;
+  const [notes, setNotes] = useState(props.notes || "");
 
   const onTimerSelect = function (e: React.ChangeEvent<HTMLSelectElement>) {
     if (props.staticMode) {
@@ -26,9 +33,23 @@ const ExerciseHeader: React.FC<{
         setResetTimerRoutine({ id: exerciseData._id, time: +e.target.value })
       );
     } else {
-      dispatch(setResetTimer({ id: exerciseData._id, time: +e.target.value }));
+      dispatch(setRestTime({ id: exerciseData._id, time: +e.target.value }));
     }
   };
+
+  useEffect(() => {
+    const notesUpdateManager = setTimeout(() => {
+      if (props.index != undefined) {
+        if (!props.staticMode) {
+          dispatch(setExerciseNotes({ exerciseIndex: props.index, notes }));
+        } else {
+          dispatch(setRoutineNotes({ exerciseIndex: props.index, notes }));
+        }
+      }
+    }, 500);
+
+    return () => clearTimeout(notesUpdateManager);
+  }, [notes, dispatch]);
 
   const loadExeriseMenu = function () {
     dispatch(
@@ -66,11 +87,13 @@ const ExerciseHeader: React.FC<{
         )}
       </header>
       <textarea
-        placeholder="Add notes here..."
+        placeholder={"Add notes here..."}
         rows={2}
-        maxLength={125}
+        maxLength={225}
         className={styles.notes}
-        disabled={props.staticMode}
+        value={notes}
+        onChange={(e) => setNotes(e.target.value)}
+        disabled={props.previewMode}
       />
       <span className={styles["rest-timer"]}>
         <label htmlFor="restTime">Rest Time:</label>

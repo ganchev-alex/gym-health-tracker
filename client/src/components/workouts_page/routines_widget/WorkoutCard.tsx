@@ -72,7 +72,12 @@ const WorkoutCard: React.FC<{
         </button>
       </div>
       <p className={styles.description}>{props.description}</p>
-      <CardBottom duration={props.duration} category={props.category} />
+      <CardBottom
+        routineId={props._id}
+        name={props.name}
+        duration={props.duration}
+        category={props.category}
+      />
     </div>
   );
 };

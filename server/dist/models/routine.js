@@ -33,6 +33,7 @@ const routineSchema = new mongoose_1.Schema({
                 type: Number,
                 required: true,
             },
+            notes: String,
         },
     ],
 });

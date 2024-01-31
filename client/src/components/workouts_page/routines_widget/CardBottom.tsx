@@ -3,12 +3,56 @@ import React from "react";
 import styles from "./CardBottom.module.css";
 
 import TimerIcon from "../../../assets/svg_icon_components/TimerIcon";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "../../../features/store";
+import {
+  setWorkoutExercises,
+  setWorkoutState,
+  setWorkoutTitle,
+} from "../../../features/workout";
 
-const CardBottom: React.FC<{ duration: number; category: string }> = (
-  props
-) => {
+const CardBottom: React.FC<{
+  routineId: string;
+  name: string;
+  duration: number;
+  category: string;
+}> = (props) => {
   const hours = Math.floor(props.duration / 3600);
   const minutes = Math.floor((props.duration % 3600) / 60);
+
+  const dispatch = useDispatch();
+  const { workoutActivity } = useSelector((state: RootState) => {
+    return state.workoutState;
+  });
+  const routine = useSelector((state: RootState) => {
+    return state.userActions.loadedUserData.routines.find(
+      (routine) => routine._id === props.routineId
+    );
+  });
+
+  const onStartRoutine = function (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ) {
+    e.stopPropagation();
+    if (routine) {
+      const workoutExercises = routine.exercises.map((exercise) => {
+        return {
+          ...exercise.exerciseData,
+          sets: exercise.sets,
+          restTime: exercise.restTime,
+          notes: exercise.notes,
+          setsData: Array.from({ length: exercise.sets }, () => {
+            return { state: false, kg: 0, reps: 0 };
+          }),
+        };
+      });
+
+      dispatch(setWorkoutTitle(props.name));
+      dispatch(setWorkoutExercises(workoutExercises));
+      dispatch(setWorkoutState({ visibility: true }));
+    }
+  };
+
   return (
     <div className={styles.wrapper}>
       <span className={styles["info-wrapper"]}>
@@ -21,7 +65,14 @@ const CardBottom: React.FC<{ duration: number; category: string }> = (
         </span>
         <p>{props.category}</p>
       </span>
-      <button className={styles.button}>Start Routine</button>
+      <button
+        className={styles.button}
+        onClick={onStartRoutine}
+        style={workoutActivity ? { background: "#e0e0e0" } : {}}
+        disabled={workoutActivity}
+      >
+        Start Routine
+      </button>
     </div>
   );
 };

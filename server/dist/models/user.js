@@ -23,6 +23,17 @@ const userSchema = new mongoose_1.Schema({
         fitnessGoal: String,
     },
     routines: [{ type: mongoose_1.Schema.ObjectId, ref: "Routine" }],
+    workoutHistory: [{ type: mongoose_1.Schema.ObjectId, ref: "Workout" }],
+    exerciseRecords: [
+        {
+            exerciseId: { type: mongoose_1.Schema.ObjectId, ref: "Exercise", required: true },
+            reps: { type: Number, required: true },
+            kg: {
+                type: Number,
+                required: true,
+            },
+        },
+    ],
 });
 const User = mongoose.model("User", userSchema, "users");
 exports.default = User;

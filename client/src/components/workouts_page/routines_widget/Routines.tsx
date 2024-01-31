@@ -64,6 +64,7 @@ const Routines: React.FC = () => {
               ...exercise.exerciseData,
               sets: exercise.sets,
               restTime: exercise.restTime,
+              notes: exercise.notes,
             };
           }),
         })
@@ -93,14 +94,14 @@ const Routines: React.FC = () => {
     if (response.ok) {
       dispatch(
         setNotificationState({
-          message: "👍🏻 Routine deleted succesfully",
+          message: "🗑️ Routine deleted succesfully",
           visibility: true,
         })
       );
     } else {
       dispatch(
         setNotificationState({
-          message: "👎🏻 Something went wrong",
+          message: "🤷🏻 Something went wrong",
           visibility: true,
         })
       );

@@ -6,6 +6,8 @@ const { validationResult } = require("express-validator");
 
 import User from "../models/user";
 import Routine from "../models/routine";
+import Workout, { IWorkout } from "../models/workout";
+import { body } from "express-validator";
 
 interface newRoutineRequest {
   routineData: {
@@ -13,7 +15,12 @@ interface newRoutineRequest {
     category: string;
     description: string;
   };
-  routineExercises: { exercise: string; sets: number; restTime: number }[];
+  routineExercises: {
+    exercise: string;
+    sets: number;
+    restTime: number;
+    notes: string;
+  }[];
 }
 
 interface updatedRoutine {
@@ -23,7 +30,12 @@ interface updatedRoutine {
     category: string;
     description: string;
   };
-  routineExercises: { exercise: string; sets: number; restTime: number }[];
+  routineExercises: {
+    exercise: string;
+    sets: number;
+    restTime: number;
+    notes: string;
+  }[];
 }
 
 const userData = async (req: express.Request, res: express.Response) => {
@@ -110,6 +122,7 @@ const newRoutine = async (
         exerciseData: new mongoodb.ObjectId(record.exercise),
         sets: record.sets,
         restTime: record.restTime,
+        notes: record.notes,
       };
     }),
     duration: 0,
@@ -173,6 +186,7 @@ const updateRoutine = async (
             exerciseData: new mongoodb.ObjectId(record.exercise),
             sets: record.sets,
             restTime: record.restTime,
+            notes: record.notes,
           })),
           duration: updatedRoutineData.routineExercises.reduce(
             (accumulator, currentExercise) => {
@@ -239,12 +253,93 @@ const deleteRoutine = async (req: express.Request, res: express.Response) => {
   }
 };
 
+const saveWorkout = async (
+  req: express.Request<{}, {}, IWorkout>,
+  res: express.Response
+) => {
+  const userId = (req as any).userId;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User was not found." });
+    }
+
+    const newRecords: { exercise: string; kg: number }[] = [];
+
+    req.body.exercises.forEach((exercise) => {
+      const previousRecordIndex = user.exerciseRecords.findIndex(
+        (record) =>
+          record.exerciseId.toString() === exercise.exerciseId.toString()
+      );
+
+      const bestSet = exercise.sets.reduce(
+        (best, set) => {
+          if (set.kg > best.kg) {
+            best = { ...set };
+          }
+
+          return best;
+        },
+        { reps: 0, kg: 0 }
+      );
+
+      if (bestSet.kg > 0) {
+        if (previousRecordIndex > -1) {
+          if (user.exerciseRecords[previousRecordIndex].kg < bestSet.kg)
+            user.exerciseRecords[previousRecordIndex] = {
+              exerciseId: new mongoodb.ObjectId(exercise.exerciseId),
+              ...bestSet,
+            };
+          newRecords.push({ exercise: exercise.name, kg: bestSet.kg });
+        } else {
+          user.exerciseRecords.push({
+            exerciseId: new mongoodb.ObjectId(exercise.exerciseId),
+            ...bestSet,
+          });
+        }
+      }
+    });
+
+    const workoutData = {
+      userId: new mongoodb.ObjectId(req.body.userId),
+      date: req.body.date,
+      title: req.body.title,
+      category: req.body.category,
+      exercises: req.body.exercises,
+      duration: req.body.duration,
+      volume: req.body.volume,
+      sets: req.body.sets,
+    };
+
+    const workout = await new Workout(workoutData).save();
+
+    if (!workout) {
+      return res
+        .status(500)
+        .json({ message: "Faulty process of saving the workout." });
+    }
+
+    user.workoutHistory.push(workout._id);
+    await user.save();
+
+    return res.status(201).json({
+      message: "Workout saved succesfully!",
+      workoutNumber: user.workoutHistory.length,
+      newRecords,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
 const application = {
   userData,
   getRoutines,
   newRoutine,
   updateRoutine,
   deleteRoutine,
+  saveWorkout,
 };
 
 export default application;

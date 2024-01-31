@@ -13,20 +13,57 @@ import {
   setRoutinePreviewState,
 } from "../../../features/widgets-actions";
 import ExerciseSlot from "../../workout_tracker/workout_display/ExerciseSlot";
+import {
+  setWorkoutExercises,
+  setWorkoutState,
+  setWorkoutTitle,
+} from "../../../features/workout";
 
 const Backdrop = function () {
   const dispatch = useDispatch();
   const clickHandler = function () {
     dispatch(setRoutinePreviewState({ visibility: false }));
   };
-  return <div onClick={clickHandler} className={modalStyles.backdrop} />;
+  return (
+    <div
+      onClick={clickHandler}
+      className={modalStyles.backdrop}
+      style={{ zIndex: 4 }}
+    />
+  );
 };
 
 const RoutinePreview = function () {
   const dispatch = useDispatch();
+
+  const { workoutActivity } = useSelector((state: RootState) => {
+    return state.workoutState;
+  });
+
   const routineData = useSelector((state: RootState) => {
     return state.widgetsManager.routinesWidget.routinePreviewForm.routineData;
   });
+
+  const onStartRoutine = function () {
+    if (routineData) {
+      const workoutExercises = routineData.exercises.map((exercise) => {
+        return {
+          ...exercise.exerciseData,
+          sets: exercise.sets,
+          restTime: exercise.restTime,
+          notes: exercise.notes,
+          setsData: Array.from({ length: exercise.sets }, () => {
+            return { state: false, kg: 0, reps: 0 };
+          }),
+        };
+      });
+
+      dispatch(setWorkoutTitle(routineData?.title));
+      dispatch(setWorkoutExercises(workoutExercises));
+      dispatch(setWorkoutState({ visibility: true }));
+      dispatch(setRoutinePreviewState({ visibility: false }));
+    }
+  };
 
   const onClose = function () {
     dispatch(setRoutinePreviewState({ visibility: false }));
@@ -71,7 +108,13 @@ const RoutinePreview = function () {
           <p>{routineData.category}</p>
         </span>
       </section>
-      <button type="button" className={formInheritedStyles["submit-button"]}>
+      <button
+        type="button"
+        className={formInheritedStyles["submit-button"]}
+        onClick={onStartRoutine}
+        disabled={workoutActivity}
+        style={workoutActivity ? { background: "#e0e0e0" } : {}}
+      >
         Start Routine
       </button>
       <main className={formInheritedStyles["exercise-wrapper"]}>
@@ -82,6 +125,7 @@ const RoutinePreview = function () {
               key={exercise.exerciseData._id}
               sets={exercise.sets}
               restTime={exercise.restTime}
+              notes={exercise.notes}
               staticMode={true}
               previewMode={true}
             />

@@ -41,7 +41,6 @@ const WorkoutDisplay: React.FC = function () {
 
   const replace = function (event: React.MouseEvent<HTMLButtonElement>) {
     event.stopPropagation();
-    console.log("Replace Activated: ", optionsMenuState);
     dispatch(setAddExerciseState({ visibility: true, mode: "REPLACE" }));
   };
 
@@ -55,8 +54,17 @@ const WorkoutDisplay: React.FC = function () {
       {exerciseSummaryVisibility && <ExersiceSummaryModal />}
       <div className={styles.display}>
         {exercises.length ? (
-          exercises.map((exercise) => {
-            return <ExerciseSlot exerciseData={exercise} key={exercise._id} />;
+          exercises.map((exercise, index) => {
+            return (
+              <ExerciseSlot
+                key={exercise._id}
+                exerciseData={exercise}
+                index={index}
+                sets={exercise.sets}
+                restTime={exercise.restTime}
+                notes={exercise.notes}
+              />
+            );
           })
         ) : (
           <div className={styles["start-message"]}>

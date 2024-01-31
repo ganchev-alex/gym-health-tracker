@@ -8,6 +8,18 @@ const { check } = require("express-validator");
 const application_1 = __importDefault(require("../controllers/application"));
 const authValidation_1 = __importDefault(require("../middleware/authValidation"));
 const router = express.Router();
+const workoutValidator = [
+    check("date").isDate(),
+    check("title").notEmpty(),
+    check("category").notEmpty(),
+    check("exercises.*.exerciseId").isMongoId(),
+    check("exercises.*.name").notEmpty(),
+    check("exercises.*.sets.reps").isInt({ min: 1 }),
+    check("exercises.*.sets.kg").isInt({ min: 0 }),
+    check("duration").isInt(),
+    check("volume").isInt(),
+    check("sets").isInt(),
+];
 const routineValidatiors = [
     check("routineData.title").notEmpty(),
     check("routineData.category").notEmpty(),
@@ -15,6 +27,7 @@ const routineValidatiors = [
     check("routineExercises.*.sets").isInt({ min: 1 }),
     check("routineExercises.*.restTime").isInt({ min: 0 }),
 ];
+router.post("/save-workout", authValidation_1.default, workoutValidator, application_1.default.saveWorkout);
 router.get("/user-data", authValidation_1.default, application_1.default.userData);
 router.get("/routines", authValidation_1.default, application_1.default.getRoutines);
 router.post("/new-routine", authValidation_1.default, routineValidatiors, application_1.default.newRoutine);

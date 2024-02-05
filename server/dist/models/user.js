@@ -23,7 +23,12 @@ const userSchema = new mongoose_1.Schema({
         fitnessGoal: String,
     },
     routines: [{ type: mongoose_1.Schema.ObjectId, ref: "Routine" }],
-    workoutHistory: [{ type: mongoose_1.Schema.ObjectId, ref: "Workout" }],
+    workoutHistory: [
+        {
+            date: { type: Date, required: true },
+            workout: { type: mongoose_1.Schema.ObjectId, ref: "Workout", required: true },
+        },
+    ],
     exerciseRecords: [
         {
             exerciseId: { type: mongoose_1.Schema.ObjectId, ref: "Exercise", required: true },

@@ -9,13 +9,13 @@ const application_1 = __importDefault(require("../controllers/application"));
 const authValidation_1 = __importDefault(require("../middleware/authValidation"));
 const router = express.Router();
 const workoutValidator = [
-    check("date").isDate(),
+    check("date").isISO8601(),
     check("title").notEmpty(),
     check("category").notEmpty(),
     check("exercises.*.exerciseId").isMongoId(),
     check("exercises.*.name").notEmpty(),
-    check("exercises.*.sets.reps").isInt({ min: 1 }),
-    check("exercises.*.sets.kg").isInt({ min: 0 }),
+    check("exercises.*.sets.*.reps").isInt({ min: 1 }),
+    check("exercises.*.sets.*.kg").isInt({ min: 0 }),
     check("duration").isInt(),
     check("volume").isInt(),
     check("sets").isInt(),
@@ -33,5 +33,7 @@ router.get("/routines", authValidation_1.default, application_1.default.getRouti
 router.post("/new-routine", authValidation_1.default, routineValidatiors, application_1.default.newRoutine);
 router.post("/update-routine", authValidation_1.default, routineValidatiors, application_1.default.updateRoutine);
 router.delete("/delete-routine", authValidation_1.default, application_1.default.deleteRoutine);
+router.get("/user-history", authValidation_1.default, application_1.default.getUserHistory);
+router.get("/history-records", authValidation_1.default, application_1.default.getHistoryRecords);
 exports.default = router;
 //# sourceMappingURL=application.js.map

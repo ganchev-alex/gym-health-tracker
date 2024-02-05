@@ -7,13 +7,13 @@ import authValidation from "../middleware/authValidation";
 const router = express.Router();
 
 const workoutValidator = [
-  check("date").isDate(),
+  check("date").isISO8601(),
   check("title").notEmpty(),
   check("category").notEmpty(),
   check("exercises.*.exerciseId").isMongoId(),
   check("exercises.*.name").notEmpty(),
-  check("exercises.*.sets.reps").isInt({ min: 1 }),
-  check("exercises.*.sets.kg").isInt({ min: 0 }),
+  check("exercises.*.sets.*.reps").isInt({ min: 1 }),
+  check("exercises.*.sets.*.kg").isInt({ min: 0 }),
   check("duration").isInt(),
   check("volume").isInt(),
   check("sets").isInt(),
@@ -48,5 +48,7 @@ router.post(
   application.updateRoutine
 );
 router.delete("/delete-routine", authValidation, application.deleteRoutine);
+router.get("/user-history", authValidation, application.getUserHistory);
+router.get("/history-records", authValidation, application.getHistoryRecords);
 
 export default router;

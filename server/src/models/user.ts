@@ -23,7 +23,7 @@ interface IUser {
     fitnessGoal: string;
   };
   routines: mongoose.Types.ObjectId[];
-  workoutHistory: mongoose.Types.ObjectId[];
+  workoutHistory: { date: Date; workout: mongoose.Types.ObjectId }[];
   exerciseRecords: {
     exerciseId: mongoose.Types.ObjectId;
     reps: number;
@@ -52,7 +52,12 @@ const userSchema = new Schema<IUser>({
     fitnessGoal: String,
   },
   routines: [{ type: Schema.ObjectId, ref: "Routine" }],
-  workoutHistory: [{ type: Schema.ObjectId, ref: "Workout" }],
+  workoutHistory: [
+    {
+      date: { type: Date, required: true },
+      workout: { type: Schema.ObjectId, ref: "Workout", required: true },
+    },
+  ],
   exerciseRecords: [
     {
       exerciseId: { type: Schema.ObjectId, ref: "Exercise", required: true },

@@ -86,7 +86,7 @@ const WorkoutTracker: React.FC = () => {
 
   const submitWorkout = async function () {
     const workoutData = {
-      date: new Date(),
+      date: new Date().toISOString(),
       title: workoutState.workoutTitle,
       category: workoutState.workoutCategory,
       exercises: workoutState.exercises
@@ -118,6 +118,7 @@ const WorkoutTracker: React.FC = () => {
     };
 
     try {
+      console.log("Workout Data:", workoutData);
       const response = await fetch(`${mainAPIPath}/app/save-workout`, {
         method: "POST",
         headers: {

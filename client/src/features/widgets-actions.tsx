@@ -28,9 +28,19 @@ interface RoutineWidget {
   };
 }
 
+interface CalendarWidget {
+  monthData: {
+    month: number;
+    year: number;
+    workoutRecords: { workoutId: string; date: string }[];
+  }[];
+  previewRecords: { workoutId: string; date: string }[];
+}
+
 const widgets: {
   notificationManager: Notification;
   routinesWidget: RoutineWidget;
+  calendarWidget: CalendarWidget;
 } = {
   notificationManager: {
     visibility: false,
@@ -64,6 +74,7 @@ const widgets: {
     },
     routineOptions: { visibility: false, routineId: "" },
   },
+  calendarWidget: { monthData: [], previewRecords: [] },
 };
 
 const workoutWidgetManager = createSlice({
@@ -200,6 +211,33 @@ const workoutWidgetManager = createSlice({
     ) => {
       state.routinesWidget.routinePreviewForm = { ...action.payload };
     },
+    appendWorkoutHistory: (
+      state,
+      action: PayloadAction<{
+        month: number;
+        year: number;
+        workoutRecords: { workoutId: string; date: string }[];
+      }>
+    ) => {
+      state.calendarWidget.monthData.push({ ...action.payload });
+    },
+    showHistoryRecords: (state, action: PayloadAction<string>) => {
+      const referenceDate = new Date(action.payload);
+      const dataChunk = state.calendarWidget.monthData.find(
+        (chunk) =>
+          chunk.month === referenceDate.getMonth() &&
+          chunk.year === referenceDate.getFullYear()
+      );
+      if (dataChunk) {
+        state.calendarWidget.previewRecords = dataChunk.workoutRecords.filter(
+          (record) =>
+            referenceDate.getDate() === new Date(record.date).getDate()
+        );
+      }
+    },
+    resetHistoryRecords: (state) => {
+      state.calendarWidget.previewRecords = [];
+    },
     restoreNewRoutineInitState: (state) => {
       state.routinesWidget.newRoutine = widgets.routinesWidget.newRoutine;
     },
@@ -225,6 +263,9 @@ export const {
   setFormVisibility,
   setEditFormData,
   setRoutinePreviewState,
+  appendWorkoutHistory,
+  showHistoryRecords,
+  resetHistoryRecords,
   restoreNewRoutineInitState,
   restoreRoutinesWidgetInitialState,
 } = workoutWidgetManager.actions;

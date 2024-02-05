@@ -130,11 +130,8 @@ const AddExerciseForm = function () {
       const keyMuscle = filterValue.muscle
         ? filterValue.muscle.toLowerCase()
         : "";
-      console.log("Key Word: ", keyEquipment);
-      console.log("Key Muscle: ", keyMuscle);
       if (filterValue.equipment || filterValue.muscle) {
         if (filteredExercises.length && searchExercise) {
-          console.log("Operation 0.");
           setFilteredExercises((previousState) => {
             return previousState.filter(
               (exercise) =>
@@ -147,7 +144,6 @@ const AddExerciseForm = function () {
             );
           });
         } else {
-          console.log("Operation 1.");
           const filtered = exercisesData.filter((exercise) => {
             return (
               (keyEquipment === "" ||
@@ -158,7 +154,6 @@ const AddExerciseForm = function () {
                 ))
             );
           });
-          console.log(filtered);
           setFilteredExercises(filtered);
         }
       }

@@ -1,4 +1,8 @@
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./CalendarBody.module.css";
+import { RootState } from "../../../features/store";
+import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
+import { showHistoryRecords } from "../../../features/widgets-actions";
 
 const CalendarBody: React.FC<{
   currantDate: Date;
@@ -9,8 +13,24 @@ const CalendarBody: React.FC<{
   lastDayMonth: number;
   lastDateLastMonth: number;
 }> = function (props) {
-  let daysList: JSX.Element[] = [];
+  const dispatch = useDispatch();
 
+  let daysList: JSX.Element[] = [];
+  const savedHistoryData = useSelector((state: RootState) => {
+    return state.widgetsManager.calendarWidget.monthData.find(
+      (monthChunk) =>
+        monthChunk.month === props.currantMonth &&
+        monthChunk.year === props.currantYear
+    );
+  });
+
+  const isLoading = useSelector((state: RootState) => {
+    return state.loadingManager.isLoading;
+  });
+
+  const historyMode = useSelector((state: RootState) => {
+    return state.widgetsManager.calendarWidget.previewRecords.length > 0;
+  });
   // Previous month's last days
   for (let i = props.firstDayMonth; i > 0; i--) {
     daysList.push(
@@ -18,8 +38,6 @@ const CalendarBody: React.FC<{
         {props.lastDateLastMonth - i + 1}
       </li>
     );
-    // Adding an haveWorkout state on previous month
-    // Apply a not this month class...
   }
 
   for (let i = 1; i <= props.lastDateMonth; i++) {
@@ -29,15 +47,37 @@ const CalendarBody: React.FC<{
       props.currantMonth === new Date().getMonth() &&
       props.currantYear === new Date().getFullYear();
 
-    daysList.push(
-      <li key={i} className={`${isToday ? styles.today : ""}`}>
-        {i}
-      </li>
-    );
+    if (savedHistoryData) {
+      const possibleRecord = savedHistoryData.workoutRecords.find(
+        (record) => new Date(record.date).getDate() === i
+      );
+      daysList.push(
+        <li
+          key={i}
+          className={`${isToday ? styles.today : ""} ${
+            possibleRecord ? styles.active : ""
+          }`}
+          onClick={
+            possibleRecord
+              ? () => {
+                  dispatch(showHistoryRecords(possibleRecord.date));
+                }
+              : () => {}
+          }
+        >
+          {i}
+        </li>
+      );
+    } else {
+      daysList.push(
+        <li key={i} className={`${isToday ? styles.today : ""}`}>
+          {i}
+        </li>
+      );
+    }
   }
 
   for (let i = props.lastDayMonth; i < 6; i++) {
-    // Adding a not this month class...
     daysList.push(
       <li key={`+${i}`} className={styles["not-this-month"]}>
         {i - props.lastDayMonth + 1}
@@ -47,6 +87,7 @@ const CalendarBody: React.FC<{
 
   return (
     <div className={styles["calendar-body"]}>
+      {isLoading && !historyMode && <LoadingPlane />}
       <ul className={styles.weeks}>
         <li>Mon</li>
         <li>Tue</li>

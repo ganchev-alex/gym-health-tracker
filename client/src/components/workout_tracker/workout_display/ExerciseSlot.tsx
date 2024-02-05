@@ -15,6 +15,7 @@ const ExerciseSlot: React.FC<{
   notes?: string;
   staticMode?: boolean;
   previewMode?: boolean;
+  historyMode?: boolean;
 }> = function (props) {
   return (
     <div className={styles.slot}>
@@ -25,6 +26,7 @@ const ExerciseSlot: React.FC<{
         notes={props.notes}
         staticMode={props.staticMode}
         previewMode={props.previewMode}
+        historyMode={props.historyMode}
       />
       <SetsTable
         _id={props.exerciseData._id}

@@ -7,7 +7,6 @@ const { validationResult } = require("express-validator");
 import User from "../models/user";
 import Routine from "../models/routine";
 import Workout, { IWorkout } from "../models/workout";
-import { body } from "express-validator";
 
 interface newRoutineRequest {
   routineData: {
@@ -36,6 +35,11 @@ interface updatedRoutine {
     restTime: number;
     notes: string;
   }[];
+}
+
+interface userHistory {
+  month?: string;
+  year?: string;
 }
 
 const userData = async (req: express.Request, res: express.Response) => {
@@ -259,6 +263,12 @@ const saveWorkout = async (
 ) => {
   const userId = (req as any).userId;
 
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    return res.status(422).json({ message: "Compromised Validation!" });
+  }
+
   try {
     const user = await User.findById(userId);
     if (!user) {
@@ -302,7 +312,7 @@ const saveWorkout = async (
     });
 
     const workoutData = {
-      userId: new mongoodb.ObjectId(req.body.userId),
+      userId,
       date: req.body.date,
       title: req.body.title,
       category: req.body.category,
@@ -320,7 +330,7 @@ const saveWorkout = async (
         .json({ message: "Faulty process of saving the workout." });
     }
 
-    user.workoutHistory.push(workout._id);
+    user.workoutHistory.push({ date: workoutData.date, workout: workout._id });
     await user.save();
 
     return res.status(201).json({
@@ -333,6 +343,66 @@ const saveWorkout = async (
   }
 };
 
+const getUserHistory = async (
+  req: express.Request<{}, {}, {}, userHistory>,
+  res: express.Response
+) => {
+  const userId = (req as any).userId;
+  const { month, year } = req.query;
+  const targetMonth = parseInt(month, 10);
+  const targetYear = parseInt(year, 10);
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User was not found!" });
+    }
+
+    const currantMonthHistory = user.workoutHistory.filter((workout) => {
+      return (
+        workout.date.getMonth() === targetMonth &&
+        workout.date.getFullYear() === targetYear
+      );
+    });
+
+    return res.status(200).json({
+      message: "History data retrieved succesfully.",
+      monthHistory: currantMonthHistory,
+    });
+  } catch (error) {
+    console.log("Get User's History:", error);
+    return res.status(500).json({ message: "Internal server error", error });
+  }
+};
+
+const getHistoryRecords = async (
+  req: express.Request<{}, {}, {}, { workoutId?: string }>,
+  res: express.Response
+) => {
+  const userId = (req as any).userId;
+  try {
+    const workout = await Workout.findById(
+      new mongoodb.ObjectId(req.query.workoutId)
+    ).populate({
+      path: "exercises.exerciseId",
+      select: "image",
+    });
+
+    console.log("Workout: ", workout);
+    console.log("Condition:", workout.userId.toString() === userId.toString());
+
+    if (workout && workout.userId.toString() === userId.toString()) {
+      return res
+        .status(200)
+        .json({ message: "Workout data retrieved succesfully", workout });
+    }
+
+    return res.status(404).json({ message: "Workout not found." });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
 const application = {
   userData,
   getRoutines,
@@ -340,6 +410,8 @@ const application = {
   updateRoutine,
   deleteRoutine,
   saveWorkout,
+  getUserHistory,
+  getHistoryRecords,
 };
 
 export default application;

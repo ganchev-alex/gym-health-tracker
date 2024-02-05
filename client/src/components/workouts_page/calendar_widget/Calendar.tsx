@@ -1,48 +1,153 @@
-import { useState } from "react";
+import React, { useEffect, useState } from "react";
 import CalendarBody from "./CalendarBody";
 import CalendarHeader from "./CalendarHeader";
 import Widget from "../../layout/Widget";
 
 import styles from "./Calendar.module.css";
+import { mainAPIPath } from "../../../App";
+import { getToken } from "../../../util/auth";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  appendWorkoutHistory,
+  setNotificationState,
+} from "../../../features/widgets-actions";
+import { RootState } from "../../../features/store";
+import { setLoadingState } from "../../../features/loading-actions";
+import HistoryPreviewModal from "../history_preview/HistoryPreview";
 
 const Calendar = function () {
-  const [today, setToday] = useState<Date>(new Date());
-  const [currantYear, setCurrantYear] = useState(today.getFullYear());
-  const [currantMonth, setCurrantMonth] = useState(today.getMonth());
+  const dispatch = useDispatch();
 
-  let firstDayMonth = new Date(currantYear, currantMonth, 1).getDay();
+  const [today, setToday] = useState<Date>(new Date());
+  const [currentYear, setCurrentYear] = useState(today.getFullYear());
+  const [currentMonth, setCurrentMonth] = useState(today.getMonth());
+
+  const savedHistoryData = useSelector(
+    (state: RootState) => state.widgetsManager.calendarWidget.monthData
+  );
+
+  const historyRecords = useSelector(
+    (state: RootState) => state.widgetsManager.calendarWidget.previewRecords
+  );
+
+  const trigger = useSelector(
+    (state: RootState) => state.workoutState.workoutActivity
+  );
+
+  let firstDayMonth = new Date(currentYear, currentMonth, 1).getDay();
   firstDayMonth = firstDayMonth === 0 ? 6 : firstDayMonth - 1;
-  const lastDateMonth = new Date(currantYear, currantMonth + 1, 0).getDate();
+  const lastDateMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
   let lastDayMonth = new Date(
-    currantYear,
-    currantMonth,
+    currentYear,
+    currentMonth,
     lastDateMonth
   ).getDay();
   lastDayMonth = lastDayMonth === 0 ? 6 : lastDayMonth - 1;
-  const lastDateLastMonth = new Date(currantYear, currantMonth, 0).getDate();
+  const lastDateLastMonth = new Date(currentYear, currentMonth, 0).getDate();
+
+  useEffect(() => {
+    const getUserHistory = async function () {
+      try {
+        dispatch(setLoadingState(true));
+        const response = await fetch(
+          `${mainAPIPath}/app/user-history?month=${currentMonth}&year=${currentYear}`,
+          {
+            method: "GET",
+            headers: {
+              Authorization: `Bearer ${getToken()}`,
+            },
+          }
+        );
+        if (response.status === 200) {
+          const data: {
+            monthHistory: {
+              date: string;
+              workout: string;
+            }[];
+          } = await response.json();
+          dispatch(
+            appendWorkoutHistory({
+              month: currentMonth,
+              year: currentYear,
+              workoutRecords: data.monthHistory.map((record) => {
+                return {
+                  workoutId: record.workout,
+                  date: record.date,
+                };
+              }),
+            })
+          );
+        } else if (response.status === 500 || response.status === 404) {
+          dispatch(
+            setNotificationState({
+              message: "😓 Couldn't load history data",
+              visibility: true,
+            })
+          );
+
+          setTimeout(() => {
+            dispatch(setNotificationState({ visibility: false }));
+          }, 4000);
+        }
+      } catch (error) {
+        dispatch(
+          setNotificationState({
+            message: "😓 Couldn't load history data",
+            visibility: true,
+          })
+        );
+
+        setTimeout(() => {
+          dispatch(setNotificationState({ visibility: false }));
+        }, 4000);
+      } finally {
+        dispatch(setLoadingState(false));
+      }
+    };
+
+    const referenceDate = new Date();
+
+    if (
+      currentYear < referenceDate.getFullYear() ||
+      (currentYear === referenceDate.getFullYear() &&
+        currentMonth <= referenceDate.getMonth())
+    ) {
+      if (
+        !savedHistoryData.some(
+          (record) =>
+            record.month === currentMonth && record.year === currentYear
+        )
+      ) {
+        getUserHistory();
+      }
+    }
+  }, [currentMonth, currentYear, dispatch, trigger]);
 
   return (
-    <div className={styles.widget}>
-      <div className={styles.calendar}>
-        <CalendarHeader
-          currantMonth={currantMonth}
-          onSetCurrantMonth={setCurrantMonth}
-          currantYear={currantYear}
-          onSetCurrantYear={setCurrantYear}
-          today={today}
-          onSetToday={setToday}
-        />
-        <CalendarBody
-          currantDate={today}
-          currantMonth={currantMonth}
-          currantYear={currantYear}
-          firstDayMonth={firstDayMonth}
-          lastDateMonth={lastDateMonth}
-          lastDayMonth={lastDayMonth}
-          lastDateLastMonth={lastDateLastMonth}
-        />
+    <React.Fragment>
+      {historyRecords.length > 0 && <HistoryPreviewModal />}
+      <div className={styles.widget}>
+        <div className={styles.calendar}>
+          <CalendarHeader
+            currantMonth={currentMonth}
+            onSetCurrantMonth={setCurrentMonth}
+            currantYear={currentYear}
+            onSetCurrantYear={setCurrentYear}
+            today={today}
+            onSetToday={setToday}
+          />
+          <CalendarBody
+            currantDate={today}
+            currantMonth={currentMonth}
+            currantYear={currentYear}
+            firstDayMonth={firstDayMonth}
+            lastDateMonth={lastDateMonth}
+            lastDayMonth={lastDayMonth}
+            lastDateLastMonth={lastDateLastMonth}
+          />
+        </div>
       </div>
-    </div>
+    </React.Fragment>
   );
 };
 

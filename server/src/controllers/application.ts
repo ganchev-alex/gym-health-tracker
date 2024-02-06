@@ -7,6 +7,7 @@ const { validationResult } = require("express-validator");
 import User from "../models/user";
 import Routine from "../models/routine";
 import Workout, { IWorkout } from "../models/workout";
+import ActivitySession, { IActivitySession } from "../models/activity-session";
 
 interface newRoutineRequest {
   routineData: {
@@ -59,9 +60,10 @@ const userData = async (req: express.Request, res: express.Response) => {
         auth: { email: user.auth.email },
         personalDetails: {
           firstName: user.personalDetails.firstName,
-          lastNamee: user.personalDetails.lastName,
+          lastName: user.personalDetails.lastName,
           sex: user.personalDetails.sex,
           profilePicture: user.personalDetails.profilePicture,
+          weight: user.personalDetails.weight,
         },
         routines: user.routines,
       };
@@ -296,12 +298,13 @@ const saveWorkout = async (
 
       if (bestSet.kg > 0) {
         if (previousRecordIndex > -1) {
-          if (user.exerciseRecords[previousRecordIndex].kg < bestSet.kg)
+          if (user.exerciseRecords[previousRecordIndex].kg < bestSet.kg) {
             user.exerciseRecords[previousRecordIndex] = {
               exerciseId: new mongoodb.ObjectId(exercise.exerciseId),
               ...bestSet,
             };
-          newRecords.push({ exercise: exercise.name, kg: bestSet.kg });
+            newRecords.push({ exercise: exercise.name, kg: bestSet.kg });
+          }
         } else {
           user.exerciseRecords.push({
             exerciseId: new mongoodb.ObjectId(exercise.exerciseId),
@@ -343,6 +346,49 @@ const saveWorkout = async (
   }
 };
 
+const saveActivitySession = async (
+  req: express.Request<{}, {}, IActivitySession>,
+  res: express.Response
+) => {
+  const userId = (req as any).userId;
+
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    const sessionData: IActivitySession = {
+      userId: new mongoodb.ObjectId(userId),
+      date: req.body.date,
+      title: req.body.title,
+      category: req.body.category,
+      duration: req.body.duration,
+      burnedCalories: req.body.burnedCalories,
+    };
+
+    const session = await new ActivitySession(sessionData).save();
+    if (!session) {
+      return res
+        .status(500)
+        .json({ message: "Faulty process of saving the session." });
+    }
+
+    user.activitySessionHistory.push({
+      date: session.date,
+      session: session._id,
+    });
+
+    await user.save();
+    return res.status(201).json({
+      message: "Session saved succesfully!",
+      sessionNumber: user.activitySessionHistory.length,
+    });
+  } catch (error) {
+    return res.status(500).json({ message: "Internal Server Error", error });
+  }
+};
+
 const getUserHistory = async (
   req: express.Request<{}, {}, {}, userHistory>,
   res: express.Response
@@ -353,21 +399,33 @@ const getUserHistory = async (
   const targetYear = parseInt(year, 10);
 
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(userId).populate(
+      "activitySessionHistory.session"
+    );
     if (!user) {
       return res.status(404).json({ message: "User was not found!" });
     }
 
-    const currantMonthHistory = user.workoutHistory.filter((workout) => {
+    const currantMonthWorkoutHistory = user.workoutHistory.filter((workout) => {
       return (
         workout.date.getMonth() === targetMonth &&
         workout.date.getFullYear() === targetYear
       );
     });
 
+    const currantMonthSessionHistory = user.activitySessionHistory.filter(
+      (session) => {
+        return (
+          session.date.getMonth() === targetMonth &&
+          session.date.getFullYear() === targetYear
+        );
+      }
+    );
+
     return res.status(200).json({
       message: "History data retrieved succesfully.",
-      monthHistory: currantMonthHistory,
+      workoutHistory: currantMonthWorkoutHistory,
+      sessionHistory: currantMonthSessionHistory,
     });
   } catch (error) {
     console.log("Get User's History:", error);
@@ -388,9 +446,6 @@ const getHistoryRecords = async (
       select: "image",
     });
 
-    console.log("Workout: ", workout);
-    console.log("Condition:", workout.userId.toString() === userId.toString());
-
     if (workout && workout.userId.toString() === userId.toString()) {
       return res
         .status(200)
@@ -410,6 +465,7 @@ const application = {
   updateRoutine,
   deleteRoutine,
   saveWorkout,
+  saveActivitySession,
   getUserHistory,
   getHistoryRecords,
 };

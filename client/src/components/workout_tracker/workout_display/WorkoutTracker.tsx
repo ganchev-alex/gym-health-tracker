@@ -7,9 +7,8 @@ import styles from "./WorkoutTracker.module.css";
 import {
   changeChoiceModalVisibility,
   changeFinishedWorkoutVisibility,
-  setErrorModalState,
 } from "../../../features/modals";
-import store, { RootState } from "../../../features/store";
+import { RootState } from "../../../features/store";
 import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
 import {
   finishedWorkoutData,
@@ -18,13 +17,22 @@ import {
 } from "../../../features/workout";
 import { mainAPIPath } from "../../../App";
 import { getToken } from "../../../util/auth";
-import { setNotificationState } from "../../../features/widgets-actions";
-import { useNavigate } from "react-router-dom";
+import {
+  setNotificationState,
+  setSessionActivity,
+} from "../../../features/widgets-actions";
+
+import TimerIcon from "../../../assets/svg_icon_components/TimerIcon";
+
+import runningBackground from "../../../assets/images/running_background.jpg";
+import cyclingBackground from "../../../assets/images/cycling_background.jpg";
+import meditationBackground from "../../../assets/images/meditation_background.jpg";
+import swimmingBackground from "../../../assets/images/swimming_background.jpg";
+import walkingBackground from "../../../assets/images/walking_background.jpg";
+import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
 
 const WorkoutTracker: React.FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
-
   const [modalMode, setModalMode] = useState(false);
   const [modalData, setModalData] = useState({
     message: "",
@@ -33,6 +41,19 @@ const WorkoutTracker: React.FC = () => {
     yesButtonLable: "",
     acceptAction: () => {},
   });
+  const [imageLoadState, setImageLoadState] = useState(false);
+
+  const timer = useSelector((state: RootState) => {
+    return state.workoutState.duration;
+  });
+  const userWeigth = useSelector((state: RootState) => {
+    return state.userActions.loadedUserData.personalDetails.weight;
+  });
+  const { selectedActivity, sessionActivity } = useSelector(
+    (state: RootState) => {
+      return state.widgetsManager.categoriesWidget;
+    }
+  );
 
   const workoutState = useSelector((state: RootState) => state.workoutState);
 
@@ -40,30 +61,94 @@ const WorkoutTracker: React.FC = () => {
     (state: RootState) => state.modalsManager.choiceModal.visibility
   );
 
+  const hours = Math.floor(timer / 3600);
+  const minutes = Math.floor((timer % 3600) / 60);
+  const remainingSeconds = timer % 60;
+
   useEffect(() => {
-    const newModalData = modalMode
-      ? {
-          message: "Workout still in progress!",
-          description:
-            "Are you sure you want to submit your workout? There are still sets that are not completed.",
-          noButtonLable: "Cancel",
-          yesButtonLable: "Submit",
-          acceptAction: submitWorkout,
-        }
-      : {
-          message: "Are you sure you want to discard your workout?",
-          description:
-            "This action is irreversible and all of your progress will be lost.",
-          noButtonLable: "Cancel",
-          yesButtonLable: "Discard",
-          acceptAction: () => {
-            dispatch(restoreWorkoutInitialState());
-          },
-        };
-    setModalData(newModalData);
+    if (sessionActivity) {
+      const newModalData = modalMode
+        ? {
+            message: "Finish session",
+            description: "Are you all set?",
+            noButtonLable: "No",
+            yesButtonLable: "Proceed",
+            acceptAction: submitSession,
+          }
+        : {
+            message: "Discard Session",
+            description:
+              "Are you sure you want to discard your session? This process won't save your session and will result in the lost of your progress.",
+            noButtonLable: "Cancel",
+            yesButtonLable: "Discard",
+            acceptAction: () => {
+              dispatch(
+                setSessionActivity({
+                  selectedActivity: "",
+                  sessionActivity: false,
+                })
+              );
+              dispatch(restoreWorkoutInitialState());
+            },
+          };
+      setModalData(newModalData);
+    } else {
+      const newModalData = modalMode
+        ? {
+            message: "Workout still in progress!",
+            description:
+              "Are you sure you want to submit your workout? There are still sets that are not completed.",
+            noButtonLable: "Cancel",
+            yesButtonLable: "Submit",
+            acceptAction: submitWorkout,
+          }
+        : {
+            message: "Are you sure you want to discard your workout?",
+            description:
+              "This action is irreversible and all of your progress will be lost.",
+            noButtonLable: "Cancel",
+            yesButtonLable: "Discard",
+            acceptAction: () => {
+              dispatch(restoreWorkoutInitialState());
+            },
+          };
+      setModalData(newModalData);
+    }
   }, [modalMode]);
 
+  let source;
+  let caloriesMultiplier: number;
+  switch (selectedActivity) {
+    case "RUN":
+      caloriesMultiplier = 9.8;
+      source = runningBackground;
+      break;
+    case "BIKE":
+      caloriesMultiplier = 6;
+      source = cyclingBackground;
+      break;
+    case "MEDITATE":
+      caloriesMultiplier = 0;
+      source = meditationBackground;
+      break;
+    case "SWIM":
+      caloriesMultiplier = 10;
+      source = swimmingBackground;
+      break;
+    case "WALK":
+      caloriesMultiplier = 3.9;
+      source = walkingBackground;
+      break;
+    default:
+      source = meditationBackground;
+      caloriesMultiplier = 0;
+  }
+
   const onDiscardWorkout = function () {
+    dispatch(changeChoiceModalVisibility(true));
+  };
+
+  const sessionAction = function () {
     dispatch(changeChoiceModalVisibility(true));
   };
 
@@ -72,7 +157,6 @@ const WorkoutTracker: React.FC = () => {
       if (exercise.setsData) {
         return exercise.setsData.every((set) => set.state === true);
       }
-
       return false;
     });
 
@@ -133,7 +217,6 @@ const WorkoutTracker: React.FC = () => {
           newRecords: { exercise: string; kg: number }[];
           workoutNumber: number;
         };
-        console.log("Response data: ", data);
         dispatch(
           finishedWorkoutData({
             records: data.newRecords,
@@ -160,6 +243,51 @@ const WorkoutTracker: React.FC = () => {
     }
   };
 
+  const submitSession = async function () {
+    const sessionData = {
+      date: new Date().toISOString(),
+      title: workoutState.workoutTitle,
+      category: "Activity Session: " + selectedActivity,
+      duration: workoutState.duration,
+      burnedCalories: Math.floor(
+        caloriesMultiplier * userWeigth * (timer / 3600)
+      ),
+    };
+
+    try {
+      const response = await fetch(`${mainAPIPath}/app/save-session`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${getToken()}`,
+        },
+        body: JSON.stringify(sessionData),
+      });
+
+      if (response.ok) {
+        const data = (await response.json()) as {
+          sessionNumber: number;
+        };
+        dispatch(
+          finishedWorkoutData({ records: [], number: data.sessionNumber })
+        );
+        dispatch(changeFinishedWorkoutVisibility(true));
+        dispatch(setWorkoutState({ visibility: false, activity: false }));
+      } else {
+        // Save the state of the workout to the local storage!
+        dispatch(
+          setNotificationState({
+            message: "😨 Something went wrong!",
+            visibility: true,
+          })
+        );
+        setTimeout(() => {
+          dispatch(setNotificationState({ visibility: false }));
+        }, 4000);
+      }
+    } catch {}
+  };
+
   return (
     <React.Fragment>
       {modalVisibility && (
@@ -172,14 +300,61 @@ const WorkoutTracker: React.FC = () => {
         />
       )}
       <div className={styles.modal}>
-        <WorkoutDisplay />
-        <div className={styles.sidebar}>
-          <Timer />
-          <div className={styles["buttons-wrapper"]}>
-            <button onClick={onDiscardWorkout}>Discard</button>
-            <button onClick={proccedWorkoutSubmission}>Finish</button>
+        {sessionActivity ? (
+          <div className={styles["session-wrapper"]}>
+            <img
+              alt="Session tracker background"
+              src={source}
+              onLoad={() => {
+                setImageLoadState(true);
+              }}
+            />
+            <div className={styles.filter} />
+            <div className={styles["session-timer"]}>
+              <TimerIcon />
+              <h3>Duration</h3>
+              <h4>{`${String(hours).padStart(2, "0")}:${String(
+                minutes
+              ).padStart(2, "0")}:${String(remainingSeconds).padStart(
+                2,
+                "0"
+              )}`}</h4>
+              {caloriesMultiplier != 0 && (
+                <h5>
+                  Calories:{" "}
+                  {Math.floor(caloriesMultiplier * userWeigth * (timer / 3600))}
+                </h5>
+              )}
+            </div>
+            <div className={styles.controlls}>
+              <button onClick={sessionAction}>Discard</button>
+              <button
+                onClick={() => {
+                  setModalMode(true);
+                  sessionAction();
+                }}
+              >
+                End Session
+              </button>
+            </div>
+            {!imageLoadState && (
+              <div className={styles["loading-plane-mod"]}>
+                <LoadingPlane />
+              </div>
+            )}
           </div>
-        </div>
+        ) : (
+          <React.Fragment>
+            <WorkoutDisplay />
+            <div className={styles.sidebar}>
+              <Timer />
+              <div className={styles["buttons-wrapper"]}>
+                <button onClick={onDiscardWorkout}>Discard</button>
+                <button onClick={proccedWorkoutSubmission}>Finish</button>
+              </div>
+            </div>
+          </React.Fragment>
+        )}
       </div>
     </React.Fragment>
   );

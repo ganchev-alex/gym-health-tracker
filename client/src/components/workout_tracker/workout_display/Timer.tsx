@@ -10,7 +10,6 @@ const Timer: React.FC = function () {
   const duration = useSelector((state: RootState) => {
     return state.workoutState.duration;
   });
-
   const { timer, active } = useSelector((state: RootState) => {
     return state.workoutState.restTimer;
   });

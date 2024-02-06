@@ -27,9 +27,10 @@ interface loadedUserData {
   auth: { email: string };
   personalDetails: {
     firstName: string;
-    lastNamee: string;
+    lastName: string;
     sex: string;
     profilePicture: string;
+    weight: number;
   };
   routines: Routine[];
 }
@@ -51,9 +52,10 @@ const initialUser: {
     auth: { email: "" },
     personalDetails: {
       firstName: "",
-      lastNamee: "",
+      lastName: "",
       sex: "",
       profilePicture: "",
+      weight: 0,
     },
     routines: [],
   },

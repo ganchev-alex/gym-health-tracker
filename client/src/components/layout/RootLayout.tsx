@@ -152,9 +152,10 @@ interface AppData {
   auth: { email: string };
   personalDetails: {
     firstName: string;
-    lastNamee: string;
+    lastName: string;
     sex: string;
     profilePicture: string;
+    weight: number;
   };
   routines: {
     _id: string;

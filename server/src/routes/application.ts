@@ -19,6 +19,14 @@ const workoutValidator = [
   check("sets").isInt(),
 ];
 
+const sessionValidator = [
+  check("date").isISO8601(),
+  check("title").notEmpty(),
+  check("category").notEmpty(),
+  check("duration").isInt(),
+  check("burnedCalories").isInt(),
+];
+
 const routineValidatiors = [
   check("routineData.title").notEmpty(),
   check("routineData.category").notEmpty(),
@@ -32,6 +40,12 @@ router.post(
   authValidation,
   workoutValidator,
   application.saveWorkout
+);
+router.post(
+  "/save-session",
+  authValidation,
+  sessionValidator,
+  application.saveActivitySession
 );
 router.get("/user-data", authValidation, application.userData);
 router.get("/routines", authValidation, application.getRoutines);

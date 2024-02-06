@@ -8,7 +8,7 @@ import { mainAPIPath } from "../../../App";
 import { getToken } from "../../../util/auth";
 import { useDispatch, useSelector } from "react-redux";
 import {
-  appendWorkoutHistory,
+  appendHistory,
   setNotificationState,
 } from "../../../features/widgets-actions";
 import { RootState } from "../../../features/store";
@@ -17,6 +17,7 @@ import HistoryPreviewModal from "../history_preview/HistoryPreview";
 
 const Calendar = function () {
   const dispatch = useDispatch();
+  const [localLoadingState, setLocalLoadingState] = useState(false);
 
   const [today, setToday] = useState<Date>(new Date());
   const [currentYear, setCurrentYear] = useState(today.getFullYear());
@@ -48,7 +49,7 @@ const Calendar = function () {
   useEffect(() => {
     const getUserHistory = async function () {
       try {
-        dispatch(setLoadingState(true));
+        setLocalLoadingState(true);
         const response = await fetch(
           `${mainAPIPath}/app/user-history?month=${currentMonth}&year=${currentYear}`,
           {
@@ -60,19 +61,37 @@ const Calendar = function () {
         );
         if (response.status === 200) {
           const data: {
-            monthHistory: {
+            workoutHistory: {
               date: string;
               workout: string;
             }[];
+            sessionHistory: {
+              session: {
+                date: string;
+                title: string;
+                category: string;
+                duration: number;
+                burnedCalories: number;
+              };
+            }[];
           } = await response.json();
           dispatch(
-            appendWorkoutHistory({
+            appendHistory({
               month: currentMonth,
               year: currentYear,
-              workoutRecords: data.monthHistory.map((record) => {
+              workoutRecords: data.workoutHistory.map((record) => {
                 return {
                   workoutId: record.workout,
                   date: record.date,
+                };
+              }),
+              sessionRecords: data.sessionHistory.map((record) => {
+                return {
+                  date: record.session.date,
+                  title: record.session.title,
+                  category: record.session.category,
+                  duration: record.session.duration,
+                  burnedCalories: record.session.burnedCalories,
                 };
               }),
             })
@@ -101,7 +120,7 @@ const Calendar = function () {
           dispatch(setNotificationState({ visibility: false }));
         }, 4000);
       } finally {
-        dispatch(setLoadingState(false));
+        setLocalLoadingState(false);
       }
     };
 
@@ -125,7 +144,8 @@ const Calendar = function () {
 
   return (
     <React.Fragment>
-      {historyRecords.length > 0 && <HistoryPreviewModal />}
+      {(historyRecords.workoutRecords.length > 0 ||
+        historyRecords.sessionRecords.length > 0) && <HistoryPreviewModal />}
       <div className={styles.widget}>
         <div className={styles.calendar}>
           <CalendarHeader
@@ -144,6 +164,7 @@ const Calendar = function () {
             lastDateMonth={lastDateMonth}
             lastDayMonth={lastDayMonth}
             lastDateLastMonth={lastDateLastMonth}
+            loadingState={localLoadingState}
           />
         </div>
       </div>

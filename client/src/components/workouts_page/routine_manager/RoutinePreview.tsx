@@ -14,6 +14,7 @@ import {
 } from "../../../features/widgets-actions";
 import ExerciseSlot from "../../workout_tracker/workout_display/ExerciseSlot";
 import {
+  setWorkoutCategory,
   setWorkoutExercises,
   setWorkoutState,
   setWorkoutTitle,
@@ -59,6 +60,7 @@ const RoutinePreview = function () {
       });
 
       dispatch(setWorkoutTitle(routineData?.title));
+      dispatch(setWorkoutCategory(routineData.category));
       dispatch(setWorkoutExercises(workoutExercises));
       dispatch(setWorkoutState({ visibility: true }));
       dispatch(setRoutinePreviewState({ visibility: false }));

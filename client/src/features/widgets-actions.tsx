@@ -7,6 +7,11 @@ interface Notification {
   message?: string;
 }
 
+interface CategoriesWidget {
+  sessionActivity: boolean;
+  selectedActivity: string;
+}
+
 interface RoutineWidget {
   selectedFilters: string[];
   isAll: boolean;
@@ -33,14 +38,31 @@ interface CalendarWidget {
     month: number;
     year: number;
     workoutRecords: { workoutId: string; date: string }[];
+    sessionRecords: {
+      date: string;
+      title: string;
+      category: string;
+      duration: number;
+      burnedCalories: number;
+    }[];
   }[];
-  previewRecords: { workoutId: string; date: string }[];
+  previewRecords: {
+    workoutRecords: { workoutId: string; date: string }[];
+    sessionRecords: {
+      date: string;
+      title: string;
+      category: string;
+      duration: number;
+      burnedCalories: number;
+    }[];
+  };
 }
 
 const widgets: {
   notificationManager: Notification;
   routinesWidget: RoutineWidget;
   calendarWidget: CalendarWidget;
+  categoriesWidget: CategoriesWidget;
 } = {
   notificationManager: {
     visibility: false,
@@ -74,7 +96,14 @@ const widgets: {
     },
     routineOptions: { visibility: false, routineId: "" },
   },
-  calendarWidget: { monthData: [], previewRecords: [] },
+  calendarWidget: {
+    monthData: [],
+    previewRecords: { workoutRecords: [], sessionRecords: [] },
+  },
+  categoriesWidget: {
+    sessionActivity: false,
+    selectedActivity: "",
+  },
 };
 
 const workoutWidgetManager = createSlice({
@@ -211,12 +240,19 @@ const workoutWidgetManager = createSlice({
     ) => {
       state.routinesWidget.routinePreviewForm = { ...action.payload };
     },
-    appendWorkoutHistory: (
+    appendHistory: (
       state,
       action: PayloadAction<{
         month: number;
         year: number;
         workoutRecords: { workoutId: string; date: string }[];
+        sessionRecords: {
+          date: string;
+          title: string;
+          category: string;
+          duration: number;
+          burnedCalories: number;
+        }[];
       }>
     ) => {
       state.calendarWidget.monthData.push({ ...action.payload });
@@ -229,14 +265,32 @@ const workoutWidgetManager = createSlice({
           chunk.year === referenceDate.getFullYear()
       );
       if (dataChunk) {
-        state.calendarWidget.previewRecords = dataChunk.workoutRecords.filter(
-          (record) =>
-            referenceDate.getDate() === new Date(record.date).getDate()
-        );
+        state.calendarWidget.previewRecords.workoutRecords =
+          dataChunk.workoutRecords.filter(
+            (record) =>
+              referenceDate.getDate() === new Date(record.date).getDate()
+          );
+        state.calendarWidget.previewRecords.sessionRecords =
+          dataChunk.sessionRecords.filter(
+            (record) =>
+              referenceDate.getDate() === new Date(record.date).getDate()
+          );
       }
     },
     resetHistoryRecords: (state) => {
-      state.calendarWidget.previewRecords = [];
+      state.calendarWidget.previewRecords = {
+        workoutRecords: [],
+        sessionRecords: [],
+      };
+    },
+    setSessionActivity: (
+      state,
+      action: PayloadAction<{
+        sessionActivity: boolean;
+        selectedActivity: string;
+      }>
+    ) => {
+      state.categoriesWidget = { ...action.payload };
     },
     restoreNewRoutineInitState: (state) => {
       state.routinesWidget.newRoutine = widgets.routinesWidget.newRoutine;
@@ -263,9 +317,10 @@ export const {
   setFormVisibility,
   setEditFormData,
   setRoutinePreviewState,
-  appendWorkoutHistory,
+  appendHistory,
   showHistoryRecords,
   resetHistoryRecords,
+  setSessionActivity,
   restoreNewRoutineInitState,
   restoreRoutinesWidgetInitialState,
 } = workoutWidgetManager.actions;

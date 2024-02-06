@@ -11,6 +11,7 @@ import medal from "../../../assets/images/medal.png";
 import flame from "../../../assets/images/flame.png";
 import { changeFinishedWorkoutVisibility } from "../../../features/modals";
 import { restoreWorkoutInitialState } from "../../../features/workout";
+import { setSessionActivity } from "../../../features/widgets-actions";
 
 const Backdrop = function () {
   const dispatch = useDispatch();
@@ -30,10 +31,13 @@ const WorkoutFinished = function () {
   const { records, number } = useSelector((state: RootState) => {
     return state.workoutState.finishedWorkoutData;
   });
+  const sessionActivity = useSelector((state: RootState) => {
+    return state.widgetsManager.categoriesWidget.sessionActivity;
+  });
 
   return (
     <div className={styles.modal}>
-      <h3>Workout finished! 🎉</h3>
+      <h3>{sessionActivity ? "Session" : "Workout"} finished! 🎉</h3>
       <h4>
         Congratulations on finishing your <br />{" "}
         <span>
@@ -47,7 +51,7 @@ const WorkoutFinished = function () {
               ? "rd"
               : "th"}
           </b>{" "}
-          workout!
+          {sessionActivity ? "session" : "workout"}
         </span>
       </h4>
       <img
@@ -79,6 +83,14 @@ const WorkoutFinished = function () {
         onClick={() => {
           dispatch(changeFinishedWorkoutVisibility(false));
           dispatch(restoreWorkoutInitialState());
+          if (sessionActivity) {
+            dispatch(
+              setSessionActivity({
+                sessionActivity: false,
+                selectedActivity: "",
+              })
+            );
+          }
         }}
       >
         Continue

@@ -6,6 +6,7 @@ import TimerIcon from "../../../assets/svg_icon_components/TimerIcon";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../features/store";
 import {
+  setWorkoutCategory,
   setWorkoutExercises,
   setWorkoutState,
   setWorkoutTitle,
@@ -48,6 +49,7 @@ const CardBottom: React.FC<{
       });
 
       dispatch(setWorkoutTitle(props.name));
+      dispatch(setWorkoutCategory(props.category));
       dispatch(setWorkoutExercises(workoutExercises));
       dispatch(setWorkoutState({ visibility: true }));
     }

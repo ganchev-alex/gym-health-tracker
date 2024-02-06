@@ -13,11 +13,11 @@ import WalkingIcon from "../../../assets/svg_icon_components/WalkingIcon";
 const Activities: React.FC = () => {
   return (
     <div className={styles["buttons-holder"]}>
-      <ActivityButton icon=<RunningIcon /> />
-      <ActivityButton icon=<ByciclingIcon /> />
-      <ActivityButton icon=<MeditationIcon /> />
-      <ActivityButton icon=<SwimmingIcon /> />
-      <ActivityButton icon=<WalkingIcon /> />
+      <ActivityButton mode="RUN" icon=<RunningIcon /> />
+      <ActivityButton mode="BIKE" icon=<ByciclingIcon /> />
+      <ActivityButton mode="MEDITATE" icon=<MeditationIcon /> />
+      <ActivityButton mode="SWIM" icon=<SwimmingIcon /> />
+      <ActivityButton mode="WALK" icon=<WalkingIcon /> />
     </div>
   );
 };

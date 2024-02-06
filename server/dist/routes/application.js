@@ -20,6 +20,13 @@ const workoutValidator = [
     check("volume").isInt(),
     check("sets").isInt(),
 ];
+const sessionValidator = [
+    check("date").isISO8601(),
+    check("title").notEmpty(),
+    check("category").notEmpty(),
+    check("duration").isInt(),
+    check("burnedCalories").isInt(),
+];
 const routineValidatiors = [
     check("routineData.title").notEmpty(),
     check("routineData.category").notEmpty(),
@@ -28,6 +35,7 @@ const routineValidatiors = [
     check("routineExercises.*.restTime").isInt({ min: 0 }),
 ];
 router.post("/save-workout", authValidation_1.default, workoutValidator, application_1.default.saveWorkout);
+router.post("/save-session", authValidation_1.default, sessionValidator, application_1.default.saveActivitySession);
 router.get("/user-data", authValidation_1.default, application_1.default.userData);
 router.get("/routines", authValidation_1.default, application_1.default.getRoutines);
 router.post("/new-routine", authValidation_1.default, routineValidatiors, application_1.default.newRoutine);

@@ -3,6 +3,7 @@ import styles from "./CalendarBody.module.css";
 import { RootState } from "../../../features/store";
 import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
 import { showHistoryRecords } from "../../../features/widgets-actions";
+import { useState } from "react";
 
 const CalendarBody: React.FC<{
   currantDate: Date;
@@ -12,6 +13,7 @@ const CalendarBody: React.FC<{
   lastDateMonth: number;
   lastDayMonth: number;
   lastDateLastMonth: number;
+  loadingState: boolean;
 }> = function (props) {
   const dispatch = useDispatch();
 
@@ -24,13 +26,6 @@ const CalendarBody: React.FC<{
     );
   });
 
-  const isLoading = useSelector((state: RootState) => {
-    return state.loadingManager.isLoading;
-  });
-
-  const historyMode = useSelector((state: RootState) => {
-    return state.widgetsManager.calendarWidget.previewRecords.length > 0;
-  });
   // Previous month's last days
   for (let i = props.firstDayMonth; i > 0; i--) {
     daysList.push(
@@ -48,19 +43,26 @@ const CalendarBody: React.FC<{
       props.currantYear === new Date().getFullYear();
 
     if (savedHistoryData) {
-      const possibleRecord = savedHistoryData.workoutRecords.find(
+      const possibleWorkoutRecord = savedHistoryData.workoutRecords.find(
+        (record) => new Date(record.date).getDate() === i
+      );
+      const possibleSessionRecord = savedHistoryData.sessionRecords.find(
         (record) => new Date(record.date).getDate() === i
       );
       daysList.push(
         <li
           key={i}
           className={`${isToday ? styles.today : ""} ${
-            possibleRecord ? styles.active : ""
+            possibleWorkoutRecord || possibleSessionRecord ? styles.active : ""
           }`}
           onClick={
-            possibleRecord
+            possibleWorkoutRecord || possibleSessionRecord
               ? () => {
-                  dispatch(showHistoryRecords(possibleRecord.date));
+                  if (possibleWorkoutRecord) {
+                    dispatch(showHistoryRecords(possibleWorkoutRecord.date));
+                  } else if (possibleSessionRecord) {
+                    dispatch(showHistoryRecords(possibleSessionRecord.date));
+                  }
                 }
               : () => {}
           }
@@ -87,7 +89,7 @@ const CalendarBody: React.FC<{
 
   return (
     <div className={styles["calendar-body"]}>
-      {isLoading && !historyMode && <LoadingPlane />}
+      {props.loadingState && <LoadingPlane />}
       <ul className={styles.weeks}>
         <li>Mon</li>
         <li>Tue</li>

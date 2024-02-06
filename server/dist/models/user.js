@@ -39,6 +39,16 @@ const userSchema = new mongoose_1.Schema({
             },
         },
     ],
+    activitySessionHistory: [
+        {
+            date: { type: Date, required: true },
+            session: {
+                type: mongoose_1.Schema.ObjectId,
+                ref: "ActivitySession",
+                required: true,
+            },
+        },
+    ],
 });
 const User = mongoose.model("User", userSchema, "users");
 exports.default = User;

@@ -99,6 +99,9 @@ const workoutState = createSlice({
         state.workoutTitle = "Workout Session: " + date;
       }
     },
+    setWorkoutCategory: (state, action: PayloadAction<string>) => {
+      state.workoutCategory = action.payload;
+    },
     addExercise: (state, action: PayloadAction<Exercise>) => {
       const existingExercise = state.exercises.find(
         (exercise) => exercise._id === action.payload._id
@@ -373,6 +376,7 @@ const workoutState = createSlice({
 export const {
   setWorkoutState,
   setWorkoutTitle,
+  setWorkoutCategory,
   addExercise,
   removeExercise,
   replaceExercise,

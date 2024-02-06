@@ -41,3 +41,105 @@
   color: white;
   border: transparent 3px solid;
 }
+
+.session-wrapper {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.session-wrapper img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 10px;
+}
+
+.filter {
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(0, 0, 0, 0.25) 55%,
+    rgba(229, 76, 96, 0.2) 100%
+  );
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  border-radius: 10px;
+}
+
+.controlls {
+  background-color: white;
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  bottom: 2%;
+  transform: translate(-50%);
+  padding: 1em 1.5em;
+  display: flex;
+  gap: 1em;
+  border-radius: 20px;
+}
+
+.controlls button {
+  font-size: 1.5rem;
+  padding: 0.3em 2em;
+  border-radius: 15px;
+  font-weight: 600;
+}
+
+.controlls button:first-child {
+  border: #eb4335 3px solid;
+  color: #eb4335;
+  background: transparent;
+}
+
+.controlls button:last-child {
+  background-color: #e54c60;
+  border: #e54c60 3px solid;
+  color: white;
+}
+
+.session-timer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.session-timer h3 {
+  font-size: 3rem;
+  margin: 0;
+}
+
+.session-timer h4 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.session-timer h5 {
+  font-size: 1.5rem;
+  margin: 0;
+  margin-top: 1em;
+}
+
+.session-timer svg {
+  width: 100px;
+  height: 100px;
+}
+
+.loading-plane-mod {
+  width: 100%;
+  height: 100%;
+  background-color: white;
+  position: absolute;
+  top: 0;
+  left: 0;
+}

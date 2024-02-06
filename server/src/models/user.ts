@@ -29,6 +29,7 @@ interface IUser {
     reps: number;
     kg: number;
   }[];
+  activitySessionHistory: { date: Date; session: mongoose.Types.ObjectId }[];
 }
 
 const userSchema = new Schema<IUser>({
@@ -64,6 +65,16 @@ const userSchema = new Schema<IUser>({
       reps: { type: Number, required: true },
       kg: {
         type: Number,
+        required: true,
+      },
+    },
+  ],
+  activitySessionHistory: [
+    {
+      date: { type: Date, required: true },
+      session: {
+        type: Schema.ObjectId,
+        ref: "ActivitySession",
         required: true,
       },
     },

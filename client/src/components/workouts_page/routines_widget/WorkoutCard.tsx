@@ -17,6 +17,7 @@ const WorkoutCard: React.FC<{
   description: string;
   duration: number;
   category: string;
+  previewMode?: boolean;
 }> = (props) => {
   const dispatch = useDispatch();
 
@@ -61,15 +62,20 @@ const WorkoutCard: React.FC<{
   };
 
   return (
-    <div className={styles.card} onClick={openPreview}>
+    <div
+      className={styles.card}
+      onClick={props.previewMode ? () => {} : openPreview}
+    >
       <div className={styles.header}>
         <input type="hidden" value={props._id} />
         <h6>{props.name}</h6>
-        <button type="button" onClick={openOptions}>
-          <div />
-          <div />
-          <div />
-        </button>
+        {!props.previewMode && (
+          <button type="button" onClick={openOptions}>
+            <div />
+            <div />
+            <div />
+          </button>
+        )}
       </div>
       <p className={styles.description}>{props.description}</p>
       <CardBottom
@@ -77,6 +83,7 @@ const WorkoutCard: React.FC<{
         name={props.name}
         duration={props.duration}
         category={props.category}
+        previewMode={props.previewMode}
       />
     </div>
   );

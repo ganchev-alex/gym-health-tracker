@@ -1,0 +1,138 @@
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 90%;
+}
+
+.review-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+  padding: 1.5em;
+  width: 100%;
+  height: 75%;
+  background: linear-gradient(30deg, #feeff1, white);
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
+  border: #e54c60 2px solid;
+}
+
+.activities {
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+  justify-content: space-between;
+  gap: 1em;
+  width: 100%;
+  height: 25%;
+  overflow-x: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.activities::-webkit-scrollbar {
+  display: none;
+}
+
+.activity-card {
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  width: fit-content;
+  background-color: white;
+  border-radius: 20px;
+  border: #e0e0e0 2px solid;
+  width: fit-content;
+  padding: 0.7em 2em 0.7em 1em;
+  flex-shrink: 0;
+  cursor: default;
+}
+
+.activity-card span {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.activity-card span h6 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.activities span p {
+  margin: 0;
+  font-size: 0.8rem;
+  color: #828282;
+  font-weight: 500;
+}
+
+.workouts {
+  display: flex;
+  flex-direction: column;
+  gap: 1em;
+  align-items: center;
+  width: 100%;
+  height: 70%;
+  box-sizing: border-box;
+}
+
+.summary {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 20%;
+  width: 100%;
+  gap: 1em;
+}
+
+.summary div {
+  display: flex;
+  align-items: center;
+  gap: 1.5em;
+  height: 100%;
+  width: 50%;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  padding: 0.5em 1.5em;
+}
+
+.summary div:first-child {
+  background: linear-gradient(30deg, #dcffff, white);
+  border: #28cfc6 2px solid;
+}
+
+.summary div:last-child {
+  background: linear-gradient(30deg, #dee1fc, white);
+  border: #4858e7 2px solid;
+}
+
+.summary img {
+  width: 45px;
+  height: 45px;
+}
+
+.summary span {
+  width: fit-content;
+  height: fit-content;
+  border-radius: 15px;
+  display: flex;
+  box-sizing: border-box;
+  padding: 0.5em;
+}
+
+.summary div:first-child span {
+  background-color: #a8ede9;
+}
+
+.summary div:last-child span {
+  background-color: #bfc4f7;
+}
+
+.summary h6 {
+  font-size: 1.1rem;
+}

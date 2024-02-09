@@ -17,6 +17,7 @@ const CardBottom: React.FC<{
   name: string;
   duration: number;
   category: string;
+  previewMode?: boolean;
 }> = (props) => {
   const hours = Math.floor(props.duration / 3600);
   const minutes = Math.floor((props.duration % 3600) / 60);
@@ -67,14 +68,18 @@ const CardBottom: React.FC<{
         </span>
         <p>{props.category}</p>
       </span>
-      <button
-        className={styles.button}
-        onClick={onStartRoutine}
-        style={workoutActivity ? { background: "#e0e0e0" } : {}}
-        disabled={workoutActivity}
-      >
-        Start Routine
-      </button>
+      {!props.previewMode ? (
+        <button
+          className={styles.button}
+          onClick={onStartRoutine}
+          style={workoutActivity ? { background: "#e0e0e0" } : {}}
+          disabled={workoutActivity}
+        >
+          Start Routine
+        </button>
+      ) : (
+        <p>Volume: </p>
+      )}
     </div>
   );
 };

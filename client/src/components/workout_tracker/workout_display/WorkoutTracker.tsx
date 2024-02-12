@@ -7,20 +7,21 @@ import styles from "./WorkoutTracker.module.css";
 import {
   changeChoiceModalVisibility,
   changeFinishedWorkoutVisibility,
+  finishedWorkoutData,
 } from "../../../features/modals";
 import { RootState } from "../../../features/store";
 import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
 import {
-  finishedWorkoutData,
   restoreWorkoutInitialState,
   setWorkoutState,
 } from "../../../features/workout";
 import { mainAPIPath } from "../../../App";
 import { getToken } from "../../../util/auth";
 import {
+  appendNewHistory,
   setNotificationState,
   setSessionActivity,
-} from "../../../features/widgets-actions";
+} from "../../../features/workout-page-actions";
 
 import TimerIcon from "../../../assets/svg_icon_components/TimerIcon";
 
@@ -30,9 +31,19 @@ import meditationBackground from "../../../assets/images/meditation_background.j
 import swimmingBackground from "../../../assets/images/swimming_background.jpg";
 import walkingBackground from "../../../assets/images/walking_background.jpg";
 import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
+import {
+  Session,
+  Workout,
+} from "../../workouts_page/history_preview/HistoryPreview";
+import {
+  appendSessionData,
+  appendWorkoutsData,
+} from "../../../features/health-essentials-actions";
+import { useNavigate } from "react-router-dom";
 
 const WorkoutTracker: React.FC = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [modalMode, setModalMode] = useState(false);
   const [modalData, setModalData] = useState({
     message: "",
@@ -202,7 +213,6 @@ const WorkoutTracker: React.FC = () => {
     };
 
     try {
-      console.log("Workout Data:", workoutData);
       const response = await fetch(`${mainAPIPath}/app/save-workout`, {
         method: "POST",
         headers: {
@@ -216,6 +226,7 @@ const WorkoutTracker: React.FC = () => {
         const data = (await response.json()) as {
           newRecords: { exercise: string; kg: number }[];
           workoutNumber: number;
+          workoutData: Workout;
         };
         dispatch(
           finishedWorkoutData({
@@ -224,8 +235,18 @@ const WorkoutTracker: React.FC = () => {
           })
         );
 
+        dispatch(
+          appendNewHistory({
+            workoutRecords: {
+              workoutId: data.workoutData._id,
+              date: new Date().toISOString(),
+            },
+          })
+        );
+        dispatch(appendWorkoutsData([data.workoutData]));
+        dispatch(restoreWorkoutInitialState());
         dispatch(changeFinishedWorkoutVisibility(true));
-        dispatch(setWorkoutState({ visibility: false, activity: false }));
+        navigate("/app/workouts");
       } else {
         // Save the state of the workout to the local storage!
         dispatch(
@@ -239,17 +260,27 @@ const WorkoutTracker: React.FC = () => {
         }, 4000);
       }
     } catch (error) {
-      console.log("Client Side Error: ", error);
+      // Save the state of the workout to the local storage!
+      dispatch(
+        setNotificationState({
+          message: "😨 Something went wrong!",
+          visibility: true,
+        })
+      );
+      setTimeout(() => {
+        dispatch(setNotificationState({ visibility: false }));
+      }, 4000);
     }
   };
 
+  // Append the new session as well ->->->
   const submitSession = async function () {
     const sessionData = {
       date: new Date().toISOString(),
       title: workoutState.workoutTitle,
       category: "Activity Session: " + selectedActivity,
       duration: workoutState.duration,
-      burnedCalories: Math.floor(
+      burntCalories: Math.floor(
         caloriesMultiplier * userWeigth * (timer / 3600)
       ),
     };
@@ -267,12 +298,16 @@ const WorkoutTracker: React.FC = () => {
       if (response.ok) {
         const data = (await response.json()) as {
           sessionNumber: number;
+          sessionData: Session;
         };
         dispatch(
           finishedWorkoutData({ records: [], number: data.sessionNumber })
         );
+        dispatch(appendNewHistory({ sessionRecords: data.sessionData }));
+        dispatch(appendSessionData([data.sessionData]));
+        dispatch(restoreWorkoutInitialState());
         dispatch(changeFinishedWorkoutVisibility(true));
-        dispatch(setWorkoutState({ visibility: false, activity: false }));
+        navigate("/app/workouts");
       } else {
         // Save the state of the workout to the local storage!
         dispatch(

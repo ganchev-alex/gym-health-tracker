@@ -59,14 +59,12 @@ const AddExerciseForm = function () {
         const response = await fetch(`${mainAPIPath}/get/exercises`);
         if (response.status === 200) {
           const data = await response.json();
-          console.log(data);
           setExercisesData(data.exercises);
           setErrorMessage(null);
         } else if (response.status === 204) {
           setErrorMessage("No data was found!");
         }
       } catch (error) {
-        console.log("Client side error: ", error);
         setErrorMessage("Something went wrong!");
       } finally {
         dispatch(setLoadingState(false));
@@ -171,8 +169,6 @@ const AddExerciseForm = function () {
     refreshTrigger,
     filterValue,
   ]);
-
-  console.log(filteredExercises.length);
 
   return (
     <div className={styles.modal}>

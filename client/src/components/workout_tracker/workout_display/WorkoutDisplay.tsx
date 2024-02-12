@@ -26,11 +26,6 @@ const WorkoutDisplay: React.FC = function () {
 
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    console.log(exercises);
-    console.log(optionsMenuState);
-  }, [exercises, optionsMenuState]);
-
   const clickHandler = function () {
     dispatch(setAddExerciseState({ visibility: true, mode: "ADD" }));
   };

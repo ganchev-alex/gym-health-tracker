@@ -37,10 +37,6 @@ type Workout = {
     timer: number;
     active: boolean;
   };
-  finishedWorkoutData: {
-    records: { exercise: string; kg: number }[];
-    number: number;
-  };
 };
 
 const initialState: Workout = {
@@ -70,10 +66,6 @@ const initialState: Workout = {
   restTimer: {
     timer: 0,
     active: false,
-  },
-  finishedWorkoutData: {
-    records: [],
-    number: 0,
   },
 };
 
@@ -358,15 +350,6 @@ const workoutState = createSlice({
         state.restTimer.timer -= action.payload.value;
       }
     },
-    finishedWorkoutData: (
-      state,
-      action: PayloadAction<{
-        records: { exercise: string; kg: number }[];
-        number: number;
-      }>
-    ) => {
-      state.finishedWorkoutData = { ...action.payload };
-    },
     restoreWorkoutInitialState: (state) => {
       return { ...initialState };
     },
@@ -400,7 +383,6 @@ export const {
   setRestTimerState,
   decreaseRestTimer,
   operateOnRestTimer,
-  finishedWorkoutData,
   restoreWorkoutInitialState,
 } = workoutState.actions;
 export default workoutState.reducer;

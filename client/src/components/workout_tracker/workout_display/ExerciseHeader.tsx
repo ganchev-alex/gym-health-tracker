@@ -11,7 +11,7 @@ import {
 import {
   setResetTimerRoutine,
   setRoutineNotes,
-} from "../../../features/widgets-actions";
+} from "../../../features/workout-page-actions";
 import { useEffect, useState } from "react";
 
 const ExerciseHeader: React.FC<{

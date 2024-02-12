@@ -30,6 +30,7 @@ interface IUser {
     kg: number;
   }[];
   activitySessionHistory: { date: Date; session: mongoose.Types.ObjectId }[];
+  essentialsHistory: { date: Date; essentials: mongoose.Types.ObjectId }[];
 }
 
 const userSchema = new Schema<IUser>({
@@ -52,7 +53,7 @@ const userSchema = new Schema<IUser>({
     frequencyStatus: String,
     fitnessGoal: String,
   },
-  routines: [{ type: Schema.ObjectId, ref: "Routine" }],
+  routines: [{ type: Schema.ObjectId, ref: "Routine", required: true }],
   workoutHistory: [
     {
       date: { type: Date, required: true },
@@ -75,6 +76,16 @@ const userSchema = new Schema<IUser>({
       session: {
         type: Schema.ObjectId,
         ref: "ActivitySession",
+        required: true,
+      },
+    },
+  ],
+  essentialsHistory: [
+    {
+      date: { type: Date, required: true },
+      essentials: {
+        type: Schema.ObjectId,
+        ref: "Essential",
         required: true,
       },
     },

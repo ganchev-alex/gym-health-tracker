@@ -14,7 +14,7 @@ import { RootState } from "../../../features/store";
 import {
   addToNewRoutine,
   replaceExerciseFromRoutine,
-} from "../../../features/widgets-actions";
+} from "../../../features/workout-page-actions";
 
 const ExerciseResult: React.FC<{ exerciseData: Exercise }> = function (props) {
   const data = props.exerciseData;

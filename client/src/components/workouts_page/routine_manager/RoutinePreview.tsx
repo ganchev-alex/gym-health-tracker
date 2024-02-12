@@ -11,7 +11,7 @@ import TimerIcon from "../../../assets/svg_icon_components/TimerIcon";
 import {
   setNotificationState,
   setRoutinePreviewState,
-} from "../../../features/widgets-actions";
+} from "../../../features/workout-page-actions";
 import ExerciseSlot from "../../workout_tracker/workout_display/ExerciseSlot";
 import {
   setWorkoutCategory,

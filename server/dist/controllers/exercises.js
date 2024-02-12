@@ -5,7 +5,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.exercises = void 0;
 const exercise_1 = __importDefault(require("../models/exercise"));
-const exercises = async (req, res) => {
+const ResError_1 = __importDefault(require("../util/ResError"));
+const exercises = async (req, res, next) => {
     try {
         const exercises = await exercise_1.default.find();
         if (exercises) {
@@ -21,12 +22,10 @@ const exercises = async (req, res) => {
             });
         }
     }
-    catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message: "Something went wrong!",
-            error: error.message,
-        });
+    catch (err) {
+        const error = new ResError_1.default("\n- func. exercises (exercises router): Failed to fetch exercise data.\nError: " +
+            err);
+        return next(error);
     }
 };
 exports.exercises = exercises;

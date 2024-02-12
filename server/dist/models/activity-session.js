@@ -24,7 +24,7 @@ const activitySessionSchema = new mongoose_1.Schema({
         type: Number,
         required: true,
     },
-    burnedCalories: {
+    burntCalories: {
         type: Number,
         required: true,
     },

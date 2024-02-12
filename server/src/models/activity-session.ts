@@ -8,7 +8,7 @@ export interface IActivitySession {
   title: string;
   category: string;
   duration: number;
-  burnedCalories: number;
+  burntCalories: number;
 }
 
 const activitySessionSchema = new Schema<IActivitySession>({
@@ -33,7 +33,7 @@ const activitySessionSchema = new Schema<IActivitySession>({
     type: Number,
     required: true,
   },
-  burnedCalories: {
+  burntCalories: {
     type: Number,
     required: true,
   },

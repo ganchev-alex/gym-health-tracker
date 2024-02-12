@@ -33,12 +33,17 @@ interface loadedUserData {
     weight: number;
   };
   routines: Routine[];
+  preferences: {
+    selectedActivities: string[];
+    fitnessLevel: string;
+    frequencyStatus: string;
+    fitnessGoal: string;
+  };
 }
 
 const initialUser: {
   auth: Auth;
   sex: string;
-  selectedActivities: string[];
   loadedUserData: loadedUserData;
 } = {
   auth: {
@@ -46,8 +51,6 @@ const initialUser: {
     password: "",
   },
   sex: "male",
-  // selectedActivities in only viable in the routine display widget. So extract the logic there.
-  selectedActivities: [],
   loadedUserData: {
     auth: { email: "" },
     personalDetails: {
@@ -58,6 +61,12 @@ const initialUser: {
       weight: 0,
     },
     routines: [],
+    preferences: {
+      selectedActivities: [],
+      fitnessLevel: "",
+      frequencyStatus: "",
+      fitnessGoal: "",
+    },
   },
 };
 
@@ -92,18 +101,6 @@ const userManager = createSlice({
         };
       }
     },
-    // Extract and refactor this.
-    addActivite: (state, action: PayloadAction<{ label: string }>) => {
-      state.selectedActivities.push(action.payload.label);
-    },
-    removeActivite: (state, action: PayloadAction<{ label: string }>) => {
-      state.selectedActivities = state.selectedActivities.filter((label) => {
-        return action.payload.label !== label;
-      });
-    },
-    selectAllActivities: (state) => {
-      state.selectedActivities = [];
-    },
   },
 });
 
@@ -113,9 +110,5 @@ export const {
   setLoadedUserData,
   setRoutinesData,
   updateRoutinesData,
-  // Extract and refactor this.
-  addActivite,
-  removeActivite,
-  selectAllActivities,
 } = userManager.actions;
 export default userManager.reducer;

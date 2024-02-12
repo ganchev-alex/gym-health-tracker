@@ -1,20 +1,25 @@
-import CalendarLeftArrowIcon from "../../../assets/svg_icon_components/CalendarLeftArrowIcon";
-import CalendarRightArrowIcon from "../../../assets/svg_icon_components/CalendarRightArrowIcon";
-import NextArrowIcon from "../../../assets/svg_icon_components/NextArrowIcon";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./TimespanControlls.module.css";
+import { setDataStream } from "../../../features/health-essentials-actions";
+import { RootState } from "../../../features/store";
 
 const TimespanControlls = function () {
+  const dispatch = useDispatch();
+  const isToday = useSelector(
+    (state: RootState) => state.healthEssentials.isToday
+  );
   return (
     <div className={styles.controlls}>
-      <h4>
-        <span>Daily Tracker:</span> Today's Activities
-      </h4>
-      <span className={styles.yesterday}>
-        <button>
-          <CalendarLeftArrowIcon />
-        </button>
-        <p>Yesterday</p>
-      </span>
+      <h4>Daily Tracker</h4>
+      <button
+        className={styles.yesterday}
+        onClick={() => {
+          dispatch(setDataStream());
+        }}
+        style={isToday ? { color: "#E54C60" } : undefined}
+      >
+        {isToday ? "Today" : "Yesterday"}
+      </button>
     </div>
   );
 };

@@ -24,7 +24,7 @@ const sessionValidator = [
   check("title").notEmpty(),
   check("category").notEmpty(),
   check("duration").isInt(),
-  check("burnedCalories").isInt(),
+  check("burntCalories").isInt(),
 ];
 
 const routineValidatiors = [

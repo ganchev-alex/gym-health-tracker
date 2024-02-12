@@ -9,10 +9,11 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: space-between;
+  gap: 2em;
   box-sizing: border-box;
   padding: 1.5em;
   width: 100%;
+  max-width: 100%;
   height: 75%;
   background: linear-gradient(30deg, #feeff1, white);
   border: none;
@@ -29,7 +30,7 @@
   gap: 1em;
   width: 100%;
   height: 25%;
-  overflow-x: scroll;
+  overflow-x: auto;
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
@@ -42,7 +43,7 @@
   display: flex;
   align-items: center;
   gap: 1em;
-  width: fit-content;
+  box-sizing: border-box;
   background-color: white;
   border-radius: 20px;
   border: #e0e0e0 2px solid;
@@ -75,9 +76,17 @@
   flex-direction: column;
   gap: 1em;
   align-items: center;
+  padding: 0.5em;
   width: 100%;
-  height: 70%;
+  height: 100%;
   box-sizing: border-box;
+  overflow-y: scroll;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.workouts::-webkit-scrollbar {
+  display: none;
 }
 
 .summary {
@@ -135,4 +144,35 @@
 
 .summary h6 {
   font-size: 1.1rem;
+}
+
+.empty-data {
+  width: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 5em;
+}
+
+.empty-data h4 {
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.empty-data p {
+  font-size: 1rem;
+  color: #828282;
+  font-weight: 500;
+  text-align: center;
+}
+
+.empty-data button {
+  border-radius: 15px;
+  border: none;
+  font-size: 1rem;
+  padding: 0.5em 2em;
+  background-color: #e54c60;
+  font-weight: 600;
+  color: white;
 }

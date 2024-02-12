@@ -10,10 +10,9 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   appendHistory,
   setNotificationState,
-} from "../../../features/widgets-actions";
+} from "../../../features/workout-page-actions";
 import { RootState } from "../../../features/store";
-import { setLoadingState } from "../../../features/loading-actions";
-import HistoryPreviewModal from "../history_preview/HistoryPreview";
+import { Session } from "../history_preview/HistoryPreview";
 
 const Calendar = function () {
   const dispatch = useDispatch();
@@ -25,10 +24,6 @@ const Calendar = function () {
 
   const savedHistoryData = useSelector(
     (state: RootState) => state.widgetsManager.calendarWidget.monthData
-  );
-
-  const historyRecords = useSelector(
-    (state: RootState) => state.widgetsManager.calendarWidget.previewRecords
   );
 
   const trigger = useSelector(
@@ -66,13 +61,7 @@ const Calendar = function () {
               workout: string;
             }[];
             sessionHistory: {
-              session: {
-                date: string;
-                title: string;
-                category: string;
-                duration: number;
-                burnedCalories: number;
-              };
+              session: Session;
             }[];
           } = await response.json();
           dispatch(
@@ -91,7 +80,7 @@ const Calendar = function () {
                   title: record.session.title,
                   category: record.session.category,
                   duration: record.session.duration,
-                  burnedCalories: record.session.burnedCalories,
+                  burntCalories: record.session.burntCalories,
                 };
               }),
             })
@@ -144,8 +133,6 @@ const Calendar = function () {
 
   return (
     <React.Fragment>
-      {(historyRecords.workoutRecords.length > 0 ||
-        historyRecords.sessionRecords.length > 0) && <HistoryPreviewModal />}
       <div className={styles.widget}>
         <div className={styles.calendar}>
           <CalendarHeader

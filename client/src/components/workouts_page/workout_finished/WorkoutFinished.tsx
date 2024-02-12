@@ -11,7 +11,7 @@ import medal from "../../../assets/images/medal.png";
 import flame from "../../../assets/images/flame.png";
 import { changeFinishedWorkoutVisibility } from "../../../features/modals";
 import { restoreWorkoutInitialState } from "../../../features/workout";
-import { setSessionActivity } from "../../../features/widgets-actions";
+import { setSessionActivity } from "../../../features/workout-page-actions";
 
 const Backdrop = function () {
   const dispatch = useDispatch();
@@ -20,7 +20,6 @@ const Backdrop = function () {
       className={backdropStyle.backdrop}
       onClick={() => {
         dispatch(changeFinishedWorkoutVisibility(false));
-        dispatch(restoreWorkoutInitialState());
       }}
     />
   );
@@ -29,7 +28,7 @@ const Backdrop = function () {
 const WorkoutFinished = function () {
   const dispatch = useDispatch();
   const { records, number } = useSelector((state: RootState) => {
-    return state.workoutState.finishedWorkoutData;
+    return state.modalsManager.workoutFinishedModal.finishedWorkoutData;
   });
   const sessionActivity = useSelector((state: RootState) => {
     return state.widgetsManager.categoriesWidget.sessionActivity;

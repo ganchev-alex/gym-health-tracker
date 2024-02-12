@@ -17,12 +17,15 @@
 
 .left {
   flex: 0 0 35%;
+  width: 35%;
 }
 
 .middle {
-  flex: 0 0 20%;
+  flex: 0 0 25%;
+  width: 25%;
 }
 
 .rigth {
   flex: 0 0 35%;
+  width: 35%;
 }

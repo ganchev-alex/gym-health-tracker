@@ -4,7 +4,7 @@ import {
   addFilter,
   removeFilter,
   selectAll,
-} from "../../../features/widgets-actions";
+} from "../../../features/workout-page-actions";
 
 import styles from "./CategoriesFilter.module.css";
 
@@ -36,8 +36,6 @@ const CategoriesFilter: React.FC<{ categories: string[] }> = (props) => {
       dispatch(addFilter({ label }));
     }
   };
-
-  console.log(selectedFilters);
 
   return (
     <div className={styles.filter}>

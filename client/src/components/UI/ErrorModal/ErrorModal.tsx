@@ -7,7 +7,7 @@ import { RootState } from "../../../features/store";
 import { changeErrorModalVisibility } from "../../../features/modals";
 
 import styles from "./ErrorModal.module.css";
-import { restoreRoutinesWidgetInitialState } from "../../../features/widgets-actions";
+import { restoreRoutinesWidgetInitialState } from "../../../features/workout-page-actions";
 
 type ModalOverlayProperties = {
   responseCode: number;

@@ -2,8 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./CalendarBody.module.css";
 import { RootState } from "../../../features/store";
 import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
-import { showHistoryRecords } from "../../../features/widgets-actions";
-import { useState } from "react";
+import { showHistoryRecords } from "../../../features/workout-page-actions";
 
 const CalendarBody: React.FC<{
   currantDate: Date;
@@ -64,7 +63,7 @@ const CalendarBody: React.FC<{
                     dispatch(showHistoryRecords(possibleSessionRecord.date));
                   }
                 }
-              : () => {}
+              : undefined
           }
         >
           {i}

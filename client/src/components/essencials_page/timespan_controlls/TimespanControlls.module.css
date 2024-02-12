@@ -9,34 +9,21 @@
 .controlls h4 {
   font-size: 1.6rem;
   margin: 0;
-}
-
-.controlls h4 span {
   color: #e54c60;
 }
 
 .yesterday {
-  display: flex;
-  width: 24%;
-  justify-content: space-between;
-  align-items: center;
-}
-
-.yesterday button {
-  width: 30%;
-  aspect-ratio: 1/1;
-  border-radius: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #e54c60;
-  outline: none;
-  border: none;
-}
-
-.yesterday p {
-  font-size: 1.2rem;
+  width: fit-content;
+  height: fit-content;
+  background-color: transparent;
+  font-size: 1.1rem;
+  padding: 0;
+  margin: 0;
   font-weight: 500;
   color: #828282;
   margin: 0;
+  text-decoration: underline;
+  outline: none;
+  border: none;
+  cursor: pointer;
 }

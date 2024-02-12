@@ -10,7 +10,8 @@ const { validationResult } = require("express-validator");
 const { ObjectId } = require("mongodb");
 const user_1 = __importDefault(require("../models/user"));
 const authValidation_1 = require("../middleware/authValidation");
-const checkEmail = async (req, res) => {
+const ResError_1 = __importDefault(require("../util/ResError"));
+const checkEmail = async (req, res, next) => {
     try {
         const { email } = req.body;
         const validationErrors = validationResult(req);
@@ -33,16 +34,14 @@ const checkEmail = async (req, res) => {
             });
         }
     }
-    catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message: "Internal server error! Something went wrong.",
-            error,
-        });
+    catch (err) {
+        const error = new ResError_1.default("\n- func. checkEmail (auth router): Couln't compare emails.\nError: " +
+            err);
+        return next(error);
     }
 };
 exports.checkEmail = checkEmail;
-const signIn = async (req, res) => {
+const signIn = async (req, res, next) => {
     try {
         const validationErrors = validationResult(req);
         if (!validationErrors.isEmpty()) {
@@ -91,15 +90,14 @@ const signIn = async (req, res) => {
             userId: result._id.toString(),
         });
     }
-    catch (error) {
-        return res.status(500).json({
-            message: "Internal Server Error. Something went wrong! ",
-            error: error.message,
-        });
+    catch (err) {
+        const error = new ResError_1.default("\n- func. signIn (auth router): Couldn't sign in the user.\nError: " +
+            err);
+        return next(error);
     }
 };
 exports.signIn = signIn;
-const setPreferences = async (req, res) => {
+const setPreferences = async (req, res, next) => {
     const userId = req.userId;
     if (!userId) {
         return res.status(500).json({
@@ -124,9 +122,8 @@ const setPreferences = async (req, res) => {
             });
         }
         else if (result.matchedCount === 0) {
-            return res.status(404).json({
-                message: `No such user was found! Provided id: ${userId}`,
-            });
+            const error = new ResError_1.default("\n- func. setPreferences (auth router): User was not found.", 404);
+            return next(error);
         }
         else {
             return res.status(304).json({
@@ -134,15 +131,13 @@ const setPreferences = async (req, res) => {
             });
         }
     }
-    catch (error) {
-        console.log(error);
-        return res.status(500).json({
-            message: "Something went wrong!",
-            error: error.message,
-        });
+    catch (err) {
+        const error = new ResError_1.default("\n- func. setPreference (auth router): Couldn't set user's preferences.\nError: " +
+            err);
+        return next(error);
     }
 };
-const login = async (req, res) => {
+const login = async (req, res, next) => {
     try {
         const validationErrors = validationResult(req);
         if (!validationErrors.isEmpty()) {
@@ -172,10 +167,9 @@ const login = async (req, res) => {
             userData: userMatch,
         });
     }
-    catch (error) {
-        return res
-            .status(error.statusCode || 500)
-            .json({ message: "A server side error has occured" });
+    catch (err) {
+        const error = new ResError_1.default("\n- func. login (auth router): Couldn't log in the user.\nError: " + err);
+        return next(error);
     }
 };
 const authController = {

@@ -43,7 +43,7 @@ interface CalendarWidget {
       title: string;
       category: string;
       duration: number;
-      burnedCalories: number;
+      burntCalories: number;
     }[];
   }[];
   previewRecords: {
@@ -53,7 +53,7 @@ interface CalendarWidget {
       title: string;
       category: string;
       duration: number;
-      burnedCalories: number;
+      burntCalories: number;
     }[];
   };
 }
@@ -251,11 +251,36 @@ const workoutWidgetManager = createSlice({
           title: string;
           category: string;
           duration: number;
-          burnedCalories: number;
+          burntCalories: number;
         }[];
       }>
     ) => {
       state.calendarWidget.monthData.push({ ...action.payload });
+    },
+    appendNewHistory: (
+      state,
+      action: PayloadAction<{
+        workoutRecords?: { workoutId: string; date: string };
+        sessionRecords?: {
+          date: string;
+          title: string;
+          category: string;
+          duration: number;
+          burntCalories: number;
+        };
+      }>
+    ) => {
+      const thisMonth = state.calendarWidget.monthData.find(
+        (record) =>
+          record.month === new Date().getMonth() &&
+          record.year === new Date().getFullYear()
+      );
+      if (thisMonth) {
+        if (action.payload.workoutRecords)
+          thisMonth.workoutRecords.push(action.payload.workoutRecords);
+        if (action.payload.sessionRecords)
+          thisMonth.sessionRecords.push(action.payload.sessionRecords);
+      }
     },
     showHistoryRecords: (state, action: PayloadAction<string>) => {
       const referenceDate = new Date(action.payload);
@@ -318,6 +343,7 @@ export const {
   setEditFormData,
   setRoutinePreviewState,
   appendHistory,
+  appendNewHistory,
   showHistoryRecords,
   resetHistoryRecords,
   setSessionActivity,

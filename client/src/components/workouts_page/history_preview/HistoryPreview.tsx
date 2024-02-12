@@ -8,7 +8,10 @@ import ReactDOM from "react-dom";
 import backdropStyles from "../../workout_tracker/add_exercise/AddExerciseForm.module.css";
 import styles from "./HistoryPreview.module.css";
 
-import { resetHistoryRecords } from "../../../features/widgets-actions";
+import {
+  resetHistoryRecords,
+  setNotificationState,
+} from "../../../features/workout-page-actions";
 import TimerIcon from "../../../assets/svg_icon_components/TimerIcon";
 import ExerciseSlot from "../../workout_tracker/workout_display/ExerciseSlot";
 import { setLoadingState } from "../../../features/loading-actions";
@@ -61,6 +64,14 @@ export interface Workout {
   duration: number;
   volume: number;
   sets: number;
+}
+
+export interface Session {
+  date: string;
+  title: string;
+  category: string;
+  duration: number;
+  burntCalories: number;
 }
 
 const Backdrop = function () {
@@ -141,7 +152,15 @@ const HistoryPreview = function () {
           // Please try again.
         }
       } catch (error) {
-        console.log(error);
+        dispatch(
+          setNotificationState({
+            message: "😨 Something went wrong!",
+            visibility: true,
+          })
+        );
+        setTimeout(() => {
+          dispatch(setNotificationState({ visibility: false }));
+        }, 4000);
       } finally {
         dispatch(setLoadingState(false));
       }
@@ -168,8 +187,6 @@ const HistoryPreview = function () {
 
       newScrollLeft = Math.max(0, Math.min(newScrollLeft, maxScrollLeft));
       smoothScroll(container, scrollLeft, newScrollLeft);
-
-      event.preventDefault();
     }
   };
 
@@ -280,11 +297,10 @@ const HistoryPreview = function () {
                   <RunningIcon />
                 ) : session.category === "Activity Session: BIKE" ? (
                   <ByciclingIcon />
-                ) : session.category ===
-                  "Activity Session: Activity Session: MEDITATE" ? (
+                ) : session.category === "Activity Session: MEDITATE" ? (
                   <MeditationIcon />
                 ) : session.category === "Activity Session: SWIM" ? (
-                  (activityPreview = <SwimmingIcon />)
+                  <SwimmingIcon />
                 ) : session.category === "Activity Session: WALK" ? (
                   <WalkingIcon />
                 ) : null}

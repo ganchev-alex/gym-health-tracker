@@ -1,10 +1,12 @@
 import express = require("express");
 
 import Exercise from "../models/exercise";
+import ResError from "../util/ResError";
 
 export const exercises = async (
   req: express.Request,
-  res: express.Response
+  res: express.Response,
+  next: express.NextFunction
 ) => {
   try {
     const exercises = await Exercise.find();
@@ -19,12 +21,12 @@ export const exercises = async (
         exercises: exercises,
       });
     }
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Something went wrong!",
-      error: error.message,
-    });
+  } catch (err) {
+    const error = new ResError(
+      "\n- func. exercises (exercises router): Failed to fetch exercise data.\nError: " +
+        err
+    );
+    return next(error);
   }
 };
 

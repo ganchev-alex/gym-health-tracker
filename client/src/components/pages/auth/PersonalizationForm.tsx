@@ -3,11 +3,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { RootState } from "../../../features/store";
-import {
-  addActivite,
-  removeActivite,
-  selectAllActivities,
-} from "../../../features/user-actions";
 import { setLoadingState } from "../../../features/loading-actions";
 import {
   changeErrorModalVisibility,
@@ -18,8 +13,6 @@ import { mainAPIPath } from "../../../App";
 
 import enheritedStyles from "./SignInForm.module.css";
 import styles from "./PersonalizationForm.module.css";
-
-// TODO: for better readability seperate the options in an array list and load them with a map function.
 
 const activitesLabels = [
   "Gym & Weightlifting",
@@ -51,6 +44,7 @@ const frequencyOptions = [
 
 const goalsOptions = [
   "Muscle & Weigth Gain",
+  "Muscle & Weigth Lost",
   "Tone and Define Muscles",
   "Improved Cardiovascular Health",
   "Increased Flexibility",
@@ -69,9 +63,7 @@ const PersonalDetails: React.FC = function () {
   const [frequencyStatus, setFrequencyStatus] = useState("");
   const [fitnessGoal, setFitnessGoal] = useState("");
 
-  const selectedActivities = useSelector((state: RootState) => {
-    return state.userActions.selectedActivities;
-  });
+  const [selectedActivities, setSelectedActivities] = useState<string[]>([]);
   let isAllActivites = !(selectedActivities.length !== 0);
 
   const themeMode = useSelector((state: RootState) => {
@@ -93,9 +85,15 @@ const PersonalDetails: React.FC = function () {
 
   const onSelectActivity = function (label: string) {
     if (selectedActivities.includes(label)) {
-      dispatch(removeActivite({ label }));
+      setSelectedActivities((previousState) => {
+        return previousState.filter((value) => {
+          return label !== value;
+        });
+      });
     } else {
-      dispatch(addActivite({ label }));
+      setSelectedActivities((previosState) => {
+        return [...previosState, label];
+      });
     }
   };
 
@@ -116,7 +114,7 @@ const PersonalDetails: React.FC = function () {
   };
 
   const onSelectAll = function () {
-    dispatch(selectAllActivities());
+    setSelectedActivities([]);
   };
 
   const submissionHandler = function (event: React.FormEvent<HTMLFormElement>) {

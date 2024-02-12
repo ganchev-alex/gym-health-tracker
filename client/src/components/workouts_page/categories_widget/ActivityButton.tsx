@@ -2,7 +2,7 @@ import React from "react";
 
 import styles from "./ActivityButton.module.css";
 import { useDispatch } from "react-redux";
-import { setSessionActivity } from "../../../features/widgets-actions";
+import { setSessionActivity } from "../../../features/workout-page-actions";
 import { setWorkoutState, setWorkoutTitle } from "../../../features/workout";
 
 const ActivityButton: React.FC<{ icon: React.ReactNode; mode: string }> = (

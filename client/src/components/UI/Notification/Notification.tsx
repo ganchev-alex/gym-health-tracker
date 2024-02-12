@@ -4,7 +4,7 @@ import styles from "./Notification.module.css";
 import { createPortal } from "react-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../features/store";
-import { setNotificationState } from "../../../features/widgets-actions";
+import { setNotificationState } from "../../../features/workout-page-actions";
 
 const Notification: React.FC<{ message: string }> = function (props) {
   const dispatch = useDispatch();

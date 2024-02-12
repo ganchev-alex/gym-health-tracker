@@ -20,7 +20,7 @@ import {
   restoreRoutinesWidgetInitialState,
   setNotificationState,
   setRoutineOptionsState,
-} from "../../../features/widgets-actions";
+} from "../../../features/workout-page-actions";
 import ReplaceIcon from "../../../assets/svg_icon_components/ReplaceIcon";
 import RemoveIcon from "../../../assets/svg_icon_components/RemoveIcon";
 import useInput from "../../../hooks/useInput";

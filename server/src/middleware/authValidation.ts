@@ -1,5 +1,6 @@
 import jwt = require("jsonwebtoken");
 import express = require("express");
+import ResError from "../util/ResError";
 
 const TOKEN_SECRET_KEY = "c!q1^g5Zt%y@r*3B";
 
@@ -10,10 +11,11 @@ const authValidation = (
 ) => {
   const authHeader = req.get("Authorization");
   if (!authHeader) {
-    console.log("Not authrozied: 401");
-    return res.status(401).json({
-      message: "Not Authorized!",
-    });
+    const error = new ResError(
+      "\n- func. authValidaton: No authorization header was detected.\n User Not Authorized!",
+      401
+    );
+    return next(error);
   }
 
   const token = authHeader.split(" ")[1];
@@ -21,13 +23,12 @@ const authValidation = (
 
   try {
     decodedToken = jwt.verify(token, TOKEN_SECRET_KEY);
-    console.log(decodedToken);
-  } catch (error) {
-    console.log(error);
-    return res.status(500).json({
-      message: "Failed authentication!",
-      error: error.message,
-    });
+  } catch (err) {
+    const error = new ResError(
+      "\n- func. decodingToken (authValidation): Token was not decoded properly.\nError: " +
+        err
+    );
+    return next(error);
   }
 
   if (!decodedToken) {

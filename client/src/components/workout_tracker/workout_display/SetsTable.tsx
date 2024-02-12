@@ -12,7 +12,7 @@ import {
 import {
   modifyStaticSetCount,
   removeFromNewRoutine,
-} from "../../../features/widgets-actions";
+} from "../../../features/workout-page-actions";
 
 const SetTable: React.FC<{
   _id: string;

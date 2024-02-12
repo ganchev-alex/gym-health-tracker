@@ -22,7 +22,7 @@ const userSchema = new mongoose_1.Schema({
         frequencyStatus: String,
         fitnessGoal: String,
     },
-    routines: [{ type: mongoose_1.Schema.ObjectId, ref: "Routine" }],
+    routines: [{ type: mongoose_1.Schema.ObjectId, ref: "Routine", required: true }],
     workoutHistory: [
         {
             date: { type: Date, required: true },
@@ -45,6 +45,16 @@ const userSchema = new mongoose_1.Schema({
             session: {
                 type: mongoose_1.Schema.ObjectId,
                 ref: "ActivitySession",
+                required: true,
+            },
+        },
+    ],
+    essentialsHistory: [
+        {
+            date: { type: Date, required: true },
+            essentials: {
+                type: mongoose_1.Schema.ObjectId,
+                ref: "Essential",
                 required: true,
             },
         },

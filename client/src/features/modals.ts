@@ -6,6 +6,10 @@ interface ChoiceModal {
 
 interface WorkoutFinishedModal {
   visibility: boolean;
+  finishedWorkoutData: {
+    records: { exercise: string; kg: number }[];
+    number: number;
+  };
 }
 
 interface ErrorModal {
@@ -27,6 +31,10 @@ const initialState: {
   },
   workoutFinishedModal: {
     visibility: false,
+    finishedWorkoutData: {
+      records: [],
+      number: 0,
+    },
   },
   errorModal: {
     visibility: false,
@@ -57,6 +65,15 @@ const modalsState = createSlice({
     ) => {
       state.workoutFinishedModal.visibility = action.payload;
     },
+    finishedWorkoutData: (
+      state,
+      action: PayloadAction<{
+        records: { exercise: string; kg: number }[];
+        number: number;
+      }>
+    ) => {
+      state.workoutFinishedModal.finishedWorkoutData = { ...action.payload };
+    },
   },
 });
 
@@ -65,5 +82,6 @@ export const {
   setErrorModalState,
   changeChoiceModalVisibility,
   changeFinishedWorkoutVisibility,
+  finishedWorkoutData,
 } = modalsState.actions;
 export default modalsState.reducer;

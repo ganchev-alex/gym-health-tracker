@@ -5,7 +5,7 @@ import { Backdrop } from "../ErrorModal/ErrorModal";
 import styles from "./ChoiceModal.module.css";
 import { useDispatch } from "react-redux";
 import { changeChoiceModalVisibility } from "../../../features/modals";
-import { setRoutineOptionsState } from "../../../features/widgets-actions";
+import { setRoutineOptionsState } from "../../../features/workout-page-actions";
 
 const ModalOverlay: React.FC<{
   properties: {

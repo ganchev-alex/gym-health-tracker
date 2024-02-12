@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 
 import { RootState } from "../../../features/store";
-import { setFormVisibility } from "../../../features/widgets-actions";
+import { setFormVisibility } from "../../../features/workout-page-actions";
 import { setWorkoutState, setWorkoutTitle } from "../../../features/workout";
 
 import styles from "./WorkoutsButton.module.css";

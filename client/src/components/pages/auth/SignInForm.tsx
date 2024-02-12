@@ -82,11 +82,9 @@ const SignInForm: React.FC = function () {
         const data = await response.json();
 
         if (response.status === 200) {
-          console.log(data);
           dispatch(setAuth(auth));
           navigate("/auth/profile");
         } else if (response.status === 409) {
-          console.log(data);
           setUsedEmail(data.email);
           setErrorCode(response.status);
           resetPassword();
@@ -130,6 +128,18 @@ const SignInForm: React.FC = function () {
     checkEmail();
   };
 
+  function normalizeEmail(email: string) {
+    email = email.toLowerCase();
+
+    if (email.endsWith("@gmail.com")) {
+      const parts = email.split("@");
+      parts[0] = parts[0].replace(/\./g, "");
+      email = parts.join("@");
+    }
+
+    return email;
+  }
+
   const preventEnter = function (event: React.KeyboardEvent) {
     if (event.keyCode == 13) {
       event.preventDefault();
@@ -166,7 +176,7 @@ const SignInForm: React.FC = function () {
             Please provide a valid email!
           </p>
         )}
-        {errorCode === 409 && usedEmail === email && (
+        {errorCode === 409 && usedEmail === normalizeEmail(email) && (
           <p className={styles["error-message"]}>
             This email is already in use. Please provide a different one!
           </p>

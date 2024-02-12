@@ -20,7 +20,7 @@ import NextArrowIcon from "../../../assets/svg_icon_components/NextArrowIcon";
 import {
   addToNewRoutine,
   replaceExerciseFromRoutine,
-} from "../../../features/widgets-actions";
+} from "../../../features/workout-page-actions";
 
 const ExersiceSummary = function () {
   const dispatch = useDispatch();

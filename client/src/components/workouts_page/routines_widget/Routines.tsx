@@ -14,7 +14,7 @@ import {
   setFormVisibility,
   setNotificationState,
   setRoutineOptionsState,
-} from "../../../features/widgets-actions";
+} from "../../../features/workout-page-actions";
 import RemoveIcon from "../../../assets/svg_icon_components/RemoveIcon";
 import EditIcon from "../../../assets/svg_icon_components/EditIcon";
 import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
@@ -74,7 +74,6 @@ const Routines: React.FC = () => {
   };
 
   const deleteRoutine = async function () {
-    console.log(optionsState.routineId);
     const response = await fetch(`${mainAPIPath}/app/delete-routine`, {
       method: "DELETE",
       headers: {

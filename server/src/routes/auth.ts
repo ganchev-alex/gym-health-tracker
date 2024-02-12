@@ -7,7 +7,10 @@ import authValidation from "../middleware/authValidation";
 const router = express.Router();
 
 const signInValidators = [
-  check("email").isEmail().withMessage("Invalid email!").normalizeEmail(),
+  check("email")
+    .isEmail()
+    .withMessage("Invalid email!")
+    .normalizeEmail({ gmail_remove_dots: false }),
   check("password")
     .isLength({ min: 8, max: 20 })
     .withMessage("Invalid password.")

@@ -8,7 +8,8 @@ import {
   setNotificationState,
   setRoutineOptionsState,
   setRoutinePreviewState,
-} from "../../../features/widgets-actions";
+  showHistoryRecords,
+} from "../../../features/workout-page-actions";
 import { RootState } from "../../../features/store";
 
 const WorkoutCard: React.FC<{
@@ -18,6 +19,7 @@ const WorkoutCard: React.FC<{
   duration: number;
   category: string;
   previewMode?: boolean;
+  volume?: number;
 }> = (props) => {
   const dispatch = useDispatch();
 
@@ -61,10 +63,25 @@ const WorkoutCard: React.FC<{
     }
   };
 
+  const isToday = useSelector(
+    (state: RootState) => state.healthEssentials.isToday
+  );
+
+  const openHistory = function () {
+    const today = new Date();
+    if (isToday) {
+      dispatch(showHistoryRecords(today.toISOString()));
+    } else {
+      const yesterday = new Date(today);
+      yesterday.setDate(today.getDate() - 1);
+      dispatch(showHistoryRecords(yesterday.toISOString()));
+    }
+  };
+
   return (
     <div
       className={styles.card}
-      onClick={props.previewMode ? () => {} : openPreview}
+      onClick={props.previewMode ? openHistory : openPreview}
     >
       <div className={styles.header}>
         <input type="hidden" value={props._id} />
@@ -84,6 +101,7 @@ const WorkoutCard: React.FC<{
         duration={props.duration}
         category={props.category}
         previewMode={props.previewMode}
+        volume={props.volume}
       />
     </div>
   );

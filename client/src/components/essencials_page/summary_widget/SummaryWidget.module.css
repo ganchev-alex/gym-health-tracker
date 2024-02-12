@@ -2,6 +2,13 @@
   width: 100%;
   height: 100%;
   position: relative;
+  margin-top: 1em;
+  padding: 1em;
+  box-sizing: border-box;
+  border: #50aa7f solid 2px;
+  background: linear-gradient(120deg, rgb(241, 252, 246), white);
+  border-radius: 15px;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
 }
 
 .active,
@@ -39,7 +46,11 @@
   display: flex;
   justify-content: space-evenly;
   font-size: 1rem;
+  margin-bottom: 0.7em;
   font-weight: 600;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
 
 .legend div {

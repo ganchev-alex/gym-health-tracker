@@ -8,6 +8,9 @@ import User from "../models/user";
 import Routine from "../models/routine";
 import Workout, { IWorkout } from "../models/workout";
 import ActivitySession, { IActivitySession } from "../models/activity-session";
+import Essential from "../models/essentials";
+
+import ResError from "../util/ResError";
 
 interface newRoutineRequest {
   routineData: {
@@ -43,7 +46,11 @@ interface userHistory {
   year?: string;
 }
 
-const userData = async (req: express.Request, res: express.Response) => {
+const userData = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
   const userId = (req as any).userId;
 
   try {
@@ -66,6 +73,7 @@ const userData = async (req: express.Request, res: express.Response) => {
           weight: user.personalDetails.weight,
         },
         routines: user.routines,
+        preferences: user.preferences,
       };
 
       return res.status(200).json({
@@ -73,17 +81,26 @@ const userData = async (req: express.Request, res: express.Response) => {
         appData,
       });
     } else {
-      return res.status(404).json({
-        message: `User was not found!`,
-      });
+      const error = new ResError(
+        "\n- func. userData (application router): User was not found.",
+        404
+      );
+      return next(error);
     }
-  } catch (error) {
-    console.log(error);
-    return res.status(500);
+  } catch (err) {
+    const error = new ResError(
+      "\n- func. userData (application router): Failed to fetch user data.\nError: " +
+        err
+    );
+    return next(error);
   }
 };
 
-const getRoutines = async (req: express.Request, res: express.Response) => {
+const getRoutines = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
   const userId = new mongoodb.ObjectId((req as any).userId);
 
   try {
@@ -101,21 +118,33 @@ const getRoutines = async (req: express.Request, res: express.Response) => {
         routines: user.routines,
       });
     } else {
-      return res.status(404).json({ message: "User was not found." });
+      const error = new ResError(
+        "\n- func. getRoutines (application router): User was not found.",
+        404
+      );
+      return next(error);
     }
-  } catch (error) {
-    return res.status(500).json({ message: "Internal server error!", error });
+  } catch (err) {
+    const error = new ResError(
+      "\n- func. getRoutines (application router): Failed to retrieve user's routines data.\nError: " +
+        err
+    );
+    return next(error);
   }
 };
 
 const newRoutine = async (
   req: express.Request<{}, {}, newRoutineRequest>,
-  res: express.Response
+  res: express.Response,
+  next: express.NextFunction
 ) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors);
-    return res.status(422).json({ message: "Compromised Validation!" });
+    const error = new ResError(
+      "\n- func. newRoutine (application router): Compromized validation. The user haven't followed the validation instructions on the front end.",
+      422
+    );
+    return next(error);
   }
 
   const routineData = {
@@ -149,9 +178,11 @@ const newRoutine = async (
   try {
     const user = await User.findOne({ _id: routineData.userId });
     if (!user) {
-      return res.status(404).json({
-        message: "User with this id does not excist.",
-      });
+      const error = new ResError(
+        "\n- func. newRoutine (application router): User was not found.",
+        404
+      );
+      return next(error);
     }
 
     const newRoutine = await new Routine(routineData).save();
@@ -166,15 +197,19 @@ const newRoutine = async (
     await user.save();
 
     return res.status(201).json({ message: "New routine saved successfully." });
-  } catch (error) {
-    console.log("Error creating the new routine", error);
-    return res.status(500).json({ message: "Internal Server error." });
+  } catch (err) {
+    const error = new ResError(
+      "\n- func. newRoutine (application router): Couldn't create a new routine.\nError: " +
+        err
+    );
+    return next(error);
   }
 };
 
 const updateRoutine = async (
   req: express.Request<{}, {}, updatedRoutine>,
-  res: express.Response
+  res: express.Response,
+  next: express.NextFunction
 ) => {
   const routineId = new mongoodb.ObjectId(req.body.routineId);
   const userId = (req as any).userId;
@@ -218,15 +253,25 @@ const updateRoutine = async (
       });
     }
 
-    return res
-      .status(404)
-      .json({ message: "No such routine with this ID was found." });
-  } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error.", error });
+    const error = new ResError(
+      "\n- func. updateRoutine (application router): Routine was not found.",
+      404
+    );
+    return next(error);
+  } catch (err) {
+    const error = new ResError(
+      "\n- func. updateRoutine (application router): Coudln't update the existing routine.\nError: " +
+        err
+    );
+    return next(error);
   }
 };
 
-const deleteRoutine = async (req: express.Request, res: express.Response) => {
+const deleteRoutine = async (
+  req: express.Request,
+  res: express.Response,
+  next: express.NextFunction
+) => {
   const routineId = new mongoodb.ObjectId(req.body.routineId);
   const userId = (req as any).userId;
 
@@ -245,36 +290,52 @@ const deleteRoutine = async (req: express.Request, res: express.Response) => {
           .status(200)
           .json({ message: "Routine was deleted succesfully." });
       } else {
-        return res
-          .status(404)
-          .json({ message: "User with the provided ID was not found." });
+        const error = new ResError(
+          "\n- func. deleteRoutine (application router): User was not found.",
+          404
+        );
+        return next(error);
       }
     } else {
-      return res
-        .status(404)
-        .json({ mesage: "Routine with this ID was not found." });
+      const error = new ResError(
+        "\n- func. deleteRoutine (application router): Routine was not found.",
+        404
+      );
+      return next(error);
     }
-  } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error", error });
+  } catch (err) {
+    const error = new ResError(
+      "\n- func. deleteRoutine (application router): Couldn't delete the existing routine.\nError" +
+        err
+    );
+    return next(error);
   }
 };
 
 const saveWorkout = async (
   req: express.Request<{}, {}, IWorkout>,
-  res: express.Response
+  res: express.Response,
+  next: express.NextFunction
 ) => {
   const userId = (req as any).userId;
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
-    console.log(errors);
-    return res.status(422).json({ message: "Compromised Validation!" });
+    const error = new ResError(
+      "\n- func. saveWorkout (application router): Compromized validation. The user haven't followed the validation instructions on the front end.",
+      422
+    );
+    return next(error);
   }
 
   try {
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: "User was not found." });
+      const error = new ResError(
+        "\n- func. saveWorkout (application router): User was not found.",
+        404
+      );
+      return next(error);
     }
 
     const newRecords: { exercise: string; kg: number }[] = [];
@@ -334,28 +395,60 @@ const saveWorkout = async (
     }
 
     user.workoutHistory.push({ date: workoutData.date, workout: workout._id });
+    const essentialsRecord = user.essentialsHistory.find((essentials) => {
+      return (
+        essentials.date.getFullYear() === workout.date.getFullYear() &&
+        essentials.date.getMonth() === workout.date.getMonth() &&
+        essentials.date.getDate() === workout.date.getDate()
+      );
+    });
+    if (essentialsRecord) {
+      await Essential.findByIdAndUpdate(essentialsRecord.essentials, {
+        $push: {
+          workouts: workout._id,
+        },
+      });
+    } else {
+      const newEssentials = await new Essential({
+        date: workout.date,
+        userId: user._id,
+        workouts: [workout._id],
+      });
+
+      await newEssentials.save();
+    }
     await user.save();
 
     return res.status(201).json({
       message: "Workout saved succesfully!",
       workoutNumber: user.workoutHistory.length,
       newRecords,
+      workoutData: workout,
     });
-  } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error", error });
+  } catch (err) {
+    const error = new ResError(
+      "\n- func. saveWorkout (application router): Failed saving the workout to the user's data.\nError: " +
+        err
+    );
+    return next(error);
   }
 };
 
 const saveActivitySession = async (
   req: express.Request<{}, {}, IActivitySession>,
-  res: express.Response
+  res: express.Response,
+  next: express.NextFunction
 ) => {
   const userId = (req as any).userId;
 
   try {
     const user = await User.findById(userId);
     if (!user) {
-      return res.status(404).json({ message: "User not found." });
+      const error = new ResError(
+        "\n- func. saveActivitySession (application router): User was not found.",
+        404
+      );
+      return next(error);
     }
 
     const sessionData: IActivitySession = {
@@ -364,7 +457,7 @@ const saveActivitySession = async (
       title: req.body.title,
       category: req.body.category,
       duration: req.body.duration,
-      burnedCalories: req.body.burnedCalories,
+      burntCalories: req.body.burntCalories,
     };
 
     const session = await new ActivitySession(sessionData).save();
@@ -378,20 +471,48 @@ const saveActivitySession = async (
       date: session.date,
       session: session._id,
     });
+    const essentialsRecord = user.essentialsHistory.find((essentials) => {
+      return (
+        essentials.date.getFullYear() === session.date.getFullYear() &&
+        essentials.date.getMonth() === session.date.getMonth() &&
+        essentials.date.getDate() === session.date.getDate()
+      );
+    });
+    if (essentialsRecord) {
+      await Essential.findByIdAndUpdate(essentialsRecord.essentials, {
+        $push: {
+          activities: session._id,
+        },
+      });
+    } else {
+      const newEssentials = await new Essential({
+        date: session.date,
+        userId: user._id,
+        activities: [session._id],
+      });
+
+      await newEssentials.save();
+    }
 
     await user.save();
     return res.status(201).json({
       message: "Session saved succesfully!",
       sessionNumber: user.activitySessionHistory.length,
+      sessionData: session,
     });
-  } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error", error });
+  } catch (err) {
+    const error = new ResError(
+      "\n- func. saveActivitySession (application router): Failed to save the activity session to the user's data.\nError: " +
+        err
+    );
+    return next(error);
   }
 };
 
 const getUserHistory = async (
   req: express.Request<{}, {}, {}, userHistory>,
-  res: express.Response
+  res: express.Response,
+  next: express.NextFunction
 ) => {
   const userId = (req as any).userId;
   const { month, year } = req.query;
@@ -403,7 +524,11 @@ const getUserHistory = async (
       "activitySessionHistory.session"
     );
     if (!user) {
-      return res.status(404).json({ message: "User was not found!" });
+      const error = new ResError(
+        "\n- func. getUserHistory (application router): User was not found.",
+        404
+      );
+      return next(error);
     }
 
     const currantMonthWorkoutHistory = user.workoutHistory.filter((workout) => {
@@ -427,15 +552,19 @@ const getUserHistory = async (
       workoutHistory: currantMonthWorkoutHistory,
       sessionHistory: currantMonthSessionHistory,
     });
-  } catch (error) {
-    console.log("Get User's History:", error);
-    return res.status(500).json({ message: "Internal server error", error });
+  } catch (err) {
+    const error = new ResError(
+      "\n- func. getUserHistory (application router): Couldn't retrieve user's history.\nError: " +
+        err
+    );
+    return next(error);
   }
 };
 
 const getHistoryRecords = async (
   req: express.Request<{}, {}, {}, { workoutId?: string }>,
-  res: express.Response
+  res: express.Response,
+  next: express.NextFunction
 ) => {
   const userId = (req as any).userId;
   try {
@@ -452,9 +581,17 @@ const getHistoryRecords = async (
         .json({ message: "Workout data retrieved succesfully", workout });
     }
 
-    return res.status(404).json({ message: "Workout not found." });
-  } catch (error) {
-    return res.status(500).json({ message: "Internal Server Error", error });
+    const error = new ResError(
+      "\n- func. getHistoryRecords (application router): Workout was not found.",
+      404
+    );
+    return next(error);
+  } catch (err) {
+    const error = new ResError(
+      "\n- func. getHistoryRecords (application router): Failed to fetch user's history records.\nError: " +
+        err
+    );
+    return next(error);
   }
 };
 

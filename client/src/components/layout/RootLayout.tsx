@@ -22,6 +22,11 @@ import {
 } from "../../features/workout";
 import NotificationBar from "../UI/Notification/Notification";
 import ErrorModal from "../UI/ErrorModal/ErrorModal";
+import HistoryPreviewModal from "../workouts_page/history_preview/HistoryPreview";
+import {
+  Essentials,
+  setLoadedEssentialsData,
+} from "../../features/health-essentials-actions";
 
 function RootLayout() {
   const navigate = useNavigate();
@@ -31,27 +36,33 @@ function RootLayout() {
   const loadedUserData = useSelector(
     (state: RootState) => state.userActions.loadedUserData
   );
+  const {
+    today: todayEssData,
+    yesterday: yesterdayEssData,
+    updated,
+  } = useSelector((state: RootState) => state.healthEssentials);
 
-  const { errorModal } = useSelector((state: RootState) => {
-    return state.modalsManager;
+  const { workoutActivity, workoutVisibility } = useSelector(
+    (state: RootState) => state.workoutState
+  );
+  const historyRecords = useSelector(
+    (state: RootState) => state.widgetsManager.calendarWidget.previewRecords
+  );
+  const { timer, active } = useSelector((state: RootState) => {
+    return state.workoutState.restTimer;
   });
 
   const toggleState = useSelector((state: RootState) => {
     return state.navigation.toggleState;
   });
-
-  const { workoutActivity, workoutVisibility } = useSelector(
-    (state: RootState) => state.workoutState
-  );
-
   const notificationVisibility = useSelector((state: RootState) => {
     return state.widgetsManager.notificationManager.visibility;
   });
-
-  const { timer, active } = useSelector((state: RootState) => {
-    return state.workoutState.restTimer;
+  const { errorModal } = useSelector((state: RootState) => {
+    return state.modalsManager;
   });
 
+  // UseEffect: User Data Manager
   useEffect(() => {
     switch (fetchedData) {
       case "TOKEN_NOT_FOUND":
@@ -78,6 +89,7 @@ function RootLayout() {
     }
   }, [dispatch]);
 
+  // UseEffect: Timers & Duration Management
   useEffect(() => {
     let durationInterval: any;
     let restTimerInterval: any;
@@ -106,11 +118,60 @@ function RootLayout() {
     };
   }, [dispatch, active, timer, workoutActivity]);
 
+  useEffect(() => {
+    const updateEssentialsData = async function () {
+      try {
+        const response = await fetch(`${mainAPIPath}/ess/update`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${getToken()}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            todayEss: { ...todayEssData },
+            yesterdayEss: { ...yesterdayEssData },
+          }),
+        });
+
+        if (response.ok) {
+          const data: {
+            essentialsToday: Essentials;
+            essentialsYesterday: Essentials;
+          } = await response.json();
+
+          dispatch(
+            setLoadedEssentialsData({
+              todayEss: data.essentialsToday,
+              yesterdayEss: data.essentialsYesterday,
+            })
+          );
+          console.log("Content updated!");
+        } else {
+          console.log("NOT UPDATED!");
+        }
+      } catch {
+        console.log("SOMETHING WENT WRONG!");
+      }
+    };
+
+    const automaticUpdater = setTimeout(() => {
+      if (!updated) {
+        updateEssentialsData();
+      }
+    }, 15000);
+
+    return () => {
+      clearTimeout(automaticUpdater);
+    };
+  }, [todayEssData, yesterdayEssData, updated]);
+
   return (
     <div className={styles["display-wrapper"]}>
       <NavigationBar />
       {notificationVisibility && <NotificationBar />}
       {errorModal.visibility && <ErrorModal properties={errorModal} />}
+      {(historyRecords.workoutRecords.length > 0 ||
+        historyRecords.sessionRecords.length > 0) && <HistoryPreviewModal />}
       <main
         className={styles["content-wrapper"]}
         style={{ width: !toggleState ? "80%" : "" }}
@@ -156,6 +217,12 @@ interface AppData {
     sex: string;
     profilePicture: string;
     weight: number;
+  };
+  preferences: {
+    selectedActivities: string[];
+    fitnessLevel: string;
+    frequencyStatus: string;
+    fitnessGoal: string;
   };
   routines: {
     _id: string;

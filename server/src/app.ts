@@ -8,6 +8,9 @@ import path = require("path");
 import exerciseRouter from "./routes/exercises";
 import authRouter from "./routes/auth";
 import applicationRouter from "./routes/application";
+import essentialsRouter from "./routes/essentials";
+import { error } from "console";
+import ResError from "./util/ResError";
 
 const app = express();
 
@@ -60,7 +63,25 @@ app.use((req: express.Request, res: express.Response, next) => {
 
 app.use("/auth", authRouter);
 app.use("/app", applicationRouter);
+app.use("/ess", essentialsRouter);
 app.use("/get", exerciseRouter);
+
+app.use(
+  (
+    error: ResError,
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) => {
+    console.log(error);
+    return res.status(error.status).json({
+      message:
+        error.status == 500
+          ? "Internal Server Error: "
+          : "Something went wrong. Error: " + error.message,
+    });
+  }
+);
 
 mongoose
   .connect(
@@ -74,5 +95,5 @@ mongoose
     app.listen(8080);
   })
   .catch((error) => {
-    console.log(error);
+    console.log("Couldn't connect to the database. \nError: ", error);
   });

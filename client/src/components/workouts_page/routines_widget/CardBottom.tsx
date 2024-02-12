@@ -18,6 +18,7 @@ const CardBottom: React.FC<{
   duration: number;
   category: string;
   previewMode?: boolean;
+  volume?: number;
 }> = (props) => {
   const hours = Math.floor(props.duration / 3600);
   const minutes = Math.floor((props.duration % 3600) / 60);
@@ -78,7 +79,7 @@ const CardBottom: React.FC<{
           Start Routine
         </button>
       ) : (
-        <p>Volume: </p>
+        <p>Volume: {props.volume}</p>
       )}
     </div>
   );

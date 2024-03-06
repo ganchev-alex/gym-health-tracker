@@ -11,6 +11,7 @@ import ActivitySession, { IActivitySession } from "../models/activity-session";
 import Essential from "../models/essentials";
 
 import ResError from "../util/ResError";
+import explore from "./explore";
 
 interface newRoutineRequest {
   routineData: {
@@ -63,8 +64,8 @@ const userData = async (
     });
 
     if (user) {
-      const appData = {
-        auth: { email: user.auth.email },
+      const userData: any = {
+        email: user.auth.email,
         personalDetails: {
           firstName: user.personalDetails.firstName,
           lastName: user.personalDetails.lastName,
@@ -74,12 +75,11 @@ const userData = async (
         },
         routines: user.routines,
         preferences: user.preferences,
+        savedArticles: user.savedArticles,
       };
 
-      return res.status(200).json({
-        message: `User was found: ${userId}`,
-        appData,
-      });
+      res.locals.userData = userData;
+      return explore.getPersonalizedExplorations(req, res, next);
     } else {
       const error = new ResError(
         "\n- func. userData (application router): User was not found.",

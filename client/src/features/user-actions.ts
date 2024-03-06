@@ -24,7 +24,7 @@ export interface Routine {
 }
 
 interface loadedUserData {
-  auth: { email: string };
+  email: string;
   personalDetails: {
     firstName: string;
     lastName: string;
@@ -39,6 +39,14 @@ interface loadedUserData {
     frequencyStatus: string;
     fitnessGoal: string;
   };
+  explorations: {
+    _id: string;
+    title: string;
+    category: string;
+    duration: number;
+    image: string;
+    content: { description: string };
+  }[];
 }
 
 const initialUser: {
@@ -52,7 +60,7 @@ const initialUser: {
   },
   sex: "male",
   loadedUserData: {
-    auth: { email: "" },
+    email: "",
     personalDetails: {
       firstName: "",
       lastName: "",
@@ -67,6 +75,7 @@ const initialUser: {
       frequencyStatus: "",
       fitnessGoal: "",
     },
+    explorations: [],
   },
 };
 
@@ -83,8 +92,18 @@ const userManager = createSlice({
     setLoadedUserData: (state, action: PayloadAction<loadedUserData>) => {
       state.loadedUserData = { ...action.payload };
     },
-    setRoutinesData: (state, action: PayloadAction<Routine[]>) => {
-      state.loadedUserData.routines = action.payload;
+    setRoutinesData: (
+      state,
+      action: PayloadAction<{ routines: Routine[]; append?: boolean }>
+    ) => {
+      if (action.payload.append === true) {
+        state.loadedUserData.routines = [
+          ...state.loadedUserData.routines,
+          ...action.payload.routines,
+        ];
+      } else {
+        state.loadedUserData.routines = action.payload.routines;
+      }
     },
     updateRoutinesData: (
       state,

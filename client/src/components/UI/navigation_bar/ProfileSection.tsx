@@ -2,7 +2,7 @@ import React from "react";
 import { useSelector, useDispatch } from "react-redux";
 
 import { RootState } from "../../../features/store";
-import { toggle } from "../../../features/styles-manager-actions";
+import { toggleNavigation } from "../../../features/styles-manager-actions";
 
 import ToggleIcon from "../../../assets/svg_icon_components/ToggleIcon";
 
@@ -17,11 +17,11 @@ const ProfileSection: React.FC = () => {
   });
 
   const toggleState = useSelector(
-    (state: RootState) => state.navigation.toggleState
+    (state: RootState) => state.styleManager.toggleState
   );
 
   const onToggle = function () {
-    dispatch(toggle());
+    dispatch(toggleNavigation());
   };
 
   return (
@@ -45,7 +45,7 @@ const ProfileSection: React.FC = () => {
         }`}
       >
         <h6>Hello, {profileData.personalDetails.firstName[0]}. 👋🏻</h6>
-        <p>{profileData.auth.email}</p>
+        <p>{profileData.email}</p>
       </div>
     </div>
   );

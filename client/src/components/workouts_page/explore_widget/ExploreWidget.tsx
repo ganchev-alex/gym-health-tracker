@@ -6,6 +6,8 @@ import { EffectFade, Pagination, Autoplay, Mousewheel } from "swiper/modules";
 
 import styles from "./ExploreWidget.module.css";
 import "./swiper-pagination.css";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../features/store";
 
 const DUMMY_DATA = [
   {
@@ -35,6 +37,10 @@ const DUMMY_DATA = [
 ];
 
 const ExploreWidget = function () {
+  const explorations = useSelector(
+    (state: RootState) => state.userActions.loadedUserData.explorations
+  );
+
   return (
     <div className={styles.widget}>
       <div className="content-wrapper">
@@ -49,14 +55,16 @@ const ExploreWidget = function () {
           pagination={{ clickable: true }}
           modules={[EffectFade, Pagination, Autoplay, Mousewheel]}
         >
-          {DUMMY_DATA.map((card, index) => {
+          {explorations.map((card) => {
             return (
-              <SwiperSlide key={index}>
+              <SwiperSlide key={card._id}>
                 <ContentCard
-                  imageSrc={card.imageSrc}
+                  _id={card._id}
+                  imageSrc={card.image}
                   title={card.title}
-                  description={card.description}
+                  description={card.content.description}
                   category={card.category}
+                  duration={card.duration}
                 />
               </SwiperSlide>
             );

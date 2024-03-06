@@ -9,7 +9,8 @@ import exerciseRouter from "./routes/exercises";
 import authRouter from "./routes/auth";
 import applicationRouter from "./routes/application";
 import essentialsRouter from "./routes/essentials";
-import { error } from "console";
+import exploreRouter from "./routes/explore";
+
 import ResError from "./util/ResError";
 
 const app = express();
@@ -58,22 +59,18 @@ app.use((req: express.Request, res: express.Response, next) => {
     "GET, POST, PUT, PATCH, DELETE"
   );
   res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  next();
+  return next();
 });
 
 app.use("/auth", authRouter);
 app.use("/app", applicationRouter);
 app.use("/ess", essentialsRouter);
 app.use("/get", exerciseRouter);
+app.use("/explore", exploreRouter);
 
-app.use(
-  (
-    error: ResError,
-    req: express.Request,
-    res: express.Response,
-    next: express.NextFunction
-  ) => {
-    console.log(error);
+app.use((error: ResError, req: express.Request, res: express.Response) => {
+  if (error.message) {
+    console.log(error.message);
     return res.status(error.status).json({
       message:
         error.status == 500
@@ -81,7 +78,7 @@ app.use(
           : "Something went wrong. Error: " + error.message,
     });
   }
-);
+});
 
 mongoose
   .connect(

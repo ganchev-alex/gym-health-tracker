@@ -13,7 +13,7 @@ const RouteButton: React.FC<{
 }> = (props) => {
   const dispatch = useDispatch();
   const toggleState = useSelector(
-    (state: RootState) => state.navigation.toggleState
+    (state: RootState) => state.styleManager.toggleState
   );
 
   const { workoutVisibility } = useSelector(

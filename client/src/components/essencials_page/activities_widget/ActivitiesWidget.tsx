@@ -78,16 +78,6 @@ const ActivitiesWidget = function () {
     dispatch(setWorkoutState({ visibility: true }));
   };
 
-  const secondsConverter = function (seconds: number) {
-    const hours = Math.floor(seconds / 3600);
-    const minutes = Math.floor((seconds % 3600) / 60);
-
-    return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
-      2,
-      "0"
-    )}`;
-  };
-
   return (
     <div className={styles["wrapper"]}>
       <main className={styles["review-content"]}>
@@ -213,3 +203,13 @@ const ActivitiesWidget = function () {
 };
 
 export default ActivitiesWidget;
+
+export const secondsConverter = function (seconds: number) {
+  const hours = Math.floor(seconds / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+
+  return `${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+    2,
+    "0"
+  )}`;
+};

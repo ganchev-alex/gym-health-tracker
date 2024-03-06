@@ -1,5 +1,10 @@
-import React, { useEffect } from "react";
-import { Outlet, useLoaderData, useNavigate } from "react-router-dom";
+import React, { useEffect, useRef, useState } from "react";
+import {
+  Outlet,
+  useLoaderData,
+  useNavigate,
+  useNavigation,
+} from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 
 import NavigationBar from "../UI/navigation_bar/NavigationBar";
@@ -27,15 +32,22 @@ import {
   Essentials,
   setLoadedEssentialsData,
 } from "../../features/health-essentials-actions";
+import {
+  ExploreCardsI,
+  addLoadedCards,
+  setFetchError,
+  setResetState,
+} from "../../features/explore-actions";
+import { setLoadingState } from "../../features/loading-actions";
+import { setExplorePreviewVisibility } from "../../features/styles-manager-actions";
+import LoadingPlane from "../UI/LoadingPlane/LoadingPlane";
 
 function RootLayout() {
   const navigate = useNavigate();
+  const pageLoading = useNavigation();
   const dispatch = useDispatch();
   const fetchedData = useLoaderData();
 
-  const loadedUserData = useSelector(
-    (state: RootState) => state.userActions.loadedUserData
-  );
   const {
     today: todayEssData,
     yesterday: yesterdayEssData,
@@ -53,7 +65,7 @@ function RootLayout() {
   });
 
   const toggleState = useSelector((state: RootState) => {
-    return state.navigation.toggleState;
+    return state.styleManager.toggleState;
   });
   const notificationVisibility = useSelector((state: RootState) => {
     return state.widgetsManager.notificationManager.visibility;
@@ -61,6 +73,15 @@ function RootLayout() {
   const { errorModal } = useSelector((state: RootState) => {
     return state.modalsManager;
   });
+  const explorePreviewVisibility = useSelector((state: RootState) => {
+    return state.styleManager.explorePreviewVisibility;
+  });
+
+  const { mainHeaderContent, subHeaderContent, centered } = useSelector(
+    (state: RootState) => {
+      return state.styleManager.headers;
+    }
+  );
 
   // UseEffect: User Data Manager
   useEffect(() => {
@@ -84,8 +105,8 @@ function RootLayout() {
         console.log("Fetch error!");
         break;
       default:
-        const appData = fetchedData as AppData;
-        dispatch(setLoadedUserData(appData));
+        const userData = fetchedData as UserData;
+        dispatch(setLoadedUserData(userData));
     }
   }, [dispatch]);
 
@@ -118,6 +139,7 @@ function RootLayout() {
     };
   }, [dispatch, active, timer, workoutActivity]);
 
+  // useEffect: Essentials Updating Manager
   useEffect(() => {
     const updateEssentialsData = async function () {
       try {
@@ -165,6 +187,88 @@ function RootLayout() {
     };
   }, [todayEssData, yesterdayEssData, updated]);
 
+  // useEffect: Explore Infinitive Scroll
+  const scrollTracker = useRef<HTMLDivElement>(null);
+  const [fetchingState, setFetchingState] = useState(false);
+  const { resetedFetching, fetchEnd, filterOptions } = useSelector(
+    (state: RootState) => state.exploreState
+  );
+
+  const { exploreOption, category, duration, contentType, keywords } =
+    filterOptions;
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (
+        !fetchEnd &&
+        scrollTracker.current &&
+        scrollTracker.current.scrollHeight -
+          scrollTracker.current.clientHeight <=
+          scrollTracker.current.scrollTop &&
+        !fetchingState &&
+        centered
+      ) {
+        console.log("Fetched upon scrolling.");
+        fetchCards();
+      }
+    };
+
+    if (scrollTracker.current) {
+      scrollTracker.current.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (scrollTracker.current) {
+        scrollTracker.current.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [filterOptions, fetchEnd, fetchingState]);
+
+  useEffect(() => {
+    if (resetedFetching) {
+      fetchCount = 1;
+      console.log("Fetched upon filter change.");
+      fetchCards();
+      dispatch(setResetState(false));
+    }
+  }, [resetedFetching]);
+
+  const fetchCards = async function () {
+    setFetchingState(true);
+    dispatch(setLoadingState(true));
+
+    const modeModif = exploreOption.toLowerCase().replace(/\s/g, "_");
+    const categoryModif = category.replace(/\s/g, "_").replace(/&/g, "and");
+    const durationModif =
+      duration !== "Set Duration" ? duration.replace(/\s/g, "_") : "";
+    const typeModif =
+      contentType !== "Set Content Type" ? contentType.toLowerCase() : "";
+    const keywordsModif = keywords !== "" ? keywords.toLowerCase() : "";
+
+    try {
+      const response = await fetch(
+        `${mainAPIPath}/explore/fetch-data?fetchCount=${fetchCount}&mode=${modeModif}&category=${categoryModif}&duration=${durationModif}&type=${typeModif}&keywords=${keywordsModif}`,
+        {
+          method: "GET",
+          headers: { Authorization: `Bearer ${getToken()}` },
+        }
+      );
+
+      if (response.ok) {
+        const data: { cards: ExploreCardsI[] } = await response.json();
+        dispatch(addLoadedCards(data.cards));
+        fetchCount++;
+      } else {
+        dispatch(setFetchError(true));
+      }
+    } catch (error) {
+      dispatch(setFetchError(true));
+    } finally {
+      setFetchingState(false);
+      dispatch(setLoadingState(false));
+    }
+  };
+
   return (
     <div className={styles["display-wrapper"]}>
       <NavigationBar />
@@ -175,6 +279,7 @@ function RootLayout() {
       <main
         className={styles["content-wrapper"]}
         style={{ width: !toggleState ? "80%" : "" }}
+        ref={scrollTracker}
       >
         {workoutVisibility ? (
           <div className={styles.tracker}>
@@ -182,12 +287,25 @@ function RootLayout() {
           </div>
         ) : (
           <React.Fragment>
-            <div className={styles.headings}>
-              <h1>Welcome Back, {loadedUserData.personalDetails.firstName}!</h1>
-              <h3>Lorem, ipsum dolor sit amet consectetur adipisicing elit.</h3>
-            </div>
-            <div className={styles["page-content"]}>
-              <Outlet />
+            {!explorePreviewVisibility && (
+              <div
+                className={styles.headings}
+                style={
+                  centered
+                    ? { alignSelf: "center", textAlign: "center" }
+                    : undefined
+                }
+              >
+                <h1>{mainHeaderContent}</h1>
+                <h3>{subHeaderContent}</h3>
+              </div>
+            )}
+
+            <div
+              className={styles["page-content"]}
+              style={explorePreviewVisibility ? { height: "100%" } : undefined}
+            >
+              {pageLoading.state === "loading" ? <LoadingPlane /> : <Outlet />}
             </div>
           </React.Fragment>
         )}
@@ -195,7 +313,7 @@ function RootLayout() {
           <button
             className={styles["minimize-button"]}
             onClick={() => {
-              navigate("/app/workouts");
+              navigate("/app/dashboard");
               dispatch(setWorkoutState({ visibility: !workoutVisibility }));
             }}
           >
@@ -209,8 +327,8 @@ function RootLayout() {
 
 export default RootLayout;
 
-interface AppData {
-  auth: { email: string };
+interface UserData {
+  email: string;
   personalDetails: {
     firstName: string;
     lastName: string;
@@ -233,9 +351,17 @@ interface AppData {
     duration: number;
     exercises: FetchedExercise[];
   }[];
+  explorations: {
+    _id: string;
+    title: string;
+    category: string;
+    duration: number;
+    image: string;
+    content: { description: string };
+  }[];
 }
 
-export async function appDataLoader(): Promise<string | AppData> {
+export async function appDataLoader(): Promise<string | UserData> {
   const token = getToken();
   if (!token) {
     return "TOKEN_NOT_FOUND";
@@ -250,9 +376,10 @@ export async function appDataLoader(): Promise<string | AppData> {
     });
 
     const data = await response.json();
+    console.log(data);
 
     if (response.status === 200) {
-      return data.appData || null;
+      return data.userData || null;
     } else if (response.status === 404) {
       return "USER_NOT_FOUND";
     } else {
@@ -262,3 +389,5 @@ export async function appDataLoader(): Promise<string | AppData> {
     return "FETCH_ERROR";
   }
 }
+
+export let fetchCount = 2;

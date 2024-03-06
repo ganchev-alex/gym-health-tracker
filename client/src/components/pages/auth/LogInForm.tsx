@@ -106,7 +106,7 @@ const LogInForm: React.FC = function () {
             })
           );
           dispatch(changeErrorModalVisibility(true));
-          console.log("500:", data);
+  
         }
       } catch (error) {
         dispatch(

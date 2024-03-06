@@ -17,19 +17,14 @@ import StatisticsIcon from "../../../assets/svg_icon_components/StatisticsIcon";
 
 const PagesNavigation = () => {
   const toggleState = useSelector(
-    (state: RootState) => state.navigation.toggleState
+    (state: RootState) => state.styleManager.toggleState
   );
 
   return (
     <ul
       className={`${styles.wrapper} ${!toggleState ? styles.untoggled : ""} `}
     >
-      <RouteButton
-        path="dashboard"
-        label="Dashboard"
-        icon={<DashboardIcon />}
-      />
-      <RouteButton path="workouts" label="Workouts" icon={<WorkoutIcon />} />
+      <RouteButton path="dashboard" label="Workouts" icon={<WorkoutIcon />} />
       <RouteButton
         path="health-essencials"
         label="Health Essencials"

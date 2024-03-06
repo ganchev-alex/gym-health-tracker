@@ -105,7 +105,6 @@ const SignInForm: React.FC = function () {
             })
           );
           dispatch(changeErrorModalVisibility(true));
-          console.log("500:", data);
         }
       } catch (error) {
         dispatch(setAuth({ email: "", password: "" }));

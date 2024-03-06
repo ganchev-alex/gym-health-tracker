@@ -18,10 +18,9 @@ const activitesLabels = [
   "Gym & Weightlifting",
   "Cardio",
   "Yoga",
-  "Mediation",
-  "Swimming",
-  "Running/Jogging",
-  "Walking/Hiking",
+  "Stretching",
+  "Meditation",
+  "Cross Fit",
 ];
 
 const fitnessLevelOptions = [

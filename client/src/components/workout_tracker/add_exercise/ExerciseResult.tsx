@@ -34,7 +34,6 @@ const ExerciseResult: React.FC<{ exerciseData: Exercise }> = function (props) {
   const onAddExercise = function () {
     switch (addExerciseState.mode) {
       case "REPLACE":
-        console.log("Replaced Exercise: ", optionsMenuState.exerciseId);
         dispatch(
           replaceExercise({
             currant: optionsMenuState.exerciseId || "",

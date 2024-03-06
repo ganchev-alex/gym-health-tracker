@@ -1,0 +1,66 @@
+.days-holder {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 18%;
+}
+
+.day-slot {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 11%;
+  height: 100%;
+  font-size: 1.1rem;
+  background-color: #ededed;
+  border-radius: 10px;
+  box-sizing: border-box;
+  padding: 1em 0;
+  color: #828282;
+}
+
+.day-slot p {
+  margin: 0;
+  margin-bottom: 0.5em;
+  font-weight: 400;
+}
+
+.day-slot span {
+  padding: 0.5em;
+  aspect-ratio: 1/1;
+  border-radius: 50px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.completed {
+  background-color: #e54c60;
+  color: white;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header h5 {
+  font-size: 1.2rem;
+  margin: 0;
+  color: #e54c60;
+}
+
+.header button {
+  background-color: #ededed;
+  color: #828282;
+  border-radius: 50px;
+  width: fit-content;
+  aspect-ratio: 1/1;
+  outline: 0;
+  border: #828282 1px solid;
+  font-size: 1.1rem;
+  font-weight: 500;
+}

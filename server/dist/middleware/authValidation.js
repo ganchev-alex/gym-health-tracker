@@ -30,7 +30,7 @@ const authValidation = (req, res, next) => {
         });
     }
     req.userId = decodedToken.userId;
-    next();
+    return next();
 };
 exports.default = authValidation;
 //# sourceMappingURL=authValidation.js.map

@@ -13,6 +13,7 @@ const exercises_1 = __importDefault(require("./routes/exercises"));
 const auth_1 = __importDefault(require("./routes/auth"));
 const application_1 = __importDefault(require("./routes/application"));
 const essentials_1 = __importDefault(require("./routes/essentials"));
+const explore_1 = __importDefault(require("./routes/explore"));
 const app = express();
 const fileStorage = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -46,21 +47,22 @@ app.use((req, res, next) => {
     res.setHeader("Access-Control-Allow-Origin", "*");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, PATCH, DELETE");
     res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-    next();
+    return next();
 });
 app.use("/auth", auth_1.default);
 app.use("/app", application_1.default);
 app.use("/ess", essentials_1.default);
 app.use("/get", exercises_1.default);
-app.use((error, req, res, next) => {
-    console.log(error);
-    return res
-        .status(error.status)
-        .json({
-        message: error.status == 500
-            ? "Internal Server Error: "
-            : "Something went wrong. Error: " + error.message,
-    });
+app.use("/explore", explore_1.default);
+app.use((error, req, res) => {
+    if (error.message) {
+        console.log(error.message);
+        return res.status(error.status).json({
+            message: error.status == 500
+                ? "Internal Server Error: "
+                : "Something went wrong. Error: " + error.message,
+        });
+    }
 });
 mongoose
     .connect("mongodb+srv://aganchev:rwUBOOO79gI3DeN7@projectmanager.jjnszh2.mongodb.net/WorkoutTrackerApplication?retryWrites=true&w=majority")

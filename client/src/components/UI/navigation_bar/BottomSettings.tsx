@@ -3,18 +3,18 @@ import ThemeIcon from "../../../assets/svg_icon_components/ThemeIcon";
 import { useSelector, useDispatch } from "react-redux";
 
 import { RootState } from "../../../features/store";
-import { toggle } from "../../../features/styles-manager-actions";
+import { toggleNavigation } from "../../../features/styles-manager-actions";
 
 import styles from "./BottomSettings.module.css";
 
 function BottomSettings() {
   const toggleState = useSelector(
-    (state: RootState) => state.navigation.toggleState
+    (state: RootState) => state.styleManager.toggleState
   );
   const dispatch = useDispatch();
 
   const onToggle = function () {
-    dispatch(toggle());
+    dispatch(toggleNavigation());
   };
 
   return (

@@ -59,6 +59,7 @@ const userSchema = new mongoose_1.Schema({
             },
         },
     ],
+    savedArticles: [String],
 });
 const User = mongoose.model("User", userSchema, "users");
 exports.default = User;

@@ -33,7 +33,6 @@ const ExersiceSummary = function () {
   const onAddExercise = function () {
     switch (addExerciseState.mode) {
       case "REPLACE":
-        console.log("Replaced Exercise: ", optionsMenuState.exerciseId);
         dispatch(
           replaceExercise({
             currant: optionsMenuState.exerciseId || "",

@@ -11,6 +11,7 @@ const workout_1 = __importDefault(require("../models/workout"));
 const activity_session_1 = __importDefault(require("../models/activity-session"));
 const essentials_1 = __importDefault(require("../models/essentials"));
 const ResError_1 = __importDefault(require("../util/ResError"));
+const explore_1 = __importDefault(require("./explore"));
 const userData = async (req, res, next) => {
     const userId = req.userId;
     try {
@@ -22,8 +23,8 @@ const userData = async (req, res, next) => {
             },
         });
         if (user) {
-            const appData = {
-                auth: { email: user.auth.email },
+            const userData = {
+                email: user.auth.email,
                 personalDetails: {
                     firstName: user.personalDetails.firstName,
                     lastName: user.personalDetails.lastName,
@@ -33,11 +34,10 @@ const userData = async (req, res, next) => {
                 },
                 routines: user.routines,
                 preferences: user.preferences,
+                savedArticles: user.savedArticles,
             };
-            return res.status(200).json({
-                message: `User was found: ${userId}`,
-                appData,
-            });
+            res.locals.userData = userData;
+            return explore_1.default.getPersonalizedExplorations(req, res, next);
         }
         else {
             const error = new ResError_1.default("\n- func. userData (application router): User was not found.", 404);

@@ -38,7 +38,7 @@ const authValidation = (
   }
 
   (req as any).userId = decodedToken.userId;
-  next();
+  return next();
 };
 
 export default authValidation;

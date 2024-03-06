@@ -20,6 +20,10 @@ import {
 } from "../../../features/health-essentials-actions";
 import { RootState } from "../../../features/store";
 import { setNotificationState } from "../../../features/workout-page-actions";
+import {
+  setExplorePreviewVisibility,
+  setHeadersState,
+} from "../../../features/styles-manager-actions";
 
 function HealthEssencialsPage() {
   const dispatch = useDispatch();
@@ -64,6 +68,16 @@ function HealthEssencialsPage() {
       }, 4000);
     }
   };
+
+  useEffect(() => {
+    dispatch(
+      setHeadersState({
+        mainHeader: "Health Essentials",
+        subHeader: "Personalized health tracking made simple.",
+      })
+    );
+    dispatch(setExplorePreviewVisibility(false));
+  }, []);
 
   useEffect(() => {
     if (!loadedState) {

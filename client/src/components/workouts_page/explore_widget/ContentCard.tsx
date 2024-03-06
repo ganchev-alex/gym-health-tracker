@@ -3,9 +3,11 @@ import BottomCard from "./BottomCard";
 import styles from "./ContentCard.module.css";
 
 const ContentCard: React.FC<{
+  _id: string;
   imageSrc: string;
   title: string;
   description: string;
+  duration: number;
   category: string;
 }> = function (props) {
   return (
@@ -18,7 +20,11 @@ const ContentCard: React.FC<{
         <h4>{props.title}</h4>
         <p>{props.description}</p>
       </div>
-      <BottomCard category={props.category} />
+      <BottomCard
+        _id={props._id}
+        category={props.category}
+        duration={props.duration}
+      />
     </div>
   );
 };

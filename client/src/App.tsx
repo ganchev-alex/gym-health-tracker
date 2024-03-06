@@ -10,11 +10,15 @@ import ProfileForm from "./components/pages/auth/ProfileForm";
 import PersonalizationForm from "./components/pages/auth/PersonalizationForm";
 import LogInForm from "./components/pages/auth/LogInForm";
 
-import Dashboard from "./components/pages/app/DashboardPage";
 import Workouts from "./components/pages/app/WorkoutsPage";
 import HealthEssencialsPage from "./components/pages/app/HealthEssencialsPage";
-import ExplorePage from "./components/pages/app/ExplorePage";
+import ExplorePage, {
+  firstCardsSetLoader,
+} from "./components/pages/app/ExplorePage";
 import StatisticsPage from "./components/pages/app/StatisticsPage";
+import CardPreview, {
+  previewLoader,
+} from "./components/explore_page/explore_card/CardPreviewPage";
 
 export const mainAPIPath = "http://localhost:8080";
 
@@ -51,9 +55,8 @@ const router = createBrowserRouter([
     element: <RootLayout />,
     loader: appDataLoader,
     children: [
-      { path: "dashboard", element: <Dashboard /> },
       {
-        path: "workouts",
+        path: "dashboard",
         element: <Workouts />,
       },
       {
@@ -63,6 +66,12 @@ const router = createBrowserRouter([
       {
         path: "explore",
         element: <ExplorePage />,
+        loader: firstCardsSetLoader,
+      },
+      {
+        path: "explore/:exploreId",
+        element: <CardPreview />,
+        loader: previewLoader,
       },
       {
         path: "statistics",

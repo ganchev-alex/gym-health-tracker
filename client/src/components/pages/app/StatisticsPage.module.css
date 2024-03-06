@@ -1,0 +1,29 @@
+.wrapper {
+  display: flex;
+  justify-content: space-between;
+  height: 100%;
+  width: 100%;
+}
+
+.left,
+.right {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  border: black 1px solid;
+  padding: 1.5em;
+  box-sizing: border-box;
+  background-color: white;
+}
+
+.left {
+  flex: 0 0 50%;
+  width: 50%;
+}
+
+.right {
+  flex: 0 0 47%;
+  width: 47%;
+}

@@ -10,7 +10,7 @@ import styles from "./NavigationBar.module.css";
 
 function NavigationBar() {
   const toggleState = useSelector(
-    (state: RootState) => state.navigation.toggleState
+    (state: RootState) => state.styleManager.toggleState
   );
 
   return (

@@ -31,6 +31,7 @@ interface IUser {
   }[];
   activitySessionHistory: { date: Date; session: mongoose.Types.ObjectId }[];
   essentialsHistory: { date: Date; essentials: mongoose.Types.ObjectId }[];
+  savedArticles: string[];
 }
 
 const userSchema = new Schema<IUser>({
@@ -90,6 +91,7 @@ const userSchema = new Schema<IUser>({
       },
     },
   ],
+  savedArticles: [String],
 });
 
 const User = mongoose.model<IUser>("User", userSchema, "users");

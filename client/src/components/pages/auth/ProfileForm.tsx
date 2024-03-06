@@ -171,7 +171,6 @@ const ProfileForm: React.FC = function () {
           body: userData,
         });
         const data = await response.json();
-        console.log(data);
         if (response.status == 201) {
           setToken(data.token);
           navigate("/auth/personalization");

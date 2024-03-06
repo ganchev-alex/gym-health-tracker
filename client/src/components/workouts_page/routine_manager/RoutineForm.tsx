@@ -197,7 +197,7 @@ const RoutineForm = function () {
         if (response.status === 201) {
           const fetchedRoutines = await fetchRoutines();
           if (fetchedRoutines) {
-            dispatch(setRoutinesData(fetchedRoutines));
+            dispatch(setRoutinesData({ routines: fetchedRoutines }));
           }
           dispatch(
             setNotificationState({

@@ -1,22 +1,24 @@
 import { configureStore } from "@reduxjs/toolkit";
 
 import userReducers from "./user-actions";
-import navigationReducers from "./styles-manager-actions";
+import styleManager from "./styles-manager-actions";
 import widgetsManager from "./workout-page-actions";
 import loadingReducers from "./loading-actions";
 import modalsReducers from "./modals";
 import workoutStateReducers from "./workout";
 import healthEssentialsReducers from "./health-essentials-actions";
+import exploreReducers from "./explore-actions";
 
 const store = configureStore({
   reducer: {
-    navigation: navigationReducers,
+    styleManager: styleManager,
     widgetsManager: widgetsManager,
     userActions: userReducers,
     loadingManager: loadingReducers,
     modalsManager: modalsReducers,
     workoutState: workoutStateReducers,
     healthEssentials: healthEssentialsReducers,
+    exploreState: exploreReducers,
   },
 });
 

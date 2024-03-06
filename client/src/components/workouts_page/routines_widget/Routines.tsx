@@ -87,7 +87,7 @@ const Routines: React.FC = () => {
 
     const fetchedRoutines = await fetchRoutines();
     if (fetchedRoutines) {
-      dispatch(setRoutinesData(fetchedRoutines));
+      dispatch(setRoutinesData({ routines: fetchedRoutines }));
     }
 
     if (response.ok) {

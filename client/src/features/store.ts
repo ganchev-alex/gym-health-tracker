@@ -8,6 +8,7 @@ import modalsReducers from "./modals";
 import workoutStateReducers from "./workout";
 import healthEssentialsReducers from "./health-essentials-actions";
 import exploreReducers from "./explore-actions";
+import statisticsReducers from "./statistics-actions";
 
 const store = configureStore({
   reducer: {
@@ -19,6 +20,7 @@ const store = configureStore({
     workoutState: workoutStateReducers,
     healthEssentials: healthEssentialsReducers,
     exploreState: exploreReducers,
+    statsData: statisticsReducers,
   },
 });
 

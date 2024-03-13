@@ -56,7 +56,7 @@ const AddExerciseForm = function () {
       try {
         dispatch(setLoadingState(true));
 
-        const response = await fetch(`${mainAPIPath}/get/exercises`);
+        const response = await fetch(`${mainAPIPath}/exercise/get-all`);
         if (response.status === 200) {
           const data = await response.json();
           setExercisesData(data.exercises);

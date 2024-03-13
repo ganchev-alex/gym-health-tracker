@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 
 import { RootState } from "../../../features/store";
-import { changeErrorModalVisibility } from "../../../features/modals";
+import { setErrorModalVisibility } from "../../../features/modals";
 
 import styles from "./ErrorModal.module.css";
 import { restoreRoutinesWidgetInitialState } from "../../../features/workout-page-actions";
@@ -41,7 +41,7 @@ const ModalOverlay: React.FC<{
 
   const clickHandler = function () {
     navigate(redirectionRoute);
-    dispatch(changeErrorModalVisibility(false));
+    dispatch(setErrorModalVisibility(false));
     dispatch(restoreRoutinesWidgetInitialState());
   };
 

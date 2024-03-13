@@ -18,6 +18,8 @@ const SetTable: React.FC<{
   _id: string;
   index?: number;
   sets?: number;
+  kg?: number;
+  reps?: number;
   staticMode?: boolean;
   previewMode?: boolean;
 }> = function (props) {
@@ -51,7 +53,11 @@ const SetTable: React.FC<{
       dispatch(
         addSetData({
           exerciseIndex: props.index,
-          setData: { state: false, reps: 25, kg: 12 },
+          setData: {
+            state: false,
+            reps: props.reps ? props.reps : 0,
+            kg: props.kg ? props.kg : 0,
+          },
         })
       );
     }
@@ -63,9 +69,11 @@ const SetTable: React.FC<{
           exerciseId={props._id}
           exerciseIndex={props.index}
           setIndex={previousState.length + 1}
-          previos="25kg x 12"
-          kg={25}
-          reps={12}
+          previos={`${props.kg ? props.kg : 0}kg x ${
+            props.reps ? props.reps : 0
+          }`}
+          kg={props.kg ? props.kg : 0}
+          reps={props.reps ? props.reps : 0}
           setRemover={() => removeSet(previousState.length)}
           staticMode={props.staticMode}
         />,
@@ -80,9 +88,11 @@ const SetTable: React.FC<{
           exerciseId={props._id}
           exerciseIndex={props.index}
           setIndex={index + 1}
-          previos="25kg x 12"
-          kg={25}
-          reps={12}
+          previos={`${props.kg ? props.kg : 0}kg x ${
+            props.reps ? props.reps : 0
+          }`}
+          kg={props.kg ? props.kg : 0}
+          reps={props.reps ? props.reps : 0}
           setRemover={() => removeSet(index)}
           staticMode={props.staticMode}
           previewMode={props.previewMode}
@@ -94,9 +104,11 @@ const SetTable: React.FC<{
           exerciseId={props._id}
           exerciseIndex={props.index}
           setIndex={1}
-          previos="25kg x 12"
-          kg={25}
-          reps={12}
+          previos={`${props.kg ? props.kg : 0}kg x ${
+            props.reps ? props.reps : 0
+          }`}
+          kg={props.kg ? props.kg : 0}
+          reps={props.reps ? props.reps : 0}
           setRemover={() => removeSet(0)}
           staticMode={props.staticMode}
           previewMode={props.previewMode}
@@ -129,7 +141,7 @@ const SetTable: React.FC<{
         <thead>
           <tr>
             <th>Set</th>
-            <th>Previous</th>
+            <th>BEST</th>
             <th>KG</th>
             <th>Reps</th>
             <th>✓</th>

@@ -12,6 +12,9 @@ import Essential from "../models/essentials";
 
 import ResError from "../util/ResError";
 import explore from "./explore";
+import Statistic from "../models/statistic";
+import { getWeekNumber } from "../util/dateModification";
+import { insertMuscleDistributionData } from "./statistics";
 
 interface newRoutineRequest {
   routineData: {
@@ -72,6 +75,8 @@ const userData = async (
           sex: user.personalDetails.sex,
           profilePicture: user.personalDetails.profilePicture,
           weight: user.personalDetails.weight,
+          height: user.personalDetails.height,
+          age: user.personalDetails.age,
         },
         routines: user.routines,
         preferences: user.preferences,
@@ -338,7 +343,90 @@ const saveWorkout = async (
       return next(error);
     }
 
+    const referenceDate = new Date();
+    let statistics = await Statistic.findOne({ userId: user._id });
+    if (!statistics) {
+      statistics = await new Statistic({
+        userId: user._id,
+        muscleDistribution: [
+          {
+            week: getWeekNumber(referenceDate),
+            month: referenceDate.getMonth(),
+            year: referenceDate.getFullYear(),
+            tracker: [
+              {
+                muscle: "back",
+                counter: 0,
+              },
+              {
+                muscle: "chest",
+                counter: 0,
+              },
+              {
+                muscle: "core",
+                counter: 0,
+              },
+              {
+                muscle: "shoulders",
+                counter: 0,
+              },
+              {
+                muscle: "arms",
+                counter: 0,
+              },
+              {
+                muscle: "legs",
+                counter: 0,
+              },
+            ],
+          },
+        ],
+      });
+    }
+
     const newRecords: { exercise: string; kg: number }[] = [];
+    let muscleDistribution = statistics.muscleDistribution.find(
+      (chunk) =>
+        chunk.week === getWeekNumber(referenceDate) &&
+        chunk.month === referenceDate.getMonth() &&
+        chunk.year === referenceDate.getFullYear()
+    );
+    let isNewChunk = false;
+
+    if (!muscleDistribution) {
+      isNewChunk = true;
+      muscleDistribution = {
+        week: getWeekNumber(referenceDate),
+        month: referenceDate.getMonth(),
+        year: referenceDate.getFullYear(),
+        tracker: [
+          {
+            muscle: "back",
+            counter: 0,
+          },
+          {
+            muscle: "chest",
+            counter: 0,
+          },
+          {
+            muscle: "core",
+            counter: 0,
+          },
+          {
+            muscle: "shoulders",
+            counter: 0,
+          },
+          {
+            muscle: "arms",
+            counter: 0,
+          },
+          {
+            muscle: "legs",
+            counter: 0,
+          },
+        ],
+      };
+    }
 
     req.body.exercises.forEach((exercise) => {
       const previousRecordIndex = user.exerciseRecords.findIndex(
@@ -373,7 +461,24 @@ const saveWorkout = async (
           });
         }
       }
+
+      insertMuscleDistributionData(muscleDistribution, exercise.muscles);
     });
+
+    if (isNewChunk) {
+      statistics.muscleDistribution.push(muscleDistribution);
+    } else {
+      statistics.muscleDistribution[
+        statistics.muscleDistribution.findIndex(
+          (chunk) =>
+            chunk.week === getWeekNumber(referenceDate) &&
+            chunk.month === referenceDate.getMonth() &&
+            chunk.year === referenceDate.getFullYear()
+        )
+      ] = muscleDistribution;
+    }
+
+    await statistics.save();
 
     const workoutData = {
       userId,

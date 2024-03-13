@@ -15,7 +15,7 @@ import { setLoadingState } from "../../../features/loading-actions";
 import { RootState } from "../../../features/store";
 import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
 import { setExploreInitialState } from "../../../features/explore-actions";
-import { changeChoiceModalVisibility } from "../../../features/modals";
+import { setChoiceModalVisibility } from "../../../features/modals";
 import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
 
 const CardPreview = function () {
@@ -48,7 +48,7 @@ const CardPreview = function () {
 
   const onSaveArticle = function (routine?: boolean) {
     if (savedArticle) {
-      dispatch(changeChoiceModalVisibility(true));
+      dispatch(setChoiceModalVisibility(true));
       return;
     }
 

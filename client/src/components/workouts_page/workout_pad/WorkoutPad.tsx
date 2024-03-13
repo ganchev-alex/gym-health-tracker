@@ -36,7 +36,7 @@ const WorkoutPad = function () {
     <div className={styles.widget}>
       <div className={styles.headings}>
         <h5>
-          {workoutState.workoutActivity ? routineTitle : "No workout acitve"}
+          {workoutState.workoutActivity ? routineTitle : "No active workout."}
         </h5>
         {workoutState.workoutActivity && (
           <React.Fragment>

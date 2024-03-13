@@ -1,5 +1,4 @@
 .button {
-  /* The width of the button must be equal to the width of the svg icon and vise versa*/
   width: 20%;
   background-color: transparent;
   border-radius: 25px;
@@ -8,7 +7,11 @@
   box-sizing: border-box;
 }
 
-button svg {
+.button svg {
   width: 100%;
   padding: 0;
+}
+
+.inactive svg {
+  filter: invert(20%);
 }

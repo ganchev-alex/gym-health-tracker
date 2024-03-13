@@ -9,6 +9,7 @@ import User from "../models/user";
 import { TOKEN_SECRET_KEY } from "../middleware/authValidation";
 
 import ResError from "../util/ResError";
+import Statistic from "../models/statistic";
 
 interface checkEmailRequest {
   email: string;

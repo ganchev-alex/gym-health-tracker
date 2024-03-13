@@ -1,0 +1,67 @@
+.widget {
+  width: 100%;
+  height: 15%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 15px;
+  background: white;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
+  padding: 1em;
+  box-sizing: border-box;
+}
+
+.widget h6 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.selectors {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.8em;
+  width: 100%;
+}
+
+.selectors button {
+  font-size: 1rem;
+  font-weight: 600;
+  padding: 0 0.5em 0.1em;
+  width: fit-content;
+  background: transparent;
+  border: none;
+  outline: none;
+}
+
+.selectors .active {
+  color: #e54c60;
+  border-bottom: #e54c60 2px solid;
+}
+
+.display {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.display p {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #828282;
+}
+
+.display button {
+  width: 35px;
+  height: 35px;
+  background: transparent;
+  outline: none;
+  border: none;
+}
+
+.display button svg path {
+  stroke: #cccccc;
+}

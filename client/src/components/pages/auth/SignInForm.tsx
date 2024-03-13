@@ -9,7 +9,7 @@ import useInput from "../../../hooks/useInput";
 
 import { RootState } from "../../../features/store";
 import {
-  changeErrorModalVisibility,
+  setErrorModalVisibility,
   setErrorModalState,
 } from "../../../features/modals";
 import { mainAPIPath } from "../../../App";
@@ -104,7 +104,7 @@ const SignInForm: React.FC = function () {
               redirectionRoute: "/auth",
             })
           );
-          dispatch(changeErrorModalVisibility(true));
+          dispatch(setErrorModalVisibility(true));
         }
       } catch (error) {
         dispatch(setAuth({ email: "", password: "" }));
@@ -118,7 +118,7 @@ const SignInForm: React.FC = function () {
             redirectionRoute: "/auth",
           })
         );
-        dispatch(changeErrorModalVisibility(true));
+        dispatch(setErrorModalVisibility(true));
       } finally {
         dispatch(setLoadingState(false));
       }

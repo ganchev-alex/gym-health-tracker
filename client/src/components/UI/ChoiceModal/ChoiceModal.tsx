@@ -4,7 +4,7 @@ import { Backdrop } from "../ErrorModal/ErrorModal";
 
 import styles from "./ChoiceModal.module.css";
 import { useDispatch } from "react-redux";
-import { changeChoiceModalVisibility } from "../../../features/modals";
+import { setChoiceModalVisibility } from "../../../features/modals";
 import { setRoutineOptionsState } from "../../../features/workout-page-actions";
 
 const ModalOverlay: React.FC<{
@@ -19,7 +19,7 @@ const ModalOverlay: React.FC<{
   const dispatch = useDispatch();
 
   const onCloseModal = function () {
-    dispatch(changeChoiceModalVisibility(false));
+    dispatch(setChoiceModalVisibility(false));
     dispatch(setRoutineOptionsState({ visibility: false }));
   };
 

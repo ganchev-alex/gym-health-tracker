@@ -1,37 +1,51 @@
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import BodyView from "../../statistics_page/body_view/BodyView";
 
 import styles from "./StatisticsPage.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   setExplorePreviewVisibility,
   setHeadersState,
 } from "../../../features/styles-manager-actions";
 import EssentialsSummary from "../../statistics_page/esentails_summary/EssentailsSummary";
 import MusclesGraph from "../../statistics_page/muscle_distribution/MusclesGraph";
+import PeriodControl from "../../statistics_page/controlls/PeriodControl";
+import { RootState } from "../../../features/store";
+import HelpModal from "../../statistics_page/help_modal/HelpModal";
+import EssentialsPreview from "../../statistics_page/esentails_summary/EssentialsPreview";
 
 function StatisticsPage() {
   const dispatch = useDispatch();
+  const { helpModal, summaryPreviewModal } = useSelector(
+    (state: RootState) => state.modalsManager
+  );
+
   useEffect(() => {
     dispatch(
       setHeadersState({
-        mainHeader: "Statistcs",
-        subHeader: "This is the description of the statistics page.",
+        mainHeader: "Statistics",
+        subHeader:
+          "Track your your gym performance and monitor your progress and achievements",
       })
     );
     dispatch(setExplorePreviewVisibility(false));
   }, []);
 
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.left}>
-        <BodyView />
-        <EssentialsSummary />
+    <React.Fragment>
+      {helpModal.visibility && <HelpModal />}
+      <div className={styles.wrapper}>
+        <div className={styles.left}>
+          <PeriodControl />
+          <MusclesGraph />
+        </div>
+        <div className={styles.right}>
+          <BodyView />
+          <EssentialsSummary />
+        </div>
       </div>
-      <div className={styles.right}>
-        <MusclesGraph />
-      </div>
-    </div>
+      {summaryPreviewModal.visibility && <EssentialsPreview />}
+    </React.Fragment>
   );
 }
 

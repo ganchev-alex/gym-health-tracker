@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { RootState } from "../../../features/store";
 import { setLoadingState } from "../../../features/loading-actions";
 import {
-  changeErrorModalVisibility,
+  setErrorModalVisibility,
   setErrorModalState,
 } from "../../../features/modals";
 import { getToken } from "../../../util/auth";
@@ -149,7 +149,7 @@ const PersonalDetails: React.FC = function () {
               redirectionRoute: "/auth/login",
             })
           );
-          dispatch(changeErrorModalVisibility(true));
+          dispatch(setErrorModalVisibility(true));
         }
       } catch (error) {
         dispatch(
@@ -162,7 +162,7 @@ const PersonalDetails: React.FC = function () {
             redirectionRoute: "/auth",
           })
         );
-        dispatch(changeErrorModalVisibility(true));
+        dispatch(setErrorModalVisibility(true));
       } finally {
         dispatch(setLoadingState(false));
       }

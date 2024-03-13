@@ -1,0 +1,1 @@
+{"version":3,"file":"statistics.js","sourceRoot":"","sources":["../../src/routes/statistics.ts"],"names":[],"mappings":";;;;;AAAA,mCAAoC;AACpC,kFAA0D;AAC1D,2EAAkD;AAElD,MAAM,MAAM,GAAG,OAAO,CAAC,MAAM,EAAE,CAAC;AAEhC,MAAM,CAAC,GAAG,CAAC,OAAO,EAAE,wBAAc,EAAE,oBAAS,CAAC,aAAa,CAAC,CAAC;AAC7D,MAAM,CAAC,GAAG,CAAC,YAAY,EAAE,wBAAc,EAAE,oBAAS,CAAC,YAAY,CAAC,CAAC;AAEjE,kBAAe,MAAM,CAAC"}

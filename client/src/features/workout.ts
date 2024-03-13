@@ -12,6 +12,7 @@ export type Exercise = {
   restTime?: number;
   notes?: string;
   setsData?: { state: boolean; reps: number; kg: number }[];
+  bestSet?: { kg: number; reps: number };
 };
 
 type Workout = {

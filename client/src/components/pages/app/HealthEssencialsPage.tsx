@@ -82,56 +82,11 @@ function HealthEssencialsPage() {
   useEffect(() => {
     if (!loadedState) {
       loadEssentialsData();
+
+      // Dispatching active time and calories data
+      dispatch(calculateActiveTime());
+      dispatch(calculateBurntCalories());
     }
-
-    let activityTimeTarget;
-    switch (preferences.fitnessGoal) {
-      case "Muscle & Weigth Gain":
-      case "Muscle & Weigth Lost":
-      case "Tone and Define Muscles":
-        activityTimeTarget = 5400;
-        break;
-      case "Improved Cardiovascular Health":
-      case "Maintain Current Fitness Level":
-      default:
-        activityTimeTarget = 3600;
-        break;
-      case "Increased Flexibility":
-      case "Improve Overall Health":
-        activityTimeTarget = 2700;
-        break;
-      case "Stress Relief and Relaxation":
-      case "Enhance Mental Well-being":
-        activityTimeTarget = 1800;
-    }
-
-    const burntCaloriesTarget =
-      preferences.fitnessGoal === "Muscle & Weigth Lost" ? 750 : 300;
-
-    const sleepTarget =
-      preferences.frequencyStatus === "5-6 times a week" ||
-      preferences.frequencyStatus === "Daily"
-        ? 9
-        : 7.5;
-
-    const waterTarget =
-      preferences.frequencyStatus === "5-6 times a week" ||
-      preferences.frequencyStatus === "Daily"
-        ? 2500
-        : 2000;
-
-    dispatch(
-      setTargets({
-        activityTimeTarget,
-        burntCaloriesTarget,
-        sleepTarget,
-        waterTarget,
-      })
-    );
-
-    // Dispatching active time and calories data
-    dispatch(calculateActiveTime());
-    dispatch(calculateBurntCalories());
   }, []);
 
   return (

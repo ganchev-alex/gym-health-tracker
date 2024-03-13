@@ -34,6 +34,8 @@ const ExerciseSlot: React.FC<{
         staticMode={props.staticMode}
         sets={props.sets}
         previewMode={props.previewMode}
+        kg={props.exerciseData.bestSet?.kg}
+        reps={props.exerciseData.bestSet?.reps}
       />
     </div>
   );

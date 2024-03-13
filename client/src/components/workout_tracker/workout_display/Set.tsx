@@ -27,8 +27,8 @@ const Set: React.FC<{
 }> = function (props) {
   const dispatch = useDispatch();
 
-  const [reps, setReps] = useState(0);
-  const [kg, setKg] = useState(0);
+  const [reps, setReps] = useState(props.reps);
+  const [kg, setKg] = useState(props.kg);
 
   const exercise = useSelector((state: RootState) => {
     return state.workoutState.exercises[props.exerciseIndex || 0];
@@ -136,7 +136,11 @@ const Set: React.FC<{
         />
       </td>
       <td className={styles["checkbox-container"]}>
-        <input type="checkbox" onChange={onCheck} />
+        <input
+          type="checkbox"
+          onChange={onCheck}
+          disabled={kg === 0 || reps === 0}
+        />
         <CheckBoxIcon checkState={setState.state} />
       </td>
     </tr>

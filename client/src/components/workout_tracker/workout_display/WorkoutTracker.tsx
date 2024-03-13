@@ -5,7 +5,7 @@ import WorkoutDisplay from "./WorkoutDisplay";
 
 import styles from "./WorkoutTracker.module.css";
 import {
-  changeChoiceModalVisibility,
+  setChoiceModalVisibility,
   changeFinishedWorkoutVisibility,
   finishedWorkoutData,
 } from "../../../features/modals";
@@ -156,11 +156,11 @@ const WorkoutTracker: React.FC = () => {
   }
 
   const onDiscardWorkout = function () {
-    dispatch(changeChoiceModalVisibility(true));
+    dispatch(setChoiceModalVisibility(true));
   };
 
   const sessionAction = function () {
-    dispatch(changeChoiceModalVisibility(true));
+    dispatch(setChoiceModalVisibility(true));
   };
 
   const proccedWorkoutSubmission = async function () {
@@ -175,7 +175,7 @@ const WorkoutTracker: React.FC = () => {
       await submitWorkout();
     } else {
       setModalMode(true);
-      dispatch(changeChoiceModalVisibility(true));
+      dispatch(setChoiceModalVisibility(true));
     }
   };
 
@@ -193,6 +193,7 @@ const WorkoutTracker: React.FC = () => {
                 ? exercise._id.substring(0, indexModification)
                 : exercise._id,
             name: exercise.name,
+            muscles: [...exercise.primaryMuscles, ...exercise.secondaryMuscles],
             sets: exercise.setsData
               ?.filter((set) => set.state)
               .map((set) => {
@@ -246,7 +247,7 @@ const WorkoutTracker: React.FC = () => {
         dispatch(appendWorkoutsData([data.workoutData]));
         dispatch(restoreWorkoutInitialState());
         dispatch(changeFinishedWorkoutVisibility(true));
-        navigate("/app/workouts");
+        navigate("/app/dashboard");
       } else {
         // Save the state of the workout to the local storage!
         dispatch(
@@ -307,7 +308,7 @@ const WorkoutTracker: React.FC = () => {
         dispatch(appendSessionData([data.sessionData]));
         dispatch(restoreWorkoutInitialState());
         dispatch(changeFinishedWorkoutVisibility(true));
-        navigate("/app/workouts");
+        navigate("/app/dashboard");
       } else {
         // Save the state of the workout to the local storage!
         dispatch(
@@ -385,7 +386,12 @@ const WorkoutTracker: React.FC = () => {
               <Timer />
               <div className={styles["buttons-wrapper"]}>
                 <button onClick={onDiscardWorkout}>Discard</button>
-                <button onClick={proccedWorkoutSubmission}>Finish</button>
+                <button
+                  onClick={proccedWorkoutSubmission}
+                  disabled={workoutState.exercises.length === 0}
+                >
+                  Finish
+                </button>
               </div>
             </div>
           </React.Fragment>

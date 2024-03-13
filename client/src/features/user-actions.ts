@@ -31,6 +31,8 @@ interface loadedUserData {
     sex: string;
     profilePicture: string;
     weight: number;
+    height: number;
+    age: number;
   };
   routines: Routine[];
   preferences: {
@@ -67,6 +69,8 @@ const initialUser: {
       sex: "",
       profilePicture: "",
       weight: 0,
+      height: 0,
+      age: 0,
     },
     routines: [],
     preferences: {

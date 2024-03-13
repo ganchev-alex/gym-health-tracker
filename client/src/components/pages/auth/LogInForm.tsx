@@ -9,7 +9,7 @@ import { getToken, setToken } from "../../../util/auth";
 import { mainAPIPath } from "../../../App";
 
 import {
-  changeErrorModalVisibility,
+  setErrorModalVisibility,
   setErrorModalState,
 } from "../../../features/modals";
 
@@ -90,7 +90,7 @@ const LogInForm: React.FC = function () {
               redirectionRoute: "/auth",
             })
           );
-          dispatch(changeErrorModalVisibility(true));
+          dispatch(setErrorModalVisibility(true));
           resetEmail();
           resetPassword();
         } else {
@@ -105,8 +105,7 @@ const LogInForm: React.FC = function () {
               redirectionRoute: "/auth",
             })
           );
-          dispatch(changeErrorModalVisibility(true));
-  
+          dispatch(setErrorModalVisibility(true));
         }
       } catch (error) {
         dispatch(
@@ -119,7 +118,7 @@ const LogInForm: React.FC = function () {
             redirectionRoute: "/auth",
           })
         );
-        dispatch(changeErrorModalVisibility(true));
+        dispatch(setErrorModalVisibility(true));
       } finally {
         dispatch(setLoadingState(false));
       }

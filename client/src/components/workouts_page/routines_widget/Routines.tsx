@@ -18,7 +18,7 @@ import {
 import RemoveIcon from "../../../assets/svg_icon_components/RemoveIcon";
 import EditIcon from "../../../assets/svg_icon_components/EditIcon";
 import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
-import { changeChoiceModalVisibility } from "../../../features/modals";
+import { setChoiceModalVisibility } from "../../../features/modals";
 import { mainAPIPath } from "../../../App";
 import { getToken } from "../../../util/auth";
 import { setRoutinesData } from "../../../features/user-actions";
@@ -179,7 +179,7 @@ const Routines: React.FC = () => {
                 type="button"
                 onClick={(event) => {
                   event.stopPropagation();
-                  dispatch(changeChoiceModalVisibility(true));
+                  dispatch(setChoiceModalVisibility(true));
                 }}
               >
                 <RemoveIcon /> Remove Routine

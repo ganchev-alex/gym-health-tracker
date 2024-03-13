@@ -7,7 +7,7 @@ import { RootState } from "../../../features/store";
 import { selectMode, setAuth } from "../../../features/user-actions";
 import { setLoadingState } from "../../../features/loading-actions";
 import {
-  changeErrorModalVisibility,
+  setErrorModalVisibility,
   setErrorModalState,
 } from "../../../features/modals";
 
@@ -128,7 +128,7 @@ const ProfileForm: React.FC = function () {
             redirectionRoute: "/auth",
           })
         );
-        dispatch(changeErrorModalVisibility(true));
+        dispatch(setErrorModalVisibility(true));
       } finally {
         dispatch(setLoadingState(false));
       }
@@ -190,7 +190,7 @@ const ProfileForm: React.FC = function () {
             })
           );
           dispatch(setAuth({ email: "", password: "" }));
-          dispatch(changeErrorModalVisibility(true));
+          dispatch(setErrorModalVisibility(true));
         }
       } catch (error) {
         dispatch(
@@ -203,7 +203,7 @@ const ProfileForm: React.FC = function () {
             redirectionRoute: "/auth",
           })
         );
-        dispatch(changeErrorModalVisibility(true));
+        dispatch(setErrorModalVisibility(true));
       } finally {
         dispatch(setLoadingState(false));
       }

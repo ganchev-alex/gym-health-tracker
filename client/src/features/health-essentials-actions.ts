@@ -26,6 +26,7 @@ interface Targets {
   burntCaloriesTarget: number;
   sleepTarget: number;
   waterTarget: number;
+  caloriesIntake: number;
 }
 
 const essentials: {
@@ -44,6 +45,7 @@ const essentials: {
     burntCaloriesTarget: 0,
     sleepTarget: 0,
     waterTarget: 0,
+    caloriesIntake: 0,
   },
   today: {
     workouts: [],

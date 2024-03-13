@@ -27,7 +27,7 @@ import useInput from "../../../hooks/useInput";
 import { getToken } from "../../../util/auth";
 import { mainAPIPath } from "../../../App";
 import {
-  changeChoiceModalVisibility,
+  setChoiceModalVisibility,
   setErrorModalState,
 } from "../../../features/modals";
 import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
@@ -43,7 +43,7 @@ import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
 const Backdrop = function () {
   const dispatch = useDispatch();
   const clickHandler = function () {
-    dispatch(changeChoiceModalVisibility(true));
+    dispatch(setChoiceModalVisibility(true));
   };
   return (
     <div
@@ -135,7 +135,7 @@ const RoutineForm = function () {
   };
 
   const cancel = function () {
-    dispatch(changeChoiceModalVisibility(true));
+    dispatch(setChoiceModalVisibility(true));
   };
 
   const onSubmitHandler = async function (
@@ -217,7 +217,7 @@ const RoutineForm = function () {
               details:
                 "It seems like you've made a request with invalid data. Please make a new request following the provided steps of the forms you are filling in.",
               label: "Reset",
-              redirectionRoute: "/app/workouts",
+              redirectionRoute: "/app/dashboard",
             })
           );
         } else {
@@ -238,7 +238,7 @@ const RoutineForm = function () {
             details:
               "It seems like your request didn't go throgh. Please check your internet connection and try again.",
             label: "Ok",
-            redirectionRoute: "/app/workouts",
+            redirectionRoute: "/app/dashboard",
           })
         );
       } finally {
@@ -285,7 +285,7 @@ const RoutineForm = function () {
               details:
                 "It seems like you've made a request with invalid data. Please make a new request following the provided steps of the forms you are filling in.",
               label: "Reset",
-              redirectionRoute: "/app/workouts",
+              redirectionRoute: "/app/dashboard",
             })
           );
         } else {
@@ -306,7 +306,7 @@ const RoutineForm = function () {
             details:
               "It seems like your request didn't go throgh. Please check your internet connection and try again.",
             label: "Ok",
-            redirectionRoute: "/app/workouts",
+            redirectionRoute: "/app/dashboard",
           })
         );
       } finally {

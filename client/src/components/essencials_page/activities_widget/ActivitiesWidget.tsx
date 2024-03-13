@@ -13,6 +13,7 @@ import ByciclingIcon from "../../../assets/svg_icon_components/ByciclingIcon";
 import MeditationIcon from "../../../assets/svg_icon_components/MeditationIcon";
 import WalkingIcon from "../../../assets/svg_icon_components/WalkingIcon";
 import { setWorkoutState, setWorkoutTitle } from "../../../features/workout";
+import { handleHorizontalScroll } from "../../../util/horizontalScroll";
 
 const ActivitiesWidget = function () {
   const dispatch = useDispatch();
@@ -30,48 +31,6 @@ const ActivitiesWidget = function () {
   );
 
   const scrollRef = useRef<HTMLDivElement>(null);
-  const handleHorizontalScroll = (event: React.WheelEvent<HTMLDivElement>) => {
-    const container = scrollRef.current;
-    if (container) {
-      const scrollAmount = event.deltaY * 1.5;
-      const scrollLeft = container.scrollLeft;
-      const maxScrollLeft = container.scrollWidth - container.clientWidth;
-
-      let newScrollLeft = scrollLeft + scrollAmount;
-
-      newScrollLeft = Math.max(0, Math.min(newScrollLeft, maxScrollLeft));
-      smoothScroll(container, scrollLeft, newScrollLeft);
-    }
-  };
-
-  const smoothScroll = (
-    element: HTMLElement,
-    start: number,
-    end: number,
-    duration = 300
-  ) => {
-    const startTime = performance.now();
-    const animateScroll = (timestamp: number) => {
-      const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const ease = easeOutQuart(progress);
-
-      element.scrollTo({
-        left: start + (end - start) * ease,
-        behavior: "auto",
-      });
-
-      if (elapsed < duration) {
-        requestAnimationFrame(animateScroll);
-      }
-    };
-
-    requestAnimationFrame(animateScroll);
-  };
-
-  const easeOutQuart = (t: number) => {
-    return 1 - --t * t * t * t;
-  };
 
   const startWorkout = function () {
     dispatch(setWorkoutTitle());
@@ -106,7 +65,7 @@ const ActivitiesWidget = function () {
               <div
                 className={styles.activities}
                 ref={scrollRef}
-                onWheel={handleHorizontalScroll}
+                onWheel={(event) => handleHorizontalScroll(event, scrollRef)}
               >
                 {essentials.activities.map((session, index) => {
                   return (

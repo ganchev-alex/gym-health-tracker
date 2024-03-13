@@ -31,6 +31,7 @@ import HistoryPreviewModal from "../workouts_page/history_preview/HistoryPreview
 import {
   Essentials,
   setLoadedEssentialsData,
+  setTargets,
 } from "../../features/health-essentials-actions";
 import {
   ExploreCardsI,
@@ -48,22 +49,6 @@ function RootLayout() {
   const dispatch = useDispatch();
   const fetchedData = useLoaderData();
 
-  const {
-    today: todayEssData,
-    yesterday: yesterdayEssData,
-    updated,
-  } = useSelector((state: RootState) => state.healthEssentials);
-
-  const { workoutActivity, workoutVisibility } = useSelector(
-    (state: RootState) => state.workoutState
-  );
-  const historyRecords = useSelector(
-    (state: RootState) => state.widgetsManager.calendarWidget.previewRecords
-  );
-  const { timer, active } = useSelector((state: RootState) => {
-    return state.workoutState.restTimer;
-  });
-
   const toggleState = useSelector((state: RootState) => {
     return state.styleManager.toggleState;
   });
@@ -76,14 +61,13 @@ function RootLayout() {
   const explorePreviewVisibility = useSelector((state: RootState) => {
     return state.styleManager.explorePreviewVisibility;
   });
-
   const { mainHeaderContent, subHeaderContent, centered } = useSelector(
     (state: RootState) => {
       return state.styleManager.headers;
     }
   );
 
-  // UseEffect: User Data Manager
+  // useEffect: User Data Manager
   useEffect(() => {
     switch (fetchedData) {
       case "TOKEN_NOT_FOUND":
@@ -110,7 +94,19 @@ function RootLayout() {
     }
   }, [dispatch]);
 
-  // UseEffect: Timers & Duration Management
+  // useEffect: Timers & Duration Management
+  const { workoutActivity, workoutVisibility } = useSelector(
+    (state: RootState) => state.workoutState
+  );
+
+  const historyRecords = useSelector(
+    (state: RootState) => state.widgetsManager.calendarWidget.previewRecords
+  );
+
+  const { timer, active } = useSelector((state: RootState) => {
+    return state.workoutState.restTimer;
+  });
+
   useEffect(() => {
     let durationInterval: any;
     let restTimerInterval: any;
@@ -139,7 +135,13 @@ function RootLayout() {
     };
   }, [dispatch, active, timer, workoutActivity]);
 
-  // useEffect: Essentials Updating Manager
+  // useEffect: Essentials Auto Updating/Saving Manager
+  const {
+    today: todayEssData,
+    yesterday: yesterdayEssData,
+    updated,
+  } = useSelector((state: RootState) => state.healthEssentials);
+
   useEffect(() => {
     const updateEssentialsData = async function () {
       try {
@@ -187,7 +189,76 @@ function RootLayout() {
     };
   }, [todayEssData, yesterdayEssData, updated]);
 
-  // useEffect: Explore Infinitive Scroll
+  // useEffect: Handling the set up of the user's targets for the essential data.
+  const { preferences } = useSelector(
+    (state: RootState) => state.userActions.loadedUserData
+  );
+  const { sex, weight, height, age } = useSelector(
+    (state: RootState) => state.userActions.loadedUserData.personalDetails
+  );
+
+  useEffect(() => {
+    let activityTimeTarget;
+    switch (preferences.fitnessGoal) {
+      case "Muscle & Weigth Gain":
+      case "Muscle & Weigth Lost":
+      case "Tone and Define Muscles":
+        activityTimeTarget = 5400;
+        break;
+      case "Improved Cardiovascular Health":
+      case "Maintain Current Fitness Level":
+      default:
+        activityTimeTarget = 3600;
+        break;
+      case "Increased Flexibility":
+      case "Improve Overall Health":
+        activityTimeTarget = 2700;
+        break;
+      case "Stress Relief and Relaxation":
+      case "Enhance Mental Well-being":
+        activityTimeTarget = 1800;
+    }
+
+    const burntCaloriesTarget =
+      preferences.fitnessGoal === "Muscle & Weigth Lost" ? 750 : 300;
+
+    const sleepTarget =
+      preferences.frequencyStatus === "5-6 times a week" ||
+      preferences.frequencyStatus === "Daily"
+        ? 9
+        : 7.5;
+
+    const waterTarget =
+      preferences.frequencyStatus === "5-6 times a week" ||
+      preferences.frequencyStatus === "Daily"
+        ? 2500
+        : 2000;
+
+    let caloriesIntake = 0;
+    if ("male" === sex) {
+      caloriesIntake = 10 * weight + 6.25 * height * 100 - 5 * age + 5;
+    } else if ("female" === sex) {
+      caloriesIntake = 10 * weight + 6.25 * height * 100 - 5 * age - 161;
+    }
+
+    if ("Muscle & Weigth Gain" === preferences.fitnessGoal) {
+      caloriesIntake += 500;
+    } else if ("Muscle & Weigth Lost" === preferences.fitnessLevel) {
+      caloriesIntake -= 500;
+    }
+
+    dispatch(
+      setTargets({
+        activityTimeTarget,
+        burntCaloriesTarget,
+        sleepTarget,
+        waterTarget,
+        caloriesIntake: Math.floor(caloriesIntake),
+      })
+    );
+  }, [preferences]);
+
+  // useEffect: Explore Infinitive Scroll Handler
   const scrollTracker = useRef<HTMLDivElement>(null);
   const [fetchingState, setFetchingState] = useState(false);
   const { resetedFetching, fetchEnd, filterOptions } = useSelector(
@@ -335,6 +406,8 @@ interface UserData {
     sex: string;
     profilePicture: string;
     weight: number;
+    height: number;
+    age: number;
   };
   preferences: {
     selectedActivities: string[];

@@ -21,6 +21,7 @@ import ByciclingIcon from "../../../assets/svg_icon_components/ByciclingIcon";
 import MeditationIcon from "../../../assets/svg_icon_components/MeditationIcon";
 import SwimmingIcon from "../../../assets/svg_icon_components/SwimmingIcon";
 import WalkingIcon from "../../../assets/svg_icon_components/WalkingIcon";
+import { handleHorizontalScroll } from "../../../util/horizontalScroll";
 
 interface FetchedExercise {
   exerciseId: {
@@ -176,48 +177,6 @@ const HistoryPreview = function () {
   }, [index]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
-  const handleHorizontalScroll = (event: React.WheelEvent<HTMLDivElement>) => {
-    const container = scrollRef.current;
-    if (container) {
-      const scrollAmount = event.deltaY * 1.5;
-      const scrollLeft = container.scrollLeft;
-      const maxScrollLeft = container.scrollWidth - container.clientWidth;
-
-      let newScrollLeft = scrollLeft + scrollAmount;
-
-      newScrollLeft = Math.max(0, Math.min(newScrollLeft, maxScrollLeft));
-      smoothScroll(container, scrollLeft, newScrollLeft);
-    }
-  };
-
-  const smoothScroll = (
-    element: HTMLElement,
-    start: number,
-    end: number,
-    duration = 300
-  ) => {
-    const startTime = performance.now();
-    const animateScroll = (timestamp: number) => {
-      const elapsed = timestamp - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const ease = easeOutQuart(progress);
-
-      element.scrollTo({
-        left: start + (end - start) * ease,
-        behavior: "auto",
-      });
-
-      if (elapsed < duration) {
-        requestAnimationFrame(animateScroll);
-      }
-    };
-
-    requestAnimationFrame(animateScroll);
-  };
-
-  const easeOutQuart = (t: number) => {
-    return 1 - --t * t * t * t;
-  };
 
   let activityPreview: JSX.Element | null = null;
   if (historyRecords.sessionRecords.length > 0) {
@@ -288,7 +247,7 @@ const HistoryPreview = function () {
         <div
           className={styles["sessions-wrapper"]}
           ref={scrollRef}
-          onWheel={handleHorizontalScroll}
+          onWheel={(event) => handleHorizontalScroll(event, scrollRef)}
         >
           {historyRecords.sessionRecords.map((session, index) => {
             return (

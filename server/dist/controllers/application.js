@@ -12,6 +12,9 @@ const activity_session_1 = __importDefault(require("../models/activity-session")
 const essentials_1 = __importDefault(require("../models/essentials"));
 const ResError_1 = __importDefault(require("../util/ResError"));
 const explore_1 = __importDefault(require("./explore"));
+const statistic_1 = __importDefault(require("../models/statistic"));
+const dateModification_1 = require("../util/dateModification");
+const statistics_1 = require("./statistics");
 const userData = async (req, res, next) => {
     const userId = req.userId;
     try {
@@ -31,6 +34,8 @@ const userData = async (req, res, next) => {
                     sex: user.personalDetails.sex,
                     profilePicture: user.personalDetails.profilePicture,
                     weight: user.personalDetails.weight,
+                    height: user.personalDetails.height,
+                    age: user.personalDetails.age,
                 },
                 routines: user.routines,
                 preferences: user.preferences,
@@ -217,7 +222,85 @@ const saveWorkout = async (req, res, next) => {
             const error = new ResError_1.default("\n- func. saveWorkout (application router): User was not found.", 404);
             return next(error);
         }
+        const referenceDate = new Date();
+        let statistics = await statistic_1.default.findOne({ userId: user._id });
+        if (!statistics) {
+            statistics = await new statistic_1.default({
+                userId: user._id,
+                muscleDistribution: [
+                    {
+                        week: (0, dateModification_1.getWeekNumber)(referenceDate),
+                        month: referenceDate.getMonth(),
+                        year: referenceDate.getFullYear(),
+                        tracker: [
+                            {
+                                muscle: "back",
+                                counter: 0,
+                            },
+                            {
+                                muscle: "chest",
+                                counter: 0,
+                            },
+                            {
+                                muscle: "core",
+                                counter: 0,
+                            },
+                            {
+                                muscle: "shoulders",
+                                counter: 0,
+                            },
+                            {
+                                muscle: "arms",
+                                counter: 0,
+                            },
+                            {
+                                muscle: "legs",
+                                counter: 0,
+                            },
+                        ],
+                    },
+                ],
+            });
+        }
         const newRecords = [];
+        let muscleDistribution = statistics.muscleDistribution.find((chunk) => chunk.week === (0, dateModification_1.getWeekNumber)(referenceDate) &&
+            chunk.month === referenceDate.getMonth() &&
+            chunk.year === referenceDate.getFullYear());
+        let isNewChunk = false;
+        if (!muscleDistribution) {
+            isNewChunk = true;
+            muscleDistribution = {
+                week: (0, dateModification_1.getWeekNumber)(referenceDate),
+                month: referenceDate.getMonth(),
+                year: referenceDate.getFullYear(),
+                tracker: [
+                    {
+                        muscle: "back",
+                        counter: 0,
+                    },
+                    {
+                        muscle: "chest",
+                        counter: 0,
+                    },
+                    {
+                        muscle: "core",
+                        counter: 0,
+                    },
+                    {
+                        muscle: "shoulders",
+                        counter: 0,
+                    },
+                    {
+                        muscle: "arms",
+                        counter: 0,
+                    },
+                    {
+                        muscle: "legs",
+                        counter: 0,
+                    },
+                ],
+            };
+        }
         req.body.exercises.forEach((exercise) => {
             const previousRecordIndex = user.exerciseRecords.findIndex((record) => record.exerciseId.toString() === exercise.exerciseId.toString());
             const bestSet = exercise.sets.reduce((best, set) => {
@@ -243,7 +326,17 @@ const saveWorkout = async (req, res, next) => {
                     });
                 }
             }
+            (0, statistics_1.insertMuscleDistributionData)(muscleDistribution, exercise.muscles);
         });
+        if (isNewChunk) {
+            statistics.muscleDistribution.push(muscleDistribution);
+        }
+        else {
+            statistics.muscleDistribution[statistics.muscleDistribution.findIndex((chunk) => chunk.week === (0, dateModification_1.getWeekNumber)(referenceDate) &&
+                chunk.month === referenceDate.getMonth() &&
+                chunk.year === referenceDate.getFullYear())] = muscleDistribution;
+        }
+        await statistics.save();
         const workoutData = {
             userId,
             date: req.body.date,

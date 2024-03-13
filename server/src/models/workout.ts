@@ -5,6 +5,7 @@ import { Schema } from "mongoose";
 interface ExerciseData {
   exerciseId: mongoose.Types.ObjectId;
   name: string;
+  muscles: string[];
   sets: {
     reps: number;
     kg: number;

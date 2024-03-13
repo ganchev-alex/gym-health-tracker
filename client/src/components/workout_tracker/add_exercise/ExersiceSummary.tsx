@@ -21,6 +21,8 @@ import {
   addToNewRoutine,
   replaceExerciseFromRoutine,
 } from "../../../features/workout-page-actions";
+import { fetchBestSet } from "./ExerciseResult";
+import { setLoadingState } from "../../../features/loading-actions";
 
 const ExersiceSummary = function () {
   const dispatch = useDispatch();
@@ -30,13 +32,16 @@ const ExersiceSummary = function () {
       return state.workoutState;
     });
 
-  const onAddExercise = function () {
+  const onAddExercise = async function () {
+    dispatch(setLoadingState(true));
+    const bestSet = await fetchBestSet(singleExerciseData._id);
+    dispatch(setLoadingState(false));
     switch (addExerciseState.mode) {
       case "REPLACE":
         dispatch(
           replaceExercise({
             currant: optionsMenuState.exerciseId || "",
-            replaceWith: singleExerciseData,
+            replaceWith: { ...singleExerciseData, bestSet },
           })
         );
         dispatch(setOptionsMenuState({ visibility: false }));
@@ -45,17 +50,17 @@ const ExersiceSummary = function () {
         dispatch(
           replaceExerciseFromRoutine({
             currant: optionsMenuState.exerciseId || "",
-            replaceWith: singleExerciseData,
+            replaceWith: { ...singleExerciseData, bestSet },
           })
         );
         dispatch(setOptionsMenuState({ visibility: false }));
         break;
       case "ADD_ROUTINE":
-        dispatch(addToNewRoutine(singleExerciseData));
+        dispatch(addToNewRoutine({ ...singleExerciseData, bestSet }));
         break;
       case "ADD":
       default:
-        dispatch(addExercise(singleExerciseData));
+        dispatch(addExercise({ ...singleExerciseData, bestSet }));
         break;
     }
 

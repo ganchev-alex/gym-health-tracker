@@ -2,7 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 18%;
+  height: 16%;
 }
 
 .day-slot {
@@ -45,19 +45,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-bottom: 0.5em;
+  box-sizing: border-box;
 }
 
 .header h5 {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   margin: 0;
-  color: #e54c60;
 }
 
 .header button {
   background-color: #ededed;
   color: #828282;
   border-radius: 50px;
-  width: fit-content;
+  height: 100%;
   aspect-ratio: 1/1;
   outline: 0;
   border: #828282 1px solid;

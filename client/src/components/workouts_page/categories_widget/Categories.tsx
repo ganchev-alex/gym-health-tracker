@@ -9,16 +9,19 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../../features/store";
 
 const Categroies: React.FC = () => {
-  const formVisibility = useSelector((state: RootState) => {
-    return state.widgetsManager.routinesWidget.newRoutine.formVisibility;
-  });
+  const formVisibility = useSelector(
+    (state: RootState) =>
+      state.widgetsManager.routinesWidget.newRoutine.formVisibility
+  );
+
+  const { isMale } = useSelector((state: RootState) => state.userActions);
 
   return (
     <React.Fragment>
       {formVisibility && <RoutineForm />}
       <div className={styles.widget}>
         <div className={styles.header}>
-          <h6>Categories</h6>
+          <h6 style={isMale ? { color: "#472ED8" } : undefined}>Categories</h6>
           <a>See all</a>
         </div>
         <Activities />

@@ -72,6 +72,8 @@ const WorkoutTracker: React.FC = () => {
     (state: RootState) => state.modalsManager.choiceModal.visibility
   );
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   const hours = Math.floor(timer / 3600);
   const minutes = Math.floor((timer % 3600) / 60);
   const remainingSeconds = timer % 60;
@@ -249,7 +251,6 @@ const WorkoutTracker: React.FC = () => {
         dispatch(changeFinishedWorkoutVisibility(true));
         navigate("/app/dashboard");
       } else {
-        // Save the state of the workout to the local storage!
         dispatch(
           setNotificationState({
             message: "😨 Something went wrong!",
@@ -261,7 +262,6 @@ const WorkoutTracker: React.FC = () => {
         }, 4000);
       }
     } catch (error) {
-      // Save the state of the workout to the local storage!
       dispatch(
         setNotificationState({
           message: "😨 Something went wrong!",
@@ -273,8 +273,6 @@ const WorkoutTracker: React.FC = () => {
       }, 4000);
     }
   };
-
-  // Append the new session as well ->->->
   const submitSession = async function () {
     const sessionData = {
       date: new Date().toISOString(),
@@ -310,7 +308,6 @@ const WorkoutTracker: React.FC = () => {
         dispatch(changeFinishedWorkoutVisibility(true));
         navigate("/app/dashboard");
       } else {
-        // Save the state of the workout to the local storage!
         dispatch(
           setNotificationState({
             message: "😨 Something went wrong!",
@@ -345,7 +342,11 @@ const WorkoutTracker: React.FC = () => {
                 setImageLoadState(true);
               }}
             />
-            <div className={styles.filter} />
+            <div
+              className={`${isMale ? styles.male : styles.female} ${
+                styles.filter
+              }`}
+            />
             <div className={styles["session-timer"]}>
               <TimerIcon />
               <h3>Duration</h3>
@@ -369,6 +370,11 @@ const WorkoutTracker: React.FC = () => {
                   setModalMode(true);
                   sessionAction();
                 }}
+                style={
+                  isMale
+                    ? { backgroundColor: "#472ed8", borderColor: "#472ed8" }
+                    : undefined
+                }
               >
                 End Session
               </button>
@@ -389,6 +395,7 @@ const WorkoutTracker: React.FC = () => {
                 <button
                   onClick={proccedWorkoutSubmission}
                   disabled={workoutState.exercises.length === 0}
+                  style={isMale ? { backgroundColor: "#472ed8" } : undefined}
                 >
                   Finish
                 </button>

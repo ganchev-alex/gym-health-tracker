@@ -83,8 +83,16 @@
   padding: 0.5em 2em;
   font-size: 1rem;
   font-weight: 600;
-  color: #e54c60;
-  border: #e54c60 2.5px solid;
   background-color: transparent;
   border-radius: 10px;
+}
+
+.male.error-wrapper button {
+  color: #472ed8;
+  border: #472ed8 2.5px solid;
+}
+
+.female.error-wrapper button {
+  color: #e54c60;
+  border: #e54c60 2.5px solid;
 }

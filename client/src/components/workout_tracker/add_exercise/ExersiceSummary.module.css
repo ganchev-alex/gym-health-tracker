@@ -33,7 +33,6 @@
 }
 
 .add-button {
-  background-color: #e54c60;
   border: none;
   color: white;
   font-size: 1rem;
@@ -43,6 +42,14 @@
   position: absolute;
   right: 0;
   margin-right: 0.7em;
+}
+
+.male.add-button {
+  background-color: #472ed8;
+}
+
+.female.add-button {
+  background-color: #e54c60;
 }
 
 .main {

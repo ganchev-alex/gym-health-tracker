@@ -326,6 +326,8 @@ const saveWorkout = async (
 
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log(errors);
+    console.log(req.body);
     const error = new ResError(
       "\n- func. saveWorkout (application router): Compromized validation. The user haven't followed the validation instructions on the front end.",
       422

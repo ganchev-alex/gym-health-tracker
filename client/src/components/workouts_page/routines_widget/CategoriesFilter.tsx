@@ -12,12 +12,14 @@ const CategoriesFilter: React.FC<{ categories: string[] }> = (props) => {
   const filterLabels = [...new Set(props.categories)];
 
   const dispatch = useDispatch();
+
   const selectedFilters = useSelector((state: RootState) => {
     return state.widgetsManager.routinesWidget.selectedFilters;
   });
-  let isAll = useSelector((state: RootState) => {
-    return state.widgetsManager.routinesWidget.isAll;
-  });
+
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
+  let isAll = true;
 
   if (selectedFilters.length !== 0) {
     isAll = false;
@@ -40,7 +42,9 @@ const CategoriesFilter: React.FC<{ categories: string[] }> = (props) => {
   return (
     <div className={styles.filter}>
       <button
-        className={isAll ? styles.active : styles.inactive}
+        className={`${isMale ? styles.male : styles.female} ${
+          isAll ? styles.active : styles.inactive
+        }`}
         onClick={() => onSelectAll()}
       >
         All
@@ -49,9 +53,9 @@ const CategoriesFilter: React.FC<{ categories: string[] }> = (props) => {
         return (
           <button
             key={index}
-            className={
+            className={`${isMale ? styles.male : styles.female} ${
               selectedFilters.includes(label) ? styles.active : styles.inactive
-            }
+            }`}
             onClick={() => onSelectFilter(label)}
           >
             {label}

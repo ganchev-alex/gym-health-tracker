@@ -1,8 +1,11 @@
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./CalendarBody.module.css";
+
 import { RootState } from "../../../features/store";
-import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
 import { showHistoryRecords } from "../../../features/workout-page-actions";
+
+import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
+
+import styles from "./CalendarBody.module.css";
 
 const CalendarBody: React.FC<{
   currantDate: Date;
@@ -16,6 +19,8 @@ const CalendarBody: React.FC<{
 }> = function (props) {
   const dispatch = useDispatch();
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   let daysList: JSX.Element[] = [];
   const savedHistoryData = useSelector((state: RootState) => {
     return state.widgetsManager.calendarWidget.monthData.find(
@@ -25,7 +30,6 @@ const CalendarBody: React.FC<{
     );
   });
 
-  // Previous month's last days
   for (let i = props.firstDayMonth; i > 0; i--) {
     daysList.push(
       <li key={`-${i}`} className={styles["not-this-month"]}>
@@ -35,7 +39,6 @@ const CalendarBody: React.FC<{
   }
 
   for (let i = 1; i <= props.lastDateMonth; i++) {
-    // Adding an haveWorkout state and today to the currant element
     const isToday =
       i === props.currantDate.getDate() &&
       props.currantMonth === new Date().getMonth() &&
@@ -52,8 +55,13 @@ const CalendarBody: React.FC<{
         <li
           key={i}
           className={`${isToday ? styles.today : ""} ${
-            possibleWorkoutRecord || possibleSessionRecord ? styles.active : ""
+            possibleWorkoutRecord || possibleSessionRecord
+              ? `${isMale ? styles.male : styles.female} ${styles.active}`
+              : ""
           }`}
+          style={
+            isToday ? { color: isMale ? "#472ed8" : "#e54c60" } : undefined
+          }
           onClick={
             possibleWorkoutRecord || possibleSessionRecord
               ? () => {
@@ -71,7 +79,13 @@ const CalendarBody: React.FC<{
       );
     } else {
       daysList.push(
-        <li key={i} className={`${isToday ? styles.today : ""}`}>
+        <li
+          key={i}
+          className={`${isToday ? styles.today : ""}`}
+          style={
+            isToday ? { color: isMale ? "#472ed8" : "#e54c60" } : undefined
+          }
+        >
           {i}
         </li>
       );
@@ -89,7 +103,7 @@ const CalendarBody: React.FC<{
   return (
     <div className={styles["calendar-body"]}>
       {props.loadingState && <LoadingPlane />}
-      <ul className={styles.weeks}>
+      <ul className={`${isMale ? styles.male : styles.female} ${styles.weeks}`}>
         <li>Mon</li>
         <li>Tue</li>
         <li>Wed</li>

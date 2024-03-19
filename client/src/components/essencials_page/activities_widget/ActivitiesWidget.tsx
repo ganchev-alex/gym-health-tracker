@@ -30,6 +30,8 @@ const ActivitiesWidget = function () {
     (state: RootState) => state.healthEssentials.targets
   );
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   const scrollRef = useRef<HTMLDivElement>(null);
 
   const startWorkout = function () {
@@ -39,7 +41,11 @@ const ActivitiesWidget = function () {
 
   return (
     <div className={styles["wrapper"]}>
-      <main className={styles["review-content"]}>
+      <main
+        className={`${isMale ? styles.male : styles.female} ${
+          styles["review-content"]
+        }`}
+      >
         {essentials.activities.length === 0 &&
         essentials.workouts.length === 0 ? (
           <div className={styles["empty-data"]}>
@@ -56,7 +62,12 @@ const ActivitiesWidget = function () {
               </p>
             )}
             {isToday && (
-              <button onClick={startWorkout}>Start Empty Workout</button>
+              <button
+                onClick={startWorkout}
+                style={isMale ? { backgroundColor: "#472ed8" } : undefined}
+              >
+                Start Empty Workout
+              </button>
             )}
           </div>
         ) : (
@@ -113,7 +124,12 @@ const ActivitiesWidget = function () {
                 <p>
                   You didn't do any specific workouts yet but you stayed active!
                 </p>
-                <button onClick={startWorkout}>Start Empty Workout</button>
+                <button
+                  onClick={startWorkout}
+                  style={isMale ? { backgroundColor: "#472ed8" } : undefined}
+                >
+                  Start Empty Workout
+                </button>
               </div>
             )}
           </React.Fragment>

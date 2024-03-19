@@ -30,6 +30,17 @@
   left: 0;
   width: 100%;
   height: 100%;
+}
+
+.male.gradient {
+  background: linear-gradient(
+    115deg,
+    rgba(71, 46, 216, 0.9) 0%,
+    rgba(0, 0, 0, 0) 90%
+  );
+}
+
+.female.gradient {
   background: linear-gradient(
     115deg,
     rgba(229, 76, 96, 0.9) 0%,

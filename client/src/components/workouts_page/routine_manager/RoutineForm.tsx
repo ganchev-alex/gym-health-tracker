@@ -109,6 +109,8 @@ const RoutineForm = function () {
     return state.loadingManager.isLoading;
   });
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   useEffect(() => {}, [
     routineExercises,
     routineTitleErrorState,
@@ -318,7 +320,10 @@ const RoutineForm = function () {
   };
 
   return (
-    <form onSubmit={onSubmitHandler} className={styles.form}>
+    <form
+      onSubmit={onSubmitHandler}
+      className={`${isMale ? styles.male : styles.female} ${styles.form}`}
+    >
       {addExerciseVisibility && <AddExercisesModal />}
       {exerciseSummaryVisibility && <ExersiceSummaryModal />}
       {choiceModalVisibility && (
@@ -383,7 +388,9 @@ const RoutineForm = function () {
         />
         <button
           type="submit"
-          className={styles["submit-button"]}
+          className={`${
+            isMale ? styles["male-button"] : styles["female-button"]
+          } ${styles["submit-button"]}`}
           style={
             !(
               titleValidationStatus &&
@@ -427,6 +434,7 @@ const RoutineForm = function () {
         )}
         <button
           className={inheritedStyles["add-button"]}
+          style={isMale ? { backgroundColor: "#472ed8" } : undefined}
           type="button"
           onClick={clickHandler}
         >

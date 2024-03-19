@@ -48,7 +48,7 @@ const LogInForm: React.FC = function () {
   const token = getToken();
   useEffect(() => {
     if (token && token != "TOKEN_EXPIRED") {
-      navigate("/app");
+      navigate("/app/dashboard");
     }
   }, [token]);
 

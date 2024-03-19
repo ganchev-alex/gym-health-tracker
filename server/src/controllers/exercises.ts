@@ -51,23 +51,58 @@ const getBestSet = async (
     );
 
     if (bestSet) {
-      return res
-        .status(200)
-        .json({
-          message: "Best set was found.",
-          bestSet: { kg: bestSet.kg, reps: bestSet.reps },
-        });
+      return res.status(200).json({
+        message: "Best set was found.",
+        bestSet: { kg: bestSet.kg, reps: bestSet.reps },
+      });
     } else {
-      return res
-        .status(200)
-        .json({
-          message: "Currantly no best record.",
-          bestSet: { kg: 0, reps: 0 },
-        });
+      return res.status(200).json({
+        message: "Currantly no best record.",
+        bestSet: { kg: 0, reps: 0 },
+      });
     }
   } catch (err) {
     const error = new ResError(
-      "\n- func. exercises (exercises router): Failed to fetch exercise's best set.\nError: " +
+      "\n- func. bestSet (exercises router): Failed to fetch exercise's best set.\nError: " +
+        err
+    );
+    return next(error);
+  }
+};
+
+const getBestSets = async (
+  req: express.Request<{}, {}, { exerciseIds: string[] }>,
+  res: express.Response,
+  next: express.NextFunction
+) => {
+  const userId = (req as any).userId;
+
+  try {
+    const user = await User.findById(userId);
+
+    if (!user) {
+      const error = new ResError("User was not found!", 404);
+      return next(error);
+    }
+
+    const bestSets = req.body.exerciseIds.map((exerciseId) => {
+      const bestSet = user.exerciseRecords.find(
+        (record) => record.exerciseId.toString() === exerciseId
+      );
+
+      if (bestSet) {
+        return { exerciseId, bestSet };
+      } else {
+        return { exerciseId, bestSet: { exerciseId, reps: 0, kg: 0 } };
+      }
+    });
+
+    return res
+      .status(200)
+      .json({ message: "Best sets retrieved succesfully.", bestSets });
+  } catch (err) {
+    const error = new ResError(
+      "\n- func. bestSets (exercises router): Failed to fetch exercises' best sets.\nError: " +
         err
     );
     return next(error);
@@ -77,6 +112,7 @@ const getBestSet = async (
 const exerciseController = {
   exercises,
   getBestSet,
+  getBestSets,
 };
 
 export default exerciseController;

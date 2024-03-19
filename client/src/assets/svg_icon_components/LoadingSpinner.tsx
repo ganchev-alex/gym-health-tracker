@@ -2,12 +2,17 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../features/store";
 
 const LoadingSpinner = function () {
-  const selectedTheme = useSelector((state: RootState) => {
-    return state.userActions.sex;
+  const { isMale } = useSelector((state: RootState) => {
+    return state.userActions;
   });
 
-  const styleChecker = localStorage.getItem("userSex") || selectedTheme;
-  const selectedColor = styleChecker == "male" ? "#472ED8" : "#E54C60";
+  const presavedSex = localStorage.getItem("userSex");
+  let selectedColor = "#472ed8";
+  if (!presavedSex) {
+    selectedColor = isMale ? "#472ed8" : "#e54c60";
+  } else {
+    selectedColor = presavedSex === "male" ? "#472ed8" : "#e54c60";
+  }
 
   return (
     <svg

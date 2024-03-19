@@ -9,7 +9,6 @@ import {
   setAddExerciseState,
   setOptionsMenuState,
 } from "../../../features/workout";
-import { useEffect } from "react";
 import ReplaceIcon from "../../../assets/svg_icon_components/ReplaceIcon";
 import RemoveIcon from "../../../assets/svg_icon_components/RemoveIcon";
 import ExersiceSummaryModal from "../add_exercise/ExersiceSummary";
@@ -23,6 +22,8 @@ const WorkoutDisplay: React.FC = function () {
   } = useSelector((state: RootState) => {
     return state.workoutState;
   });
+
+  const { isMale } = useSelector((state: RootState) => state.userActions);
 
   const dispatch = useDispatch();
 
@@ -71,6 +72,7 @@ const WorkoutDisplay: React.FC = function () {
           type="button"
           className={styles["add-button"]}
           onClick={clickHandler}
+          style={isMale ? { backgroundColor: "#472ed8" } : undefined}
         >
           + Add Exercise
         </button>
@@ -78,7 +80,11 @@ const WorkoutDisplay: React.FC = function () {
       {optionsMenuState.visibility && (
         <div className={styles["exercise-menu"]} onClick={closeOptions}>
           <div className={styles["options"]}>
-            <button type="button" onClick={replace}>
+            <button
+              style={isMale ? { color: "#472ed8" } : undefined}
+              type="button"
+              onClick={replace}
+            >
               <ReplaceIcon /> Replace Exercise
             </button>
             <button type="button" onClick={remove}>
@@ -89,6 +95,7 @@ const WorkoutDisplay: React.FC = function () {
           <button
             type="button"
             className={styles["close-button"]}
+            style={isMale ? { color: "#472ed8" } : undefined}
             onClick={closeOptions}
           >
             Close

@@ -351,6 +351,9 @@ const workoutState = createSlice({
         state.restTimer.timer -= action.payload.value;
       }
     },
+    restoreWorkoutState: (state, action: PayloadAction<Workout>) => {
+      return { ...action.payload };
+    },
     restoreWorkoutInitialState: (state) => {
       return { ...initialState };
     },
@@ -384,6 +387,7 @@ export const {
   setRestTimerState,
   decreaseRestTimer,
   operateOnRestTimer,
+  restoreWorkoutState,
   restoreWorkoutInitialState,
 } = workoutState.actions;
 export default workoutState.reducer;

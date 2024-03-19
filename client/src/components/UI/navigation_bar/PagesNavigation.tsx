@@ -1,15 +1,10 @@
-import { useState } from "react";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../features/store";
 
-// Components
 import RouteButton from "./RouteButton";
 
-// CSS Modules
 import styles from "./PagesNavigation.module.css";
 
-// Assets
-import DashboardIcon from "../../../assets/svg_icon_components/DashboardIcon";
 import WorkoutIcon from "../../../assets/svg_icon_components/WorkoutIcon";
 import HealthEssenscialsIcon from "../../../assets/svg_icon_components/HealthEssensialsIcon";
 import ExploreIcon from "../../../assets/svg_icon_components/ExploreIcon";

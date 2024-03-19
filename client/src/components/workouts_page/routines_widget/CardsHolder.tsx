@@ -6,7 +6,7 @@ import WorkoutCard from "./WorkoutCard";
 
 import styles from "./CardsHolder.module.css";
 
-const CardsHolder: React.FC = (props) => {
+const CardsHolder: React.FC = () => {
   const filters = useSelector((state: RootState) => {
     return state.widgetsManager.routinesWidget.selectedFilters;
   });

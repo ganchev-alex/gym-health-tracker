@@ -1,13 +1,18 @@
 .wrapper {
   display: flex;
+  align-items: center;
   width: 100%;
   height: 100%;
 }
 
 .image-slot {
   width: 70%;
-  height: 100%;
+  height: 97%;
+  box-sizing: content-box;
   position: relative;
+  border-radius: 30px;
+  margin-left: 1em;
+  overflow: hidden;
 }
 
 .image-slot img {

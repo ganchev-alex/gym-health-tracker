@@ -35,6 +35,7 @@ const MusclesGraph = function () {
     (state: RootState) => state.statsData
   );
   const { isLoading } = useSelector((state: RootState) => state.loadingManager);
+  const { isMale } = useSelector((state: RootState) => state.userActions);
 
   function calculatePercentageDistribution<T>(
     distribution: T,
@@ -80,8 +81,10 @@ const MusclesGraph = function () {
         {
           label: "This " + timeSpan[0].toUpperCase() + timeSpan.slice(1),
           data: currantDataSet,
-          backgroundColor: "hsla(352, 75%, 60%, 0.5)",
-          borderColor: "#e54c60",
+          backgroundColor: isMale
+            ? "rgba(71, 46, 216, 0.6)"
+            : "rgba(229, 76, 76, 0.5)",
+          borderColor: isMale ? "#472ed8" : "#e54c60",
           borderWidth: 2,
         },
         {

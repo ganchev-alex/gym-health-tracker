@@ -18,6 +18,8 @@ const Timer: React.FC = function () {
     return state.workoutState;
   });
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   const hours = Math.floor(duration / 3600);
   const minutes = Math.floor((duration % 3600) / 60);
   const remainingSeconds = duration % 60;
@@ -27,7 +29,9 @@ const Timer: React.FC = function () {
 
   return (
     <div className={styles.widget}>
-      <div className={styles.gradient}></div>
+      <div
+        className={`${isMale ? styles.male : styles.female} ${styles.gradient}`}
+      />
       <img
         className={styles.image}
         src="https://images.unsplash.com/photo-1587938745570-681161dcfe17?auto=format&fit=crop&q=80&w=1966&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"

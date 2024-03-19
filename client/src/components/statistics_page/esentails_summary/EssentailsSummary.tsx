@@ -28,6 +28,8 @@ const EssentialsSummary = function () {
   );
   const { targets } = useSelector((state: RootState) => state.healthEssentials);
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   const widgetsData = [
     {
       dataRef: "active-time",
@@ -123,7 +125,9 @@ const EssentialsSummary = function () {
       <header className={styles.header}>
         <h6>
           Essentials Overview:{" "}
-          <span>{timeSpan[0].toUpperCase() + timeSpan.slice(1) + "ly"}</span>
+          <span style={isMale ? { color: "#472ed8" } : undefined}>
+            {timeSpan[0].toUpperCase() + timeSpan.slice(1) + "ly"}
+          </span>
         </h6>
         <button
           onClick={() =>

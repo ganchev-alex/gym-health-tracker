@@ -1,28 +1,19 @@
-import { useDispatch, useSelector } from "react-redux";
-import styles from "./WorkoutPad.module.css";
-import {
-  decreaseRestTimer,
-  incrementWorkoutDuration,
-  operateOnRestTimer,
-  setRestTimerState,
-} from "../../../features/workout";
-import { useEffect } from "react";
-import { RootState } from "../../../features/store";
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+
+import { operateOnRestTimer } from "../../../features/workout";
+import { RootState } from "../../../features/store";
+
+import styles from "./WorkoutPad.module.css";
 
 const WorkoutPad = function () {
   const dispatch = useDispatch();
 
-  const workoutState = useSelector((state: RootState) => {
-    return state.workoutState;
-  });
+  const { isMale } = useSelector((state: RootState) => state.userActions);
 
-  const {
-    workoutActivity,
-    workoutTitle: routineTitle,
-    duration,
-    restTimer,
-  } = workoutState;
+  const workoutState = useSelector((state: RootState) => state.workoutState);
+
+  const { workoutTitle: routineTitle, duration, restTimer } = workoutState;
   const { active, timer } = restTimer;
 
   const hours = Math.floor(duration / 3600);
@@ -33,7 +24,17 @@ const WorkoutPad = function () {
   const restSeconds = timer % 60;
 
   return (
-    <div className={styles.widget}>
+    <div
+      className={styles.widget}
+      style={
+        isMale
+          ? {
+              background:
+                "linear-gradient(-125deg, #472ED8 20.25%, #29156B 100%)",
+            }
+          : undefined
+      }
+    >
       <div className={styles.headings}>
         <h5>
           {workoutState.workoutActivity ? routineTitle : "No active workout."}

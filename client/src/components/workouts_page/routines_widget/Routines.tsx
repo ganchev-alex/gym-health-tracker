@@ -1,13 +1,6 @@
-import React, { useEffect, useState } from "react";
-
-import CardsHolder from "./CardsHolder";
-import CategoriesFilter from "./CategoriesFilter";
-
-import styles from "./Routines.module.css";
-import buttonStyle from "../categories_widget/WorkoutsButton.module.css";
-import optionsStyle from "../../workout_tracker/workout_display/WorkoutDisplay.module.css";
-
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
+
 import { RootState } from "../../../features/store";
 import {
   setEditFormData,
@@ -15,19 +8,28 @@ import {
   setNotificationState,
   setRoutineOptionsState,
 } from "../../../features/workout-page-actions";
-import RemoveIcon from "../../../assets/svg_icon_components/RemoveIcon";
-import EditIcon from "../../../assets/svg_icon_components/EditIcon";
-import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
 import { setChoiceModalVisibility } from "../../../features/modals";
+import { setRoutinesData } from "../../../features/user-actions";
+
+import CardsHolder from "./CardsHolder";
+import CategoriesFilter from "./CategoriesFilter";
+import RoutinePreviewModal from "../routine_manager/RoutinePreview";
+import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
+
 import { mainAPIPath } from "../../../App";
 import { getToken } from "../../../util/auth";
-import { setRoutinesData } from "../../../features/user-actions";
-import RoutinePreviewModal from "../routine_manager/RoutinePreview";
+
+import RemoveIcon from "../../../assets/svg_icon_components/RemoveIcon";
+import EditIcon from "../../../assets/svg_icon_components/EditIcon";
+
+import styles from "./Routines.module.css";
+import buttonStyle from "../categories_widget/WorkoutsButton.module.css";
+import optionsStyle from "../../workout_tracker/workout_display/WorkoutDisplay.module.css";
 
 const Routines: React.FC = () => {
   const dispatch = useDispatch();
-  const routines = useSelector((state: RootState) => {
-    return state.userActions.loadedUserData.routines;
+  const { routines } = useSelector((state: RootState) => {
+    return state.userActions.loadedUserData;
   });
 
   const optionsState = useSelector((state: RootState) => {
@@ -41,6 +43,8 @@ const Routines: React.FC = () => {
   const routinePreviewVisibility = useSelector((state: RootState) => {
     return state.widgetsManager.routinesWidget.routinePreviewForm.visibility;
   });
+
+  const { isMale } = useSelector((state: RootState) => state.userActions);
 
   const categories = routines.map((routine) => {
     return routine.category;
@@ -136,10 +140,15 @@ const Routines: React.FC = () => {
       )}
       {routinePreviewVisibility && <RoutinePreviewModal />}
       <div className={styles.widget}>
-        <h6 className={styles.header}>My Routines</h6>
+        <h6
+          className={styles.header}
+          style={isMale ? { color: "#472ed8" } : undefined}
+        >
+          My Routines
+        </h6>
         <p className={styles.comment}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Odit iusto
-          nulla, distinctio eligendi eveniet delectus.
+          Gain access to your personal routines and seamlessly initiate a
+          workout session with effortless speed and convenience.
         </p>
         {routines.length > 0 ? (
           <React.Fragment>
@@ -148,14 +157,18 @@ const Routines: React.FC = () => {
           </React.Fragment>
         ) : (
           <div className={styles["message-container"]}>
-            <h6>No Routines!</h6>
+            <h6 style={isMale ? { color: "#472ed8" } : undefined}>
+              No Routines!
+            </h6>
             <p>
               You don't have any saved routines! If you want to add one click on
               the button "New Routine" and layout your routine.
             </p>
             <button
               type="button"
-              className={buttonStyle["secondary-button"]}
+              className={`${isMale ? styles.male : styles.female} ${
+                buttonStyle["secondary-button"]
+              }`}
               onClick={onNewRoutine}
             >
               New Routine
@@ -171,6 +184,7 @@ const Routines: React.FC = () => {
                   event.stopPropagation();
                   editRoutine();
                 }}
+                style={isMale ? { color: "#472ed8" } : undefined}
               >
                 <EditIcon />
                 Edit Routine
@@ -189,6 +203,7 @@ const Routines: React.FC = () => {
               type="button"
               className={optionsStyle["close-button"]}
               onClick={closeOptions}
+              style={isMale ? { color: "#472ed8" } : undefined}
             >
               Close
             </button>

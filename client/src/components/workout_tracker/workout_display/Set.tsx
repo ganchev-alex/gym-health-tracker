@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
 
-import CheckBoxIcon from "../../../assets/svg_icon_components/CheckboxIcon";
-import RemoveIcon from "../../../assets/svg_icon_components/RemoveIcon";
-
-import styles from "./SetsTable.module.css";
-import setStyles from "./Set.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setRestTimerState,
@@ -13,6 +8,14 @@ import {
   setTotalValues,
 } from "../../../features/workout";
 import { RootState } from "../../../features/store";
+
+import styles from "./SetsTable.module.css";
+import setStyles from "./Set.module.css";
+
+import CheckBoxIcon from "../../../assets/svg_icon_components/CheckboxIcon";
+import RemoveIcon from "../../../assets/svg_icon_components/RemoveIcon";
+
+let referenceValues = { state: false, kg: 0, reps: 0 };
 
 const Set: React.FC<{
   exerciseId: string;
@@ -27,19 +30,21 @@ const Set: React.FC<{
 }> = function (props) {
   const dispatch = useDispatch();
 
-  const [reps, setReps] = useState(props.reps);
-  const [kg, setKg] = useState(props.kg);
-
   const exercise = useSelector((state: RootState) => {
     return state.workoutState.exercises[props.exerciseIndex || 0];
   });
 
-  let setState = { state: false };
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
+  let setState = { state: false, kg: 0, reps: 0 };
   if (!props.staticMode) {
     setState = exercise?.setsData
       ? exercise.setsData[props.setIndex - 1]
-      : { state: false };
+      : { state: false, kg: 0, reps: 0 };
   }
+
+  const [reps, setReps] = useState(setState.reps);
+  const [kg, setKg] = useState(setState.kg);
 
   useEffect(() => {
     if (!props.staticMode && props.exerciseIndex != undefined) {
@@ -54,7 +59,7 @@ const Set: React.FC<{
     }
   }, [dispatch, props.staticMode, props.exerciseId, props.setIndex, kg, reps]);
 
-  const onCheck = function (event: React.ChangeEvent<HTMLInputElement>) {
+  const onCheck = function () {
     if (!props.staticMode) {
       if (setState.state) {
         dispatch(setRestTimerState({ activity: false }));
@@ -93,7 +98,11 @@ const Set: React.FC<{
   };
 
   return (
-    <tr className={setState.state ? styles["checked-row"] : ""}>
+    <tr
+      className={`${isMale ? styles.male : styles.female} ${
+        setState.state ? styles["checked-row"] : ""
+      }`}
+    >
       <td className={setStyles["cell-wrapper"]}>
         <span className={!props.previewMode ? setStyles["set-index"] : ""}>
           {props.setIndex}
@@ -139,7 +148,9 @@ const Set: React.FC<{
         <input
           type="checkbox"
           onChange={onCheck}
-          disabled={kg === 0 || reps === 0}
+          disabled={
+            (props.kg === 0 || props.reps === 0) && (kg === 0 || reps === 0)
+          }
         />
         <CheckBoxIcon checkState={setState.state} />
       </td>

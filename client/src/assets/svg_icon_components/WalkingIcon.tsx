@@ -1,4 +1,9 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../../features/store";
+
 const WalkingIcon: React.FC = () => {
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -29,8 +34,8 @@ const WalkingIcon: React.FC = () => {
           y2="2.57143"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#D385E6" />
-          <stop offset="1" stopColor="#E54C60" />
+          <stop stopColor={isMale ? "#472ed8" : "#D385E6"} />
+          <stop offset="1" stopColor={isMale ? "#29156B" : "#E54C60"} />
         </linearGradient>
         <linearGradient
           id="paint1_linear_145_220"
@@ -40,8 +45,8 @@ const WalkingIcon: React.FC = () => {
           y2="64.2857"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#E54C60" />
-          <stop offset="1" stopColor="#D385E6" />
+          <stop stopColor={isMale ? "#29156B" : "#E54C60"} />
+          <stop offset="1" stopColor={isMale ? "#472ed8" : "#D385E6"} />
         </linearGradient>
       </defs>
     </svg>

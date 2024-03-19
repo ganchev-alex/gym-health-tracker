@@ -28,8 +28,16 @@
 }
 
 .secondary-button {
-  border: #e54c60 3px solid;
-  color: #e54c60;
   padding: calc(0.9em - 3px) 0.5em;
   margin-left: 0.5em;
+}
+
+.male.secondary-button {
+  border: #472ed8 3px solid;
+  color: #472ed8;
+}
+
+.female.secondary-button {
+  border: #e54c60 3px solid;
+  color: #e54c60;
 }

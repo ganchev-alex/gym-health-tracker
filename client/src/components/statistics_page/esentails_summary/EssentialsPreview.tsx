@@ -82,11 +82,11 @@ const EssentialsPreview = function () {
 
   const lineConfig = {
     data: {
-      labels: data.map((set) => set.date.getDate()),
+      labels: data.map((set) => set.date.getDate()).reverse(),
       datasets: [
         {
           label: metrix,
-          data: data.map((set) => set.value),
+          data: data.map((set) => set.value).reverse(),
           borderColor: color,
           cubicInterpolationMode: "monotone",
         },

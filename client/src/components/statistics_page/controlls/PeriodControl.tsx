@@ -34,6 +34,8 @@ const PeriodControl = function () {
   const [currentWeek, setCurrentWeek] = useState(getStartOfWeek(new Date()));
   const [isCurrentWeek, setIsCurrentWeek] = useState(true);
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   useEffect(() => {
     const today = new Date();
     setIsCurrentWeek(getWeekNumber(today) === getWeekNumber(currentWeek));
@@ -151,7 +153,9 @@ const PeriodControl = function () {
           <button
             key={index}
             className={
-              span.toLocaleLowerCase() === timeSpan ? styles.active : ""
+              span.toLocaleLowerCase() === timeSpan
+                ? `${isMale ? styles.male : styles.female} ${styles.active}`
+                : ""
             }
             onClick={() => {
               dispatch(setTimeSpan(span.toLocaleLowerCase()));

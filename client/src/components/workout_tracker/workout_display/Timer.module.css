@@ -13,13 +13,25 @@
   position: absolute;
   top: 0;
   left: 0;
+  border-radius: 15px;
+}
+
+.male.gradient {
+  background: linear-gradient(
+    180deg,
+    rgba(71, 46, 216, 0.4) 0%,
+    rgba(41, 21, 107, 0.4) 78.12%,
+    rgba(41, 21, 107, 0.4) 100%
+  );
+}
+
+.female.gradient {
   background: linear-gradient(
     180deg,
     rgba(229, 76, 96, 0.4) 0%,
     rgba(211, 133, 230, 0.4) 78.12%,
     rgba(211, 133, 230, 0.4) 100%
   );
-  border-radius: 15px;
 }
 
 .image {

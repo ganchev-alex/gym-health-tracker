@@ -29,17 +29,23 @@ const ModalOverlay: React.FC<{
   const { responseCode, title, details, label, redirectionRoute } =
     props.properties;
 
-  const selectedTheme = useSelector((state: RootState) => {
-    return state.userActions.sex;
-  });
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+  const presavedSex = localStorage.getItem("userSex");
 
-  const styleChecker = localStorage.getItem("userSex") || selectedTheme;
-
-  const classes = `${styles.modal} ${
-    styleChecker === "male" ? styles.male : styles.female
-  }`;
+  let classes;
+  if (presavedSex) {
+    classes = `${styles.modal} ${
+      presavedSex === "male" ? styles.male : styles.female
+    }`;
+  } else {
+    classes = `${styles.modal} ${isMale ? styles.male : styles.female}`;
+  }
 
   const clickHandler = function () {
+    if (redirectionRoute.includes("/auth")) {
+      localStorage.removeItem("token");
+      localStorage.removeItem("expiration");
+    }
     navigate(redirectionRoute);
     dispatch(setErrorModalVisibility(false));
     dispatch(restoreRoutinesWidgetInitialState());

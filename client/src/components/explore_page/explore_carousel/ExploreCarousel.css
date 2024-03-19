@@ -116,12 +116,23 @@
   top: 0;
   width: 130%;
   height: 100%;
+  opacity: 0.5;
+}
+
+.male.gradient {
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(211, 133, 230, 0) 0%,
+    rgba(71, 46, 216, 0.3) 100%
+  );
+}
+
+.female.gradient {
   background: radial-gradient(
     50% 50% at 50% 50%,
     rgba(211, 133, 230, 0) 0%,
     rgba(229, 76, 96, 0.3) 100%
   );
-  opacity: 0.5;
 }
 
 .main-wrapper .image-wrapper img {

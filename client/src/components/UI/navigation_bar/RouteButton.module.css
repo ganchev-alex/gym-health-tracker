@@ -1,9 +1,3 @@
-:root {
-  --red-light: #e54c60;
-  --purple: #d385e6;
-  --icon-color-active: linear-gradient(-90deg, var(--red-light), var(--purple));
-}
-
 .button {
   display: flex;
   justify-content: center;
@@ -47,11 +41,18 @@ a {
 }
 
 .active-route {
-  padding: 14px 6px;
+  padding: 1em 0.5em;
   background-color: white;
-  color: var(--red-light);
   border-radius: 15px;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+}
+
+.active-color-male {
+  color: #472ed8;
+}
+
+.active-color-female {
+  color: #e54c60;
 }
 
 .active-route div {
@@ -62,8 +63,13 @@ a {
   width: 45px;
 }
 
-.active-route svg path {
-  stroke: var(--red-light);
+.active-color-male svg path {
+  stroke: #472ed8;
+  stroke-width: 2.6;
+}
+
+.active-color-female svg path {
+  stroke: #e54c60;
   stroke-width: 2.6;
 }
 

@@ -1,8 +1,5 @@
 import React from "react";
 
-import CardBottom from "./CardBottom";
-
-import styles from "./WorkoutCard.module.css";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setNotificationState,
@@ -11,6 +8,10 @@ import {
   showHistoryRecords,
 } from "../../../features/workout-page-actions";
 import { RootState } from "../../../features/store";
+
+import CardBottom from "./CardBottom";
+
+import styles from "./WorkoutCard.module.css";
 
 const WorkoutCard: React.FC<{
   _id: string;

@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
-import CalendarBody from "./CalendarBody";
-import CalendarHeader from "./CalendarHeader";
-import Widget from "../../layout/Widget";
-
-import styles from "./Calendar.module.css";
-import { mainAPIPath } from "../../../App";
-import { getToken } from "../../../util/auth";
 import { useDispatch, useSelector } from "react-redux";
+
 import {
   appendHistory,
   setNotificationState,
 } from "../../../features/workout-page-actions";
 import { RootState } from "../../../features/store";
 import { Session } from "../history_preview/HistoryPreview";
+
+import { mainAPIPath } from "../../../App";
+import { getToken } from "../../../util/auth";
+
+import styles from "./Calendar.module.css";
+
+import CalendarBody from "./CalendarBody";
+import CalendarHeader from "./CalendarHeader";
 
 const Calendar = function () {
   const dispatch = useDispatch();

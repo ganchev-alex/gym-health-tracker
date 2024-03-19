@@ -49,6 +49,8 @@ const AddExerciseForm = function () {
     return state.workoutState.filterState.visibility;
   });
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -188,7 +190,11 @@ const AddExerciseForm = function () {
             <p>No results found</p>
           )
         ) : errorMessage ? (
-          <div className={styles["error-wrapper"]}>
+          <div
+            className={`${isMale ? styles.male : styles.female} ${
+              styles["error-wrapper"]
+            }`}
+          >
             <p>
               {errorMessage}
               <br />

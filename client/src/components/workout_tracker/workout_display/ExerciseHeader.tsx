@@ -1,5 +1,6 @@
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./ExerciseHeader.module.css";
+
 import {
   Exercise,
   setExerciseData,
@@ -12,7 +13,9 @@ import {
   setResetTimerRoutine,
   setRoutineNotes,
 } from "../../../features/workout-page-actions";
-import { useEffect, useState } from "react";
+
+import styles from "./ExerciseHeader.module.css";
+import { RootState } from "../../../features/store";
 
 const ExerciseHeader: React.FC<{
   exerciseData: Exercise;
@@ -27,6 +30,7 @@ const ExerciseHeader: React.FC<{
 
   const { exerciseData } = props;
   const [notes, setNotes] = useState(props.notes || "");
+  const { isMale } = useSelector((state: RootState) => state.userActions);
 
   const onTimerSelect = function (e: React.ChangeEvent<HTMLSelectElement>) {
     if (props.staticMode) {
@@ -73,7 +77,9 @@ const ExerciseHeader: React.FC<{
           style={props.previewMode ? { cursor: "default" } : {}}
         >
           <img src={exerciseData.image} alt="Exercise Image" />
-          <h3>{exerciseData.name}</h3>
+          <h3 style={isMale ? { color: "#472ed8" } : undefined}>
+            {exerciseData.name}
+          </h3>
         </div>
         {!props.previewMode && (
           <button
@@ -81,9 +87,9 @@ const ExerciseHeader: React.FC<{
             className={styles["settings"]}
             onClick={loadExeriseMenu}
           >
-            <span />
-            <span />
-            <span />
+            <span style={isMale ? { backgroundColor: "#472ed8" } : undefined} />
+            <span style={isMale ? { backgroundColor: "#472ed8" } : undefined} />
+            <span style={isMale ? { backgroundColor: "#472ed8" } : undefined} />
           </button>
         )}
       </header>
@@ -100,13 +106,19 @@ const ExerciseHeader: React.FC<{
       }
       {!props.historyMode && (
         <span className={styles["rest-timer"]}>
-          <label htmlFor="restTime">Rest Time:</label>
+          <label
+            htmlFor="restTime"
+            style={isMale ? { color: "#472ed8" } : undefined}
+          >
+            Rest Time:
+          </label>
           <select
             name="restTime"
             id="restTime"
             onChange={onTimerSelect}
             value={props.restTime}
             disabled={props.previewMode}
+            style={isMale ? { color: "#472ed8" } : undefined}
           >
             <option value={0} defaultValue={0}>
               Off.

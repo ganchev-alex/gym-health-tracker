@@ -17,15 +17,32 @@
   margin: 2px;
   width: auto;
   height: 25px;
+}
+
+.male {
+  border: #472ed8 2px solid;
+}
+
+.female {
   border: #e54c60 2px solid;
 }
 
-.inactive {
+.male.inactive {
+  color: #472ed8;
+  background-color: transparent;
+}
+
+.male.active {
+  color: white;
+  background-color: #472ed8;
+}
+
+.female.inactive {
   color: #e54c60;
   background-color: transparent;
 }
 
-.active {
+.female.active {
   color: white;
   background-color: #e54c60;
 }

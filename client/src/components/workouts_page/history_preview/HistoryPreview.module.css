@@ -24,18 +24,21 @@
   font-size: 1.1rem;
 }
 
-.header h3 span {
-  color: #e54c60;
-}
-
 .header button {
-  background-color: #e54c60;
   font-size: 1rem;
   color: white;
   border: none;
   border-radius: 10px;
   margin: 0 1em;
   padding: 0.2em 1em;
+}
+
+.header.male button {
+  background-color: #472ed8;
+}
+
+.header.female button {
+  background-color: #e54c60;
 }
 
 .details {

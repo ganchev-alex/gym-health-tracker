@@ -13,6 +13,7 @@ import {
   modifyStaticSetCount,
   removeFromNewRoutine,
 } from "../../../features/workout-page-actions";
+import { RootState } from "../../../features/store";
 
 const SetTable: React.FC<{
   _id: string;
@@ -24,6 +25,8 @@ const SetTable: React.FC<{
   previewMode?: boolean;
 }> = function (props) {
   const dispatch = useDispatch();
+
+  const { isMale } = useSelector((state: RootState) => state.userActions);
 
   const removeSet = function (index: number) {
     if (props.index != undefined && !props.staticMode) {
@@ -154,7 +157,14 @@ const SetTable: React.FC<{
         </tbody>
       </table>
       {!props.previewMode && (
-        <button type="button" className={styles["set-button"]} onClick={addSet}>
+        <button
+          type="button"
+          className={styles["set-button"]}
+          style={
+            isMale ? { color: "#472ED8", borderColor: "#472ED8" } : undefined
+          }
+          onClick={addSet}
+        >
           Add Set
         </button>
       )}

@@ -15,6 +15,7 @@ import { setSessionActivity } from "../../../features/workout-page-actions";
 
 const Backdrop = function () {
   const dispatch = useDispatch();
+
   return (
     <div
       className={backdropStyle.backdrop}
@@ -34,12 +35,14 @@ const WorkoutFinished = function () {
     return state.widgetsManager.categoriesWidget.sessionActivity;
   });
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   return (
-    <div className={styles.modal}>
+    <div className={`${isMale ? styles.male : styles.female} ${styles.modal}`}>
       <h3>{sessionActivity ? "Session" : "Workout"} finished! 🎉</h3>
       <h4>
         Congratulations on finishing your <br />{" "}
-        <span>
+        <span style={isMale ? { color: "#472ed8" } : undefined}>
           <b>
             {number}
             {number % 10 === 1

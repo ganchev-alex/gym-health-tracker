@@ -37,8 +37,15 @@
 }
 
 .completed {
-  background-color: #e54c60;
   color: white;
+}
+
+.male.completed {
+  background-color: #472ed8;
+}
+
+.female.completed {
+  background-color: #e54c60;
 }
 
 .header {

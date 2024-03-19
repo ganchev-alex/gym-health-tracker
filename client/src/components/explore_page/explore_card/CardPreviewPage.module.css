@@ -145,18 +145,19 @@
   border-radius: 15px;
 }
 
+.male.main-button {
+  background: linear-gradient(270deg, #29156b 0%, #472ed8 81.25%);
+}
+
+.female.main-button {
+  background: linear-gradient(270deg, #d385e6 0%, #e4516b 81.25%);
+}
+
 .saved-button {
   background: #dfdfdf;
   color: white;
   border-radius: 15px;
 }
-
-/* .secondary-button {
-  background-color: transparent;
-  color: #e54c60;
-  font-weight: 600;
-  text-decoration: underline;
-} */
 
 .aside {
   background-color: #ececec;

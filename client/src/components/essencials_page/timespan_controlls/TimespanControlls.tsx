@@ -8,15 +8,18 @@ const TimespanControlls = function () {
   const isToday = useSelector(
     (state: RootState) => state.healthEssentials.isToday
   );
+
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   return (
     <div className={styles.controlls}>
-      <h4>Daily Tracker</h4>
+      <h4 style={isMale ? { color: "#472ed8" } : undefined}>Daily Tracker</h4>
       <button
         className={styles.yesterday}
         onClick={() => {
           dispatch(setDataStream());
         }}
-        style={isToday ? { color: "#E54C60" } : undefined}
+        style={isToday ? { color: isMale ? "#472ed8" : "#e54c60" } : undefined}
       >
         {isToday ? "Today" : "Yesterday"}
       </button>

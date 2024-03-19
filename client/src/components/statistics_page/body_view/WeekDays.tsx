@@ -20,6 +20,8 @@ const WeekDays = function () {
     (state: RootState) => state.statsData.muscleGraph
   );
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   return (
     <React.Fragment>
       <div className={styles.header}>
@@ -44,7 +46,7 @@ const WeekDays = function () {
               <p
                 style={
                   date.getDate() === new Date().getDate()
-                    ? { color: "#E54C60", fontWeight: 800 }
+                    ? { color: isMale ? "#472ED8" : "#E54C60", fontWeight: 800 }
                     : {}
                 }
               >
@@ -52,7 +54,11 @@ const WeekDays = function () {
               </p>
               <span
                 className={`${
-                  activityDates.includes(date.getDate()) ? styles.completed : ""
+                  activityDates.includes(date.getDate())
+                    ? `${isMale ? styles.male : styles.female} ${
+                        styles.completed
+                      }`
+                    : ""
                 }`}
               >
                 {date.getDate() < 10 ? "0" + date.getDate() : date.getDate()}

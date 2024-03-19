@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import { Exercise } from "../../../features/workout";
 
 import ExerciseHeader from "./ExerciseHeader";

@@ -21,9 +21,16 @@
 
 .weeks li {
   cursor: default;
-  color: #e54c60;
   font-size: 1.1rem;
   font-weight: 700;
+}
+
+.male.weeks li {
+  color: #472ed8;
+}
+
+.female.weeks li {
+  color: #e54c60;
 }
 
 .days li {
@@ -36,7 +43,6 @@
 }
 
 .days .today {
-  color: #e54c60;
   font-weight: 800;
 }
 
@@ -57,7 +63,12 @@
   transform: translate(-50%, -50%);
 }
 
-.days li.active::before {
+.days li.male.active::before {
+  background-color: #472ed8;
+  border: #472ed8 3px solid;
+}
+
+.days li.female.active::before {
   background-color: #e54c60;
   border: #e54c60 3px solid;
 }

@@ -98,9 +98,16 @@
 }
 
 .set-table tbody tr.checked-row {
-  background-color: rgba(228, 81, 107, 0.7);
   color: white;
   font-weight: 600;
+}
+
+.set-table tbody tr.checked-row.female {
+  background-color: rgba(228, 81, 107, 0.7);
+}
+
+.set-table tbody tr.checked-row.male {
+  background-color: rgba(71, 46, 216, 0.7);
 }
 
 .set-table tbody tr.checked-row input[type="number"] {

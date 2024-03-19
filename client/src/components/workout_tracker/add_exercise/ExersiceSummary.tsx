@@ -32,6 +32,8 @@ const ExersiceSummary = function () {
       return state.workoutState;
     });
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   const onAddExercise = async function () {
     dispatch(setLoadingState(true));
     const bestSet = await fetchBestSet(singleExerciseData._id);
@@ -90,13 +92,15 @@ const ExersiceSummary = function () {
           </button>
           <h4>Summary</h4>
           <button
-            className={styles["add-button"]}
+            className={`${isMale ? styles.male : styles.female} ${
+              styles["add-button"]
+            }`}
             style={{
               display: `${addExerciseState.visibility ? "block" : "none"}`,
             }}
+            type="button"
             onClick={onAddExercise}
           >
-            {" "}
             + Add Exersice
           </button>
         </nav>

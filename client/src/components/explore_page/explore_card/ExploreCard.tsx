@@ -2,12 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { ExploreCardsI } from "../../../features/explore-actions";
 import { secondsConverter } from "../../essencials_page/activities_widget/ActivitiesWidget";
 import styles from "./ExploreCard.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setExplorePreviewVisibility } from "../../../features/styles-manager-actions";
+import { RootState } from "../../../features/store";
 
 const ExploreCard: React.FC<ExploreCardsI> = function (props) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
+  const { isMale } = useSelector((state: RootState) => state.userActions);
 
   const onCardRedirect = function () {
     dispatch(setExplorePreviewVisibility(true));
@@ -20,7 +23,9 @@ const ExploreCard: React.FC<ExploreCardsI> = function (props) {
       <div className={styles.description}>
         <h6>{props.title}</h6>
         <span>
-          <p>{props.category}</p>
+          <p style={isMale ? { color: "#472ED8" } : undefined}>
+            {props.category}
+          </p>
           <p>Duration: {secondsConverter(props.duration)}</p>
         </span>
       </div>

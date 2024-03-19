@@ -68,9 +68,16 @@
 
 /* .swiper-pagination-bullet-active styles */
 .content-wrapper .swiper-pagination-bullet-active {
-  background: #e54c60;
   width: 30px;
   border-radius: 10px;
+}
+
+.content-wrapper.male .swiper-pagination-bullet-active {
+  background: #472ed8;
+}
+
+.content-wrapper.female .swiper-pagination-bullet-active {
+  background: #e54c60;
 }
 
 /* .slider-buttons styles */

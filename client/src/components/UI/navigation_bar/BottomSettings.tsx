@@ -19,13 +19,19 @@ function BottomSettings() {
 
   return (
     <div className={styles.wrapper}>
-      <div className={styles["set-wrapper"]}>
+      <div
+        className={styles["set-wrapper"]}
+        style={toggleState ? { justifyContent: "center" } : undefined}
+      >
         <button className={styles["theme-button"]}>
           <ThemeIcon selectedTheme={true} />
         </button>
-        {toggleState ? null : <span className={styles.label}>Light Mode</span>}
+        {toggleState ? null : <span className={styles.label}>Settings</span>}
       </div>
-      <div className={styles["set-wrapper"]}>
+      <div
+        className={styles["set-wrapper"]}
+        style={toggleState ? { justifyContent: "center" } : undefined}
+      >
         <button className={styles["logout-button"]}>
           <LogOutIcon />
         </button>

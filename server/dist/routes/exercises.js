@@ -9,5 +9,6 @@ const authValidation_1 = __importDefault(require("../middleware/authValidation")
 const router = express.Router();
 router.get("/get-all", exercises_1.default.exercises);
 router.get("/best-set", authValidation_1.default, exercises_1.default.getBestSet);
+router.post("/best-sets", authValidation_1.default, exercises_1.default.getBestSets);
 exports.default = router;
 //# sourceMappingURL=exercises.js.map

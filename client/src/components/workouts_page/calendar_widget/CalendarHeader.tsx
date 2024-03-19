@@ -1,9 +1,9 @@
-import { current } from "@reduxjs/toolkit";
-
 import styles from "./CalendarHeader.module.css";
 
 import CalendarLeftArrowIcon from "../../../assets/svg_icon_components/CalendarLeftArrowIcon";
 import CalendarRightArrowIcon from "../../../assets/svg_icon_components/CalendarRightArrowIcon";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../features/store";
 
 const CalendarHeader: React.FC<{
   currantMonth: number;
@@ -35,13 +35,13 @@ const CalendarHeader: React.FC<{
     if (direction === "prev") {
       newMonth -= 1;
       if (newMonth < 0) {
-        newMonth = 11; // Go to December
+        newMonth = 11;
         newYear -= 1;
       }
     } else {
       newMonth += 1;
       if (newMonth > 11) {
-        newMonth = 0; // Go to January
+        newMonth = 0;
         newYear += 1;
       }
     }
@@ -63,8 +63,17 @@ const CalendarHeader: React.FC<{
     props.onSetCurrantYear(currentYear);
   };
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   return (
-    <div className={styles["calendar-header"]}>
+    <div
+      className={styles["calendar-header"]}
+      style={
+        isMale
+          ? { backgroundImage: "linear-gradient(-90deg, #472ED8, #29156B)" }
+          : undefined
+      }
+    >
       <p>
         {months[props.currantMonth]}, {props.currantYear}
       </p>

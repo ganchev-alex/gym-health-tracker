@@ -21,11 +21,14 @@ const Help = function () {
     (state: RootState) => state.modalsManager.helpModal.tip
   );
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   return (
     <div className={styles.modal}>
       <p>{tip}</p>
       <button
         onClick={() => dispatch(setHelpModalState({ visibility: false }))}
+        style={isMale ? { color: "#472ED8" } : undefined}
       >
         OK
       </button>

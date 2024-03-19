@@ -40,6 +40,7 @@ const CardPreview = function () {
   const modalVisibility = useSelector(
     (state: RootState) => state.modalsManager.choiceModal.visibility
   );
+  const { isMale } = useSelector((state: RootState) => state.userActions);
 
   useEffect(() => {
     dispatch(setExplorePreviewVisibility(true));
@@ -215,11 +216,13 @@ const CardPreview = function () {
             )}
             <div className={styles.details}>
               <span>
-                <p>
+                <p style={isMale ? { backgroundColor: "#472ed8" } : undefined}>
                   <TimerIcon />
                   {secondsConverter(article.duration)}
                 </p>
-                <p>{article.category}</p>
+                <p style={isMale ? { color: "#472ed8" } : undefined}>
+                  {article.category}
+                </p>
               </span>
               <p
                 className={styles["content-type"]}
@@ -251,7 +254,11 @@ const CardPreview = function () {
             ) : (
               <button
                 className={`${
-                  savedArticle ? styles["saved-button"] : styles["main-button"]
+                  savedArticle
+                    ? styles["saved-button"]
+                    : `${isMale ? styles.male : styles.female} ${
+                        styles["main-button"]
+                      }`
                 }`}
                 onClick={() =>
                   onSaveArticle(article.content.type === "routine")
@@ -268,7 +275,9 @@ const CardPreview = function () {
           </div>
         </article>
         <aside className={styles.aside}>
-          <h4>You may also like</h4>
+          <h4 style={isMale ? { color: "#472ed8" } : undefined}>
+            You may also like
+          </h4>
           {relatedArticles.map((article) => (
             <RelatedCard
               key={article._id}

@@ -13,6 +13,8 @@ const WorkoutsButton: React.FC = () => {
     return state.workoutState;
   });
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   const createNewRoutine = function () {
     dispatch(setFormVisibility(true));
   };
@@ -26,13 +28,24 @@ const WorkoutsButton: React.FC = () => {
     <div className={styles["button-holder"]}>
       <button
         className={styles["main-button"]}
-        style={workoutActivity ? { background: "#e0e0e0" } : {}}
+        style={
+          workoutActivity
+            ? { background: "#e0e0e0" }
+            : isMale
+            ? { backgroundImage: "linear-gradient(90deg, #29156b, #472ED8)" }
+            : undefined
+        }
         onClick={startWorkout}
         disabled={workoutActivity}
       >
         Start Empty Workout
       </button>
-      <button className={styles["secondary-button"]} onClick={createNewRoutine}>
+      <button
+        className={`${isMale ? styles.male : styles.female} ${
+          styles["secondary-button"]
+        }`}
+        onClick={createNewRoutine}
+      >
         New Routine
       </button>
     </div>

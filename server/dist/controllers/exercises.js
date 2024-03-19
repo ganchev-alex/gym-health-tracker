@@ -40,24 +40,47 @@ const getBestSet = async (req, res, next) => {
         }
         const bestSet = user.exerciseRecords.find((record) => record.exerciseId.toString() === req.query.exerciseId);
         if (bestSet) {
-            return res
-                .status(200)
-                .json({
+            return res.status(200).json({
                 message: "Best set was found.",
                 bestSet: { kg: bestSet.kg, reps: bestSet.reps },
             });
         }
         else {
-            return res
-                .status(200)
-                .json({
+            return res.status(200).json({
                 message: "Currantly no best record.",
                 bestSet: { kg: 0, reps: 0 },
             });
         }
     }
     catch (err) {
-        const error = new ResError_1.default("\n- func. exercises (exercises router): Failed to fetch exercise's best set.\nError: " +
+        const error = new ResError_1.default("\n- func. bestSet (exercises router): Failed to fetch exercise's best set.\nError: " +
+            err);
+        return next(error);
+    }
+};
+const getBestSets = async (req, res, next) => {
+    const userId = req.userId;
+    try {
+        const user = await user_1.default.findById(userId);
+        if (!user) {
+            const error = new ResError_1.default("User was not found!", 404);
+            return next(error);
+        }
+        const bestSets = req.body.exerciseIds.map((exerciseId) => {
+            const bestSet = user.exerciseRecords.find((record) => record.exerciseId.toString() === exerciseId);
+            if (bestSet) {
+                return { exerciseId, bestSet };
+            }
+            else {
+                return { exerciseId, bestSet: { exerciseId, reps: 0, kg: 0 } };
+            }
+        });
+        return res
+            .status(200)
+            .json({ message: "Best sets retrieved succesfully.", bestSets });
+    }
+    catch (err) {
+        const error = new ResError_1.default("\n- func. bestSets (exercises router): Failed to fetch exercises' best sets.\nError: " +
             err);
         return next(error);
     }
@@ -65,6 +88,7 @@ const getBestSet = async (req, res, next) => {
 const exerciseController = {
     exercises: exports.exercises,
     getBestSet,
+    getBestSets,
 };
 exports.default = exerciseController;
 //# sourceMappingURL=exercises.js.map

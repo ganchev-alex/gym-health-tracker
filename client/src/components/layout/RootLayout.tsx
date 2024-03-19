@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import NavigationBar from "../UI/navigation_bar/NavigationBar";
 
 import styles from "./RootLayout.module.css";
-import { getToken } from "../../util/auth";
+import { getExpiryRate, getToken } from "../../util/auth";
 import { mainAPIPath } from "../../App";
 import {
   FetchedExercise,
@@ -22,6 +22,7 @@ import MinimizeIcon from "../../assets/svg_icon_components/MinimizeIcon";
 import {
   decreaseRestTimer,
   incrementWorkoutDuration,
+  restoreWorkoutState,
   setRestTimerState,
   setWorkoutState,
 } from "../../features/workout";
@@ -40,14 +41,17 @@ import {
   setResetState,
 } from "../../features/explore-actions";
 import { setLoadingState } from "../../features/loading-actions";
-import { setExplorePreviewVisibility } from "../../features/styles-manager-actions";
 import LoadingPlane from "../UI/LoadingPlane/LoadingPlane";
+import { setErrorModalState, setHelpModalState } from "../../features/modals";
+import RedirectionModal from "../UI/RedirectionModal/RedirectionModal";
+import { setHeadersState } from "../../features/styles-manager-actions";
 
 function RootLayout() {
   const navigate = useNavigate();
   const pageLoading = useNavigation();
   const dispatch = useDispatch();
-  const fetchedData = useLoaderData();
+
+  const fetchedData = useLoaderData() as string | UserData;
 
   const toggleState = useSelector((state: RootState) => {
     return state.styleManager.toggleState;
@@ -67,45 +71,87 @@ function RootLayout() {
     }
   );
 
-  // useEffect: User Data Manager
+  // useEffect: User Data & Authentication Manager
+  const [redirectionVisibility, setRedirectionVisibility] = useState(false);
+
   useEffect(() => {
     switch (fetchedData) {
       case "TOKEN_NOT_FOUND":
         navigate("/auth/login");
         break;
       case "TOKEN_EXPIRED":
-        // Create a modal showing that the session has expired.
-        console.log("Token expired.");
+        navigate("/auth/login");
+        dispatch(
+          setHelpModalState({
+            visibility: true,
+            tip: "Your session has expired! You have been redirected. Please log in again",
+          })
+        );
         break;
       case "USER_NOT_FOUND":
         navigate("/auth/login");
         break;
       case "SERVER_ERROR":
-        // Create a modal that tells something went wrong.
-        console.log("Someting went wrong!");
+        dispatch(
+          setErrorModalState({
+            visibility: true,
+            responseCode: 500,
+            title: "Internal Server Error!",
+            details:
+              "It is not you it is us! The error you are experiencing is related to the server of our application. Please try again and if you continue to experience this issue please reach out to us!",
+            label: "Retry Login",
+            redirectionRoute: "/auth/login",
+          })
+        );
         break;
       case "FETCH_ERROR":
-        // Create a modal that tells something went wrong.
-        console.log("Fetch error!");
+        console.log("Fetch error.");
+        dispatch(
+          setErrorModalState({
+            visibility: true,
+            responseCode: 400,
+            title: "Unable to load application.",
+            details:
+              "It seems like your can be offline. Please check your internet connection and try again. If you continue to encounter this problem even though you are connected please reach out to us!",
+            label: "Retry Login",
+            redirectionRoute: "/auth/login",
+          })
+        );
         break;
       default:
         const userData = fetchedData as UserData;
         dispatch(setLoadedUserData(userData));
+        localStorage.setItem("userSex", userData.personalDetails.sex);
+        dispatch(
+          setHeadersState({
+            mainHeader: `Welcome back, ${userData.personalDetails.firstName}!`,
+            subHeader:
+              "Effortlessly manage your workouts from the main dashboard",
+          })
+        );
     }
-  }, [dispatch]);
 
-  // useEffect: Timers & Duration Management
-  const { workoutActivity, workoutVisibility } = useSelector(
-    (state: RootState) => state.workoutState
-  );
+    setTimeout(() => {
+      setRedirectionVisibility(true);
+      setTimeout(() => {
+        setRedirectionVisibility(false);
+        navigate("/auth/login");
+        localStorage.removeItem("expiration");
+        localStorage.removeItem("token");
+      }, 2000);
+    }, getExpiryRate());
+  }, []);
+
+  // useEffect: Timers & Duration Management + Workout Autosaver
+  const workoutState = useSelector((state: RootState) => state.workoutState);
+
+  const { workoutActivity, workoutVisibility } = workoutState;
 
   const historyRecords = useSelector(
     (state: RootState) => state.widgetsManager.calendarWidget.previewRecords
   );
 
-  const { timer, active } = useSelector((state: RootState) => {
-    return state.workoutState.restTimer;
-  });
+  const { timer, active } = workoutState.restTimer;
 
   useEffect(() => {
     let durationInterval: any;
@@ -343,6 +389,7 @@ function RootLayout() {
   return (
     <div className={styles["display-wrapper"]}>
       <NavigationBar />
+      {redirectionVisibility && <RedirectionModal />}
       {notificationVisibility && <NotificationBar />}
       {errorModal.visibility && <ErrorModal properties={errorModal} />}
       {(historyRecords.workoutRecords.length > 0 ||
@@ -383,6 +430,7 @@ function RootLayout() {
         {workoutActivity && (
           <button
             className={styles["minimize-button"]}
+            style={{ right: !toggleState ? "3%" : "4%" }}
             onClick={() => {
               navigate("/app/dashboard");
               dispatch(setWorkoutState({ visibility: !workoutVisibility }));
@@ -436,9 +484,12 @@ interface UserData {
 
 export async function appDataLoader(): Promise<string | UserData> {
   const token = getToken();
+  console.log("Token: ", token);
   if (!token) {
+    console.log("TOKEN_NOT_FOUND");
     return "TOKEN_NOT_FOUND";
   } else if (token === "TOKEN_EXPIRED") {
+    console.log("TOKEN_EXPIRED");
     return "TOKEN_EXPIRED";
   }
 
@@ -449,16 +500,18 @@ export async function appDataLoader(): Promise<string | UserData> {
     });
 
     const data = await response.json();
-    console.log(data);
 
     if (response.status === 200) {
       return data.userData || null;
     } else if (response.status === 404) {
+      console.log("USER_NOT_FOUND");
       return "USER_NOT_FOUND";
     } else {
+      console.log("SERVER_ERROR");
       return "SERVER_ERROR";
     }
   } catch (error) {
+    console.log("FETCH_ERROR");
     return "FETCH_ERROR";
   }
 }

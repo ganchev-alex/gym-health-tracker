@@ -35,7 +35,12 @@
   outline: none;
 }
 
-.selectors .active {
+.male.active {
+  color: #472ed8;
+  border-bottom: #472ed8 2px solid;
+}
+
+.female.active {
   color: #e54c60;
   border-bottom: #e54c60 2px solid;
 }

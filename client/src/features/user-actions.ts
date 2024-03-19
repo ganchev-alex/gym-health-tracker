@@ -54,6 +54,7 @@ interface loadedUserData {
 const initialUser: {
   auth: Auth;
   sex: string;
+  isMale: boolean;
   loadedUserData: loadedUserData;
 } = {
   auth: {
@@ -61,6 +62,7 @@ const initialUser: {
     password: "",
   },
   sex: "male",
+  isMale: true,
   loadedUserData: {
     email: "",
     personalDetails: {
@@ -92,9 +94,11 @@ const userManager = createSlice({
     },
     selectMode: (state, action: PayloadAction<string>) => {
       state.sex = action.payload;
+      state.isMale = action.payload === "male";
     },
     setLoadedUserData: (state, action: PayloadAction<loadedUserData>) => {
       state.loadedUserData = { ...action.payload };
+      state.isMale = action.payload.personalDetails.sex === "male";
     },
     setRoutinesData: (
       state,

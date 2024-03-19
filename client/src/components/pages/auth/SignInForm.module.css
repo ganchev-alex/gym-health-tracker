@@ -36,6 +36,9 @@
   background-color: transparent;
   border: #828282 1.5px solid;
   border-radius: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .google-button svg {

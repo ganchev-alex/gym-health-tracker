@@ -1,4 +1,9 @@
+import { useSelector } from "react-redux";
+import { RootState } from "../../features/store";
+
 const ByciclingIcon: React.FC = () => {
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -25,8 +30,8 @@ const ByciclingIcon: React.FC = () => {
           y2="60"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#E54C60" />
-          <stop offset="1" stopColor="#D385E6" />
+          <stop stopColor={isMale ? "#29156B" : "#E54C60"} />
+          <stop offset="1" stopColor={isMale ? "#472ed8" : "#D385E6"} />
         </linearGradient>
         <linearGradient
           id="paint1_linear_145_206"
@@ -36,8 +41,8 @@ const ByciclingIcon: React.FC = () => {
           y2="12"
           gradientUnits="userSpaceOnUse"
         >
-          <stop stopColor="#D385E6" />
-          <stop offset="1" stopColor="#E54C60" />
+          <stop stopColor={isMale ? "#472ed8" : "#D385E6"} />
+          <stop offset="1" stopColor={isMale ? "#29156B" : "#E54C60"} />
         </linearGradient>
       </defs>
     </svg>

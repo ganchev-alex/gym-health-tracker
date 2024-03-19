@@ -61,6 +61,8 @@ const Filter = function () {
     (state: RootState) => state.workoutState.filterState
   );
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -79,7 +81,12 @@ const Filter = function () {
     <div className={styles.backdrop}>
       <div className={styles.ribbon}>
         <h6>{type}</h6>
-        <button onClick={onClose}>Close</button>
+        <button
+          onClick={onClose}
+          style={isMale ? { color: "#472ed8" } : undefined}
+        >
+          Close
+        </button>
       </div>
       <div className={styles.filter}>
         {selectedOptions.length > 0 &&

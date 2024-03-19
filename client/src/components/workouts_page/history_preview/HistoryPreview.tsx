@@ -97,6 +97,7 @@ const HistoryPreview = function () {
   const isLoading = useSelector(
     (state: RootState) => state.loadingManager.isLoading
   );
+  const { isMale } = useSelector((state: RootState) => state.userActions);
 
   const [workoutData, setWorkoutData] = useState<Workout>({
     _id: "",
@@ -150,7 +151,15 @@ const HistoryPreview = function () {
             else return [...previousState];
           });
         } else {
-          // Please try again.
+          dispatch(
+            setNotificationState({
+              message: "😨 Something went wrong!",
+              visibility: true,
+            })
+          );
+          setTimeout(() => {
+            dispatch(setNotificationState({ visibility: false }));
+          }, 4000);
         }
       } catch (error) {
         dispatch(
@@ -209,7 +218,9 @@ const HistoryPreview = function () {
       }
     >
       {isLoading && <LoadingPlane />}
-      <header className={styles.header}>
+      <header
+        className={`${isMale ? styles.male : styles.female} ${styles.header}`}
+      >
         {historyRecords.workoutRecords.length > 1 && (
           <button
             style={index == 0 ? { background: "#E0E0E0" } : {}}
@@ -221,7 +232,7 @@ const HistoryPreview = function () {
         )}
         <h3>
           Workout Records:{" "}
-          <span>
+          <span style={{ color: isMale ? "#472ed8" : "#e54c60" }}>
             {new Date(
               historyRecords.workoutRecords.length > 0
                 ? historyRecords.workoutRecords[index].date
@@ -264,7 +275,9 @@ const HistoryPreview = function () {
                   <WalkingIcon />
                 ) : null}
                 <div>
-                  <h6>{session.category}</h6>
+                  <h6 style={isMale ? { color: "#472ed8" } : undefined}>
+                    {session.category}
+                  </h6>
                   <p>
                     Duration:{" "}
                     {`${String(Math.floor(session.duration / 3600)).padStart(
@@ -285,7 +298,13 @@ const HistoryPreview = function () {
           <div className={styles.details}>
             <h2>{workoutData.title}</h2>
             <div className={styles["main-details"]}>
-              <span>
+              <span
+                style={
+                  isMale
+                    ? { borderColor: "#472ed8", color: "#472ed8" }
+                    : undefined
+                }
+              >
                 <TimerIcon />
                 {`${String(Math.floor(workoutData.duration / 3600)).padStart(
                   2,
@@ -294,14 +313,22 @@ const HistoryPreview = function () {
                   Math.floor((workoutData.duration % 3600) / 60)
                 ).padStart(2, "0")}`}
               </span>
-              <p>{workoutData.category}</p>
+              <p style={isMale ? { color: "#472ed8" } : undefined}>
+                {workoutData.category}
+              </p>
             </div>
             <div className={styles.totals}>
               <p>
-                Total Volume: <span>{workoutData.volume}</span>
+                Total Volume:{" "}
+                <span style={isMale ? { color: "#472ed8" } : undefined}>
+                  {workoutData.volume}
+                </span>
               </p>
               <p>
-                Total Sets: <span>{workoutData.sets}</span>
+                Total Sets:{" "}
+                <span style={isMale ? { color: "#472ed8" } : undefined}>
+                  {workoutData.sets}
+                </span>
               </p>
             </div>
           </div>
@@ -342,7 +369,9 @@ const HistoryPreview = function () {
         </React.Fragment>
       ) : (
         <div className={styles["empty-workouts"]}>
-          <h6>🪹 Empty Workout Box...</h6>
+          <h6 style={isMale ? { color: "#472ed8" } : undefined}>
+            🪹 Empty Workout Box...
+          </h6>
           <p>
             You did not do any specific workouts that day, <br /> but you stayed
             active!

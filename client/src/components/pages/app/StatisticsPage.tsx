@@ -11,7 +11,7 @@ import EssentialsSummary from "../../statistics_page/esentails_summary/Essentail
 import MusclesGraph from "../../statistics_page/muscle_distribution/MusclesGraph";
 import PeriodControl from "../../statistics_page/controlls/PeriodControl";
 import { RootState } from "../../../features/store";
-import HelpModal from "../../statistics_page/help_modal/HelpModal";
+import HelpModal from "../../UI/help_modal/HelpModal";
 import EssentialsPreview from "../../statistics_page/esentails_summary/EssentialsPreview";
 
 function StatisticsPage() {

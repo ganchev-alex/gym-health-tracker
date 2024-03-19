@@ -138,6 +138,7 @@ const PersonalDetails: React.FC = function () {
 
         if (response.status == 204) {
           navigate("/app");
+          localStorage.removeItem("userSex");
         } else if (response.status == 404) {
           dispatch(
             setErrorModalState({

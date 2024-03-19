@@ -12,6 +12,7 @@ import ErrorModal from "../UI/ErrorModal/ErrorModal";
 import maleBackground from "../../assets/images/male_background_signin_form.jpg";
 import femaleBackground from "../../assets/images/female_background_signin_form.jpg";
 import LoadingPlane from "../UI/LoadingPlane/LoadingPlane";
+import HelpModal from "../UI/help_modal/HelpModal";
 
 const FormLayout: React.FC = function () {
   const token = getToken();

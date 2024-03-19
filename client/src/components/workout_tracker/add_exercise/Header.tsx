@@ -23,6 +23,8 @@ const Header = function () {
     }
   );
 
+  const { isMale } = useSelector((state: RootState) => state.userActions);
+
   useEffect(() => {
     const indentifier = setTimeout(() => {
       dispatch(setSearchExercise(searchValue));
@@ -66,7 +68,12 @@ const Header = function () {
     <header className={styles.header}>
       <div className={styles["header-bond"]}>
         <h4>Add Exercise</h4>
-        <button onClick={onClose}>x</button>
+        <button
+          onClick={onClose}
+          style={isMale ? { backgroundColor: "#472ed8" } : undefined}
+        >
+          x
+        </button>
       </div>
       <form className={styles["search-form"]}>
         <div className={styles["search-bar"]}>
@@ -81,7 +88,11 @@ const Header = function () {
             onKeyDown={preventEnter}
           />
         </div>
-        <div className={styles["filter-buttons"]}>
+        <div
+          className={`${isMale ? styles.male : styles.female} ${
+            styles["filter-buttons"]
+          }`}
+        >
           <button
             className={keyEquipment ? styles.selected : ""}
             style={availableFilter ? { width: "46%" } : { width: "49%" }}
@@ -101,6 +112,11 @@ const Header = function () {
           {availableFilter && (
             <button
               className={styles.clear}
+              style={
+                isMale
+                  ? { color: "#472ed8", borderColor: "#472ed8" }
+                  : undefined
+              }
               type="button"
               onClick={resetFilter}
             >

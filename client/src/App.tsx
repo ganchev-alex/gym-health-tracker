@@ -1,5 +1,3 @@
-import React from "react";
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 
 import RootLayout, { appDataLoader } from "./components/layout/RootLayout";

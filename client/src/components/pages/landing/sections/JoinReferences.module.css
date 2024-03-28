@@ -1,0 +1,110 @@
+.section {
+  width: 100vw;
+  background: linear-gradient(
+    90deg,
+    rgba(190, 176, 225, 1) 50%,
+    rgba(137, 204, 220, 1) 100%
+  );
+  display: flex;
+  justify-content: space-between;
+  margin: 6em;
+  gap: 3em;
+}
+
+.section img {
+  display: none;
+}
+
+.content {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  box-sizing: border-box;
+  position: relative;
+  gap: 2em;
+  padding: 3em;
+}
+
+.content h3 {
+  font-size: 3rem;
+  color: white;
+  margin: 0;
+}
+
+.content p {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+
+  text-align: justify;
+}
+
+/* Desktop: .content p {
+  color: white;
+  font-size: 1.1rem;
+  font-weight: 500;
+  margin: 0;
+} */
+
+.button {
+  font-size: 1.5rem;
+  font-weight: 600;
+  background: #2e2e2e;
+  color: white;
+  height: fit-content;
+  padding: 0.5em;
+  border: none;
+  border-radius: 15px;
+  margin: 0 auto;
+  width: 85%;
+}
+
+/* Dekstop: .button {
+  width: fit-content;
+  height: fit-content;
+  padding: 0.3em 2em;
+  border: none;
+} */
+
+@media screen and (min-width: 768px) {
+  .content {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .section img {
+    display: block;
+    width: 45%;
+    object-fit: cover;
+    border-radius: 0 100px 100px 0;
+  }
+
+  .content {
+    width: 35%;
+    height: 100%;
+    margin-right: 15em;
+    gap: 2em;
+    padding: 5em 0;
+  }
+
+  .content p {
+    color: white;
+    font-size: 1.1rem;
+    font-weight: 500;
+    margin: 0;
+    text-align: left;
+  }
+
+  .button {
+    width: fit-content;
+    height: fit-content;
+    padding: 0.3em 2em;
+    border: none;
+    margin: 0;
+  }
+}

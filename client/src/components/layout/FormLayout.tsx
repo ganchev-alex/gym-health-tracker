@@ -61,6 +61,16 @@ const FormLayout: React.FC = function () {
         <div className={selectedGradient} />
       </div>
       <div className={styles["form-holder"]}>
+        <div className={styles["responsive-background"]}>
+          <img
+            src={maleBackground}
+            className={styleChecker == "male" ? "" : styles.hidden}
+          />
+          <img
+            src={femaleBackground}
+            className={styleChecker == "female" ? "" : styles.hidden}
+          />
+        </div>
         {loadingState && <LoadingPlane />}
         <Outlet />
       </div>

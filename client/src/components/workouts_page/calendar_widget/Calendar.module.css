@@ -10,6 +10,7 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+  margin-bottom: 8em;
 }
 
 .calendar {
@@ -18,4 +19,16 @@
   flex-direction: column;
   justify-content: space-between;
   gap: 1.5em;
+}
+
+@media screen and (min-width: 768px) {
+  .widget {
+    margin-bottom: 2em;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .widget {
+    margin-bottom: 0;
+  }
 }

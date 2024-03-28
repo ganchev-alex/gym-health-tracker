@@ -446,7 +446,11 @@ const RoutineForm = function () {
             onClick={closeOptions}
           >
             <div className={inheritedStyles["options"]}>
-              <button type="button" onClick={replace}>
+              <button
+                type="button"
+                onClick={replace}
+                style={isMale ? { color: "#472ED8" } : undefined}
+              >
                 <ReplaceIcon /> Replace Exercise
               </button>
               <button type="button" onClick={remove}>
@@ -457,6 +461,7 @@ const RoutineForm = function () {
             <button
               type="button"
               className={inheritedStyles["close-button"]}
+              style={isMale ? { color: "#472ED8" } : undefined}
               onClick={closeOptions}
             >
               Close

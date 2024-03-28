@@ -25,12 +25,43 @@
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
     <title>React App</title>
+    <style>
+      .root {
+        height: 100%;
+      }
+
+      body {
+        scroll-behavior: smooth;
+      }
+
+      body::-webkit-scrollbar {
+        width: 7px;
+        border-radius: 10px;
+      }
+
+      body::-webkit-scrollbar-thumb {
+        background: #2e2e2e;
+        border-radius: 10px;
+      }
+
+      body::-webkit-scrollbar-thumb:hover {
+        background: #a0a0a0;
+      }
+
+      body::-webkit-scrollbar-track {
+        background: #ffffff;
+      }
+
+      body::-webkit-scrollbar-thumb:active {
+        background: #c0c0c0;
+      }
+    </style>
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="backdrop-root"></div>
     <div id="overlay-root"></div>
-    <div id="root" style="height: 100%"></div>
+    <div id="root" class="root"></div>
     <!--
       This HTML file is a template.
       If you open it directly in the browser, you will see an empty page.

@@ -83,7 +83,6 @@ function HealthEssencialsPage() {
     if (!loadedState) {
       loadEssentialsData();
 
-      // Dispatching active time and calories data
       dispatch(calculateActiveTime());
       dispatch(calculateBurntCalories());
     }

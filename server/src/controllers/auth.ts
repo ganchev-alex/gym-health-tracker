@@ -9,7 +9,6 @@ import User from "../models/user";
 import { TOKEN_SECRET_KEY } from "../middleware/authValidation";
 
 import ResError from "../util/ResError";
-import Statistic from "../models/statistic";
 
 interface checkEmailRequest {
   email: string;
@@ -114,10 +113,18 @@ export const signIn = async (
         height: height,
       },
       preferences: {
-        selectedActivities: [],
-        fitnessLevel: "",
-        frequencyStatus: "",
-        fitnessGoal: "",
+        selectedActivities: [
+          "Gym & Weightlifting",
+          "Cardio",
+          "Yoga",
+          "Stretching",
+          "Meditation",
+          "Cross Fit",
+        ],
+
+        fitnessLevel: "Beginner",
+        frequencyStatus: "3-4 times a week",
+        fitnessGoal: "Tone and Define Muscles",
       },
     };
     const user = new User(userData);

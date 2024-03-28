@@ -1,0 +1,205 @@
+.main {
+  width: 100vw;
+  height: fit-content;
+  background-color: #011219;
+  padding: 3.5em 0;
+  position: relative;
+  z-index: -2;
+
+  justify-content: center;
+  align-items: center;
+}
+
+/* Desktop: .main {
+  width: 100vw;
+  padding: 7em 0 0;
+  margin-bottom: 10em;
+} */
+
+.main h2 {
+  font-size: 3rem;
+  width: 100%;
+  margin: 0 auto;
+  color: white;
+
+  text-align: center;
+  margin-bottom: 1em;
+}
+
+/* .main h2 {
+  font-size: 3rem;
+  padding-left: 1em;
+  width: 80%;
+  margin: 0 auto;
+  color: white;
+} */
+
+.background-header {
+  position: absolute;
+  top: 2%;
+  left: 5%;
+  z-index: -1;
+  font-size: 8em;
+  color: #0c1e25;
+  font-style: oblique;
+  line-height: 1em;
+  margin: 0;
+}
+
+/* Desktop: .background-header {
+  top: -1%;
+  left: 10%;
+  font-size: 10em;
+  line-height: 1.2em;
+} */
+
+.article {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 0;
+
+  gap: 2em;
+}
+
+/* .article {
+  width: 80%;
+  margin: 0 auto;
+  flex-direction: row;
+  padding: 0;
+} */
+
+.left,
+.middle,
+.rigth {
+  display: flex;
+  flex-direction: column;
+}
+
+.left,
+.rigth {
+  width: 100%;
+  padding: 0.5em;
+  box-sizing: border-box;
+  gap: 2em;
+}
+
+/* Desktop: .left,
+.rigth {
+  width: 30%;
+  justify-content: space-evenly;
+} */
+
+.middle {
+  display: none;
+}
+
+/* Destkop: .middle {
+  width: 30%;
+  justify-content: end;
+} */
+
+.middle img {
+  width: 100%;
+  height: auto;
+}
+
+.article section {
+  color: white;
+}
+
+.article section h3 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  padding: 0 1em;
+  box-sizing: border-box;
+  margin: 0;
+}
+
+/* Destkop: .article section h3 {
+  font-size: 1.5rem;
+  font-weight: 600;
+} */
+
+.article section p {
+  font-size: 1.1rem;
+  text-align: justify;
+  padding: 1em;
+  box-sizing: border-box;
+  font-weight: 500;
+  margin: 0;
+}
+
+/* Destkop: .article section p {
+  font-size: 1.1rem;
+} */
+
+@media screen and (min-width: 768px) {
+  .article {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .main {
+    padding: 7em 0 0;
+    margin-bottom: 10em;
+    justify-content: space-between;
+  }
+
+  .main h2 {
+    font-size: 3rem;
+    padding-left: 1em;
+    width: 80%;
+    margin: 0 auto 1em;
+    color: white;
+    text-align: left;
+  }
+
+  .background-header {
+    top: -1%;
+    left: 10%;
+    font-size: 10em;
+    line-height: 1.2em;
+  }
+
+  .article {
+    width: 80%;
+    margin: 0 auto;
+    flex-direction: row;
+    padding: 0;
+    gap: 0;
+  }
+
+  .left,
+  .rigth {
+    width: 30%;
+    justify-content: space-evenly;
+    padding: 0;
+  }
+
+  .middle {
+    width: 30%;
+    align-self: flex-end;
+    display: block;
+    justify-content: end;
+    padding: 0;
+    overflow: hidden;
+  }
+
+  .middle img {
+    margin-bottom: -1em;
+  }
+
+  .article section h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+  }
+
+  .article section p {
+    font-size: 1.1rem;
+    text-align: left;
+  }
+}

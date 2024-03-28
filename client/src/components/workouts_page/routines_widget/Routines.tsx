@@ -166,7 +166,7 @@ const Routines: React.FC = () => {
             </p>
             <button
               type="button"
-              className={`${isMale ? styles.male : styles.female} ${
+              className={`${isMale ? buttonStyle.male : buttonStyle.female} ${
                 buttonStyle["secondary-button"]
               }`}
               onClick={onNewRoutine}
@@ -203,7 +203,11 @@ const Routines: React.FC = () => {
               type="button"
               className={optionsStyle["close-button"]}
               onClick={closeOptions}
-              style={isMale ? { color: "#472ed8" } : undefined}
+              style={
+                isMale
+                  ? { color: "#472ed8", marginBottom: "1.2em" }
+                  : { marginBottom: "1.2em" }
+              }
             >
               Close
             </button>

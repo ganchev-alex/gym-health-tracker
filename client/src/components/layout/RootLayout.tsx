@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import {
   Outlet,
   useLoaderData,
+  useLocation,
   useNavigate,
   useNavigation,
 } from "react-router-dom";
@@ -45,17 +46,16 @@ import LoadingPlane from "../UI/LoadingPlane/LoadingPlane";
 import { setErrorModalState, setHelpModalState } from "../../features/modals";
 import RedirectionModal from "../UI/RedirectionModal/RedirectionModal";
 import { setHeadersState } from "../../features/styles-manager-actions";
+import { setNotificationState } from "../../features/workout-page-actions";
 
 function RootLayout() {
   const navigate = useNavigate();
   const pageLoading = useNavigation();
+  const location = useLocation();
   const dispatch = useDispatch();
 
   const fetchedData = useLoaderData() as string | UserData;
 
-  const toggleState = useSelector((state: RootState) => {
-    return state.styleManager.toggleState;
-  });
   const notificationVisibility = useSelector((state: RootState) => {
     return state.widgetsManager.notificationManager.visibility;
   });
@@ -105,7 +105,6 @@ function RootLayout() {
         );
         break;
       case "FETCH_ERROR":
-        console.log("Fetch error.");
         dispatch(
           setErrorModalState({
             visibility: true,
@@ -215,12 +214,17 @@ function RootLayout() {
               yesterdayEss: data.essentialsYesterday,
             })
           );
-          console.log("Content updated!");
-        } else {
-          console.log("NOT UPDATED!");
         }
       } catch {
-        console.log("SOMETHING WENT WRONG!");
+        dispatch(
+          setNotificationState({
+            message: "😨 Essentials Data not Saved",
+            visibility: true,
+          })
+        );
+        setTimeout(() => {
+          dispatch(setNotificationState({ visibility: false }));
+        }, 4000);
       }
     };
 
@@ -228,7 +232,7 @@ function RootLayout() {
       if (!updated) {
         updateEssentialsData();
       }
-    }, 15000);
+    }, 10000);
 
     return () => {
       clearTimeout(automaticUpdater);
@@ -315,6 +319,50 @@ function RootLayout() {
     filterOptions;
 
   useEffect(() => {
+    if (scrollTracker.current) {
+      scrollTracker.current.scrollTop = 0;
+    }
+
+    if (location.pathname.includes("essentials")) {
+      dispatch(
+        setHeadersState({
+          mainHeader: "Health Essentials",
+          subHeader: "Personalized health tracking made simple.",
+        })
+      );
+    } else if (location.pathname.includes("explore")) {
+      dispatch(
+        setHeadersState({
+          mainHeader: "Just for you!",
+          subHeader:
+            "Explore premade workouts popular amoung the community and add them to your routines!",
+          centered: true,
+        })
+      );
+    } else if (location.pathname.includes("statistics")) {
+      dispatch(
+        setHeadersState({
+          mainHeader: "Statistics",
+          subHeader:
+            "Track your your gym performance and monitor your progress and achievements",
+        })
+      );
+    } else {
+      if (typeof fetchedData === "object") {
+        dispatch(
+          setHeadersState({
+            mainHeader: `Welcome back, ${
+              (fetchedData as UserData).personalDetails.firstName
+            }!`,
+            subHeader:
+              "Effortlessly manage your workouts from the main dashboard",
+          })
+        );
+      }
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
     const handleScroll = () => {
       if (
         !fetchEnd &&
@@ -323,9 +371,9 @@ function RootLayout() {
           scrollTracker.current.clientHeight <=
           scrollTracker.current.scrollTop &&
         !fetchingState &&
-        centered
+        centered &&
+        !explorePreviewVisibility
       ) {
-        console.log("Fetched upon scrolling.");
         fetchCards();
       }
     };
@@ -344,7 +392,6 @@ function RootLayout() {
   useEffect(() => {
     if (resetedFetching) {
       fetchCount = 1;
-      console.log("Fetched upon filter change.");
       fetchCards();
       dispatch(setResetState(false));
     }
@@ -394,11 +441,7 @@ function RootLayout() {
       {errorModal.visibility && <ErrorModal properties={errorModal} />}
       {(historyRecords.workoutRecords.length > 0 ||
         historyRecords.sessionRecords.length > 0) && <HistoryPreviewModal />}
-      <main
-        className={styles["content-wrapper"]}
-        style={{ width: !toggleState ? "80%" : "" }}
-        ref={scrollTracker}
-      >
+      <main className={styles["content-wrapper"]} ref={scrollTracker}>
         {workoutVisibility ? (
           <div className={styles.tracker}>
             <WorkoutTracker />
@@ -430,7 +473,6 @@ function RootLayout() {
         {workoutActivity && (
           <button
             className={styles["minimize-button"]}
-            style={{ right: !toggleState ? "3%" : "4%" }}
             onClick={() => {
               navigate("/app/dashboard");
               dispatch(setWorkoutState({ visibility: !workoutVisibility }));
@@ -484,12 +526,9 @@ interface UserData {
 
 export async function appDataLoader(): Promise<string | UserData> {
   const token = getToken();
-  console.log("Token: ", token);
   if (!token) {
-    console.log("TOKEN_NOT_FOUND");
     return "TOKEN_NOT_FOUND";
   } else if (token === "TOKEN_EXPIRED") {
-    console.log("TOKEN_EXPIRED");
     return "TOKEN_EXPIRED";
   }
 
@@ -504,14 +543,11 @@ export async function appDataLoader(): Promise<string | UserData> {
     if (response.status === 200) {
       return data.userData || null;
     } else if (response.status === 404) {
-      console.log("USER_NOT_FOUND");
       return "USER_NOT_FOUND";
     } else {
-      console.log("SERVER_ERROR");
       return "SERVER_ERROR";
     }
   } catch (error) {
-    console.log("FETCH_ERROR");
     return "FETCH_ERROR";
   }
 }

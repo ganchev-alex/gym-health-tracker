@@ -50,7 +50,6 @@ const PeriodControl = function () {
     const fetchStatistics = async function () {
       try {
         dispatch(setLoadingState(true));
-        console.log(`span=${timeSpan.toLocaleLowerCase()} ` + paramsList);
         const response = await fetch(
           `${mainAPIPath}/stats/data?span=${timeSpan.toLocaleLowerCase()}&` +
             paramsList,
@@ -65,7 +64,6 @@ const PeriodControl = function () {
             muscleGroups: string[];
             activityDates: number[];
           } = await response.json();
-          console.log("Data: ", data);
           dispatch(
             setStatistics({
               muscleDistribution: data.distributionStats,

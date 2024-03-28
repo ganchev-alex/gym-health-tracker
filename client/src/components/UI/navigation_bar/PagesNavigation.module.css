@@ -1,15 +1,17 @@
 .wrapper {
   list-style-type: none;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  gap: 2em;
   margin: 0;
   padding: 0;
+  width: 100%;
 }
 
-.untoggled {
-  width: 98%;
-  align-items: start;
+@media screen and (min-width: 768px) {
+  .wrapper {
+    flex-direction: column;
+    justify-content: center;
+    gap: 2em;
+  }
 }

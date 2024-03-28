@@ -2,7 +2,7 @@
   background: linear-gradient(30deg, #deedf5, white);
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
   border-radius: 15px;
-  height: 20%;
+  height: 125px;
   width: 100%;
   box-sizing: border-box;
   padding: 0.2em 2em;
@@ -10,7 +10,7 @@
   align-items: center;
   justify-content: space-around;
   border: #5db9ed 2px solid;
-  flex: 0 0 20%;
+  margin-top: 2em;
 }
 
 .icon-slot {
@@ -68,7 +68,8 @@
 .buttons {
   display: flex;
   flex: 0 0 30%;
-  justify-content: space-between;
+  justify-content: flex-end;
+  gap: 1em;
   align-items: center;
 }
 
@@ -83,4 +84,22 @@
   border: #5db9ed 2px solid;
   color: black;
   padding: 0;
+}
+
+@media screen and (min-width: 1150px) {
+  .widget {
+    margin-top: 0;
+  }
+
+  .buttons {
+    justify-content: space-between;
+    gap: 0;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .widget {
+    height: 20%;
+    flex: 0 0 20%;
+  }
 }

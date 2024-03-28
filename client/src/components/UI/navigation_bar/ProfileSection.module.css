@@ -1,13 +1,5 @@
 .wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1em 0 1.5em;
-  border-bottom: 1px solid white;
-  gap: 1.5em;
-  width: 100%;
-  height: 15%;
-  box-sizing: border-box;
+  display: none;
 }
 
 .profile-picture {
@@ -20,64 +12,16 @@
   pointer-events: none;
 }
 
-.toggle-parent {
-  width: fit-content;
-  height: fit-content;
-  position: relative;
-}
-
-.toggle-button-male,
-.toggle-button-female {
-  width: 25px;
-  height: 25px;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background-color: white;
-  border: none;
-  border-radius: 100%;
-  z-index: 1;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.toggle-button-male svg path {
-  stroke: #472ed8;
-  stroke-width: 2;
-}
-
-.toggle-button-female svg path {
-  stroke: #e54c60;
-  stroke-width: 2;
-}
-
-.toggle-button-female.toggled,
-.toggle-button-male.toggled {
-  transform: rotate(-180deg);
-}
-
-.profile-label {
-  background-color: white;
-  border-radius: 15px;
-  display: flex;
-  flex-direction: column;
-  padding: 0.5em 1.25em;
-  width: 50%;
-  overflow: hidden;
-}
-
-.profile-label h6 {
-  font-size: 1.3em;
-  margin: 0.5rem 0 0.2rem;
-}
-
-.profile-label p {
-  font-size: 0.8em;
-  margin: 0.2rem 0 0.5rem;
-  color: #828282;
-}
-
-.profile-label.toggled {
-  display: none;
+@media screen and (min-width: 768px) {
+  .wrapper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1em 0 1.5em;
+    border-bottom: 1px solid white;
+    gap: 1.5em;
+    width: 100%;
+    height: 15%;
+    box-sizing: border-box;
+  }
 }

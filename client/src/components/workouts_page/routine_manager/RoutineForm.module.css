@@ -3,18 +3,17 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-around;
-  width: 40vw;
-  height: 85vh;
+  width: 100%;
+  height: 100%;
   background-color: white;
-  border-radius: 15px;
   box-sizing: border-box;
   position: relative;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 5;
-  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
+  border: white 2px solid;
 }
 
 .header {
@@ -23,7 +22,7 @@
   position: relative;
   padding: 0.7em 0.5em;
   box-sizing: border-box;
-  margin-top: 0.7em;
+  margin: 1.2em 0;
 }
 
 .header h6 {
@@ -48,11 +47,11 @@
   padding: 0 1.5em;
 }
 
-.male .header button {
+.male.header button {
   color: #472ed8;
 }
 
-.female .header button {
+.female.header button {
   color: #e54c60;
 }
 
@@ -66,6 +65,7 @@
   align-items: center;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  margin-bottom: 8em;
 }
 
 .exercise-wrapper::-webkit-scrollbar {
@@ -91,12 +91,12 @@
   border: none;
   font-size: 1rem;
   outline: 0;
-  padding: 0.25em 0.5em;
+  padding: 0.3em 0.6em;
   box-sizing: border-box;
 }
 
 .details input:first-child {
-  width: 70%;
+  width: 63%;
   font-weight: 600;
 }
 
@@ -140,7 +140,7 @@
   height: auto;
   overflow: hidden;
   font-family: "Noto Sans", sans-serif;
-  font-size: 0.9rem;
+  font-size: 1rem;
   font-weight: 500;
   resize: none;
   outline: none;
@@ -156,7 +156,7 @@
 
   border: none;
   border-radius: 10px;
-  margin: 1em auto 0;
+  margin: 1.5em auto;
   box-sizing: border-box;
 }
 
@@ -166,4 +166,33 @@
 
 .female-button {
   background: linear-gradient(270deg, #d385e6 0%, #e4516b 81.25%);
+}
+
+@media screen and (min-width: 768px) {
+  .form {
+    width: 70%;
+    height: 85vh;
+    position: absolute;
+    border-radius: 15px;
+  }
+
+  .header {
+    margin-top: 0.7em;
+  }
+
+  .exercise-wrapper {
+    margin-bottom: 0;
+  }
+
+  .submit-button {
+    margin: 1em auto 0;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .form {
+    width: 40vw;
+    height: 85vh;
+    position: absolute;
+  }
 }

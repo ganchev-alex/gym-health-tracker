@@ -5,11 +5,19 @@
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   grid-auto-rows: 30vh;
   gap: 2.5em;
-  margin-bottom: 2em;
+  margin-bottom: 5em;
 }
+
+/* Desktop: .grid {
+  display: grid; -
+  grid-template-columns: repeat(4, 1fr);
+  grid-auto-rows: 30vh; -
+  gap: 2.5em; -
+  margin-bottom: 2em; ~
+} */
 
 .load-button {
   width: 100%;
@@ -44,4 +52,23 @@
   color: #828282;
   width: fit-content;
   margin: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 2em;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
 }

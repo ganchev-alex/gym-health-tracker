@@ -14,34 +14,13 @@
   gap: 1.9em;
 }
 
-.untoggled-wrapper {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-}
-
-.label {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: left;
-  font-size: 1.2rem;
-  font-style: normal;
-  font-weight: 600;
-  line-height: normal;
-}
-
-.hidden-label {
-  display: none;
-}
-
 a {
   color: white;
   text-decoration: none;
 }
 
 .active-route {
-  padding: 1em 0.5em;
+  padding: 0.5em;
   background-color: white;
   border-radius: 15px;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
@@ -71,8 +50,4 @@ a {
 .active-color-female svg path {
   stroke: #e54c60;
   stroke-width: 2.6;
-}
-
-.untoggled-wrapper.active-route div {
-  padding-left: 1rem;
 }

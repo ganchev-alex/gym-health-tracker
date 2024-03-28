@@ -8,7 +8,6 @@ import { secondsConverter } from "../../essencials_page/activities_widget/Activi
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { setExplorePreviewVisibility } from "../../../features/styles-manager-actions";
-import { setWorkoutTitle } from "../../../features/workout";
 import { setRoutinesData } from "../../../features/user-actions";
 import { setNotificationState } from "../../../features/workout-page-actions";
 import { setLoadingState } from "../../../features/loading-actions";

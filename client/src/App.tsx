@@ -17,10 +17,15 @@ import StatisticsPage from "./components/pages/app/StatisticsPage";
 import CardPreview, {
   previewLoader,
 } from "./components/explore_page/explore_card/CardPreviewPage";
+import LandingPage from "./components/pages/landing/base/LandingPage";
 
 export const mainAPIPath = "http://localhost:8080";
 
 const router = createBrowserRouter([
+  {
+    path: "",
+    element: <LandingPage />,
+  },
   {
     path: "/auth",
     element: <FormLayout />,
@@ -58,7 +63,7 @@ const router = createBrowserRouter([
         element: <Workouts />,
       },
       {
-        path: "health-essencials",
+        path: "health-essentials",
         element: <HealthEssencialsPage />,
       },
       {

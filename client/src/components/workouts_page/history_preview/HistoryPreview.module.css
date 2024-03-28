@@ -1,22 +1,23 @@
 .modal {
-  width: 40vw;
-  height: 85vh;
+  width: 100%;
+  height: 100%;
   background-color: white;
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  border-radius: 15px;
   box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
   z-index: 7;
   display: flex;
   flex-direction: column;
+  border: white 2px solid;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  text-align: center;
 }
 
 .header h3 {
@@ -165,4 +166,20 @@
   font-size: 1rem;
   color: #828282;
   text-align: center;
+}
+
+@media screen and (min-width: 768px) {
+  .modal {
+    width: 70%;
+    height: 85vh;
+    position: absolute;
+    border-radius: 15px;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .modal {
+    width: 40vw;
+    height: 85vh;
+  }
 }

@@ -149,7 +149,11 @@ const RoutinePreview = function () {
 
   return (
     <div className={formInheritedStyles.form}>
-      <header className={formInheritedStyles.header}>
+      <header
+        className={`${formInheritedStyles.header} ${
+          isMale ? formInheritedStyles.male : formInheritedStyles.female
+        }`}
+      >
         <button
           type="button"
           onClick={onClose}
@@ -182,7 +186,7 @@ const RoutinePreview = function () {
         className={`${formInheritedStyles["submit-button"]} ${
           isMale
             ? formInheritedStyles["male-button"]
-            : formInheritedStyles["male-button"]
+            : formInheritedStyles["female-button"]
         }`}
         onClick={onStartRoutine}
         disabled={workoutActivity}

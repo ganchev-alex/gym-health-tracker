@@ -96,7 +96,11 @@ const CatalogFilter = function () {
   };
 
   const onContentTypeSelect = function (label: string) {
-    dispatch(setFilter({ contentType: label }));
+    if (label === contentType) {
+      dispatch(setFilter({ contentType: "Set Content Type" }));
+    } else {
+      dispatch(setFilter({ contentType: label }));
+    }
     setContentVisibility(false);
   };
 
@@ -175,7 +179,10 @@ const CatalogFilter = function () {
               {duration}
             </button>
             {durationVisibility && (
-              <div className={styles.options} style={{ width: "100%" }}>
+              <div
+                className={styles.options}
+                style={{ width: "100%", top: "125%" }}
+              >
                 {durationOptionsLabels.map((durationLable) => {
                   return (
                     <button
@@ -207,7 +214,10 @@ const CatalogFilter = function () {
               {contentType}
             </button>
             {contentVisibility && (
-              <div className={styles.options} style={{ width: "100%" }}>
+              <div
+                className={styles.options}
+                style={{ width: "100%", top: "125%" }}
+              >
                 {contentTypeLabels.map((contentTypeLable) => {
                   return (
                     <button

@@ -69,10 +69,17 @@ const signIn = async (req, res, next) => {
                 height: height,
             },
             preferences: {
-                selectedActivities: [],
-                fitnessLevel: "",
-                frequencyStatus: "",
-                fitnessGoal: "",
+                selectedActivities: [
+                    "Gym & Weightlifting",
+                    "Cardio",
+                    "Yoga",
+                    "Stretching",
+                    "Meditation",
+                    "Cross Fit",
+                ],
+                fitnessLevel: "Beginner",
+                frequencyStatus: "3-4 times a week",
+                fitnessGoal: "Tone and Define Muscles",
             },
         };
         const user = new user_1.default(userData);

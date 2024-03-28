@@ -1,14 +1,14 @@
 .widget {
   width: 100%;
-  height: 100%;
+  height: 425px;
   position: relative;
-  margin-top: 1em;
   padding: 1em;
   box-sizing: border-box;
   border: #50aa7f solid 2px;
   background: linear-gradient(120deg, rgb(241, 252, 246), white);
   border-radius: 15px;
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
+  margin-bottom: 8em;
 }
 
 .active,
@@ -22,15 +22,15 @@
 }
 
 .active {
-  width: 90%;
+  height: 80%;
 }
 
 .hydration {
-  width: 75%;
+  height: 65%;
 }
 
 .calories {
-  width: 60%;
+  height: 50%;
 }
 
 .hover-prevent {
@@ -46,11 +46,11 @@
   display: flex;
   justify-content: space-evenly;
   font-size: 1rem;
-  margin-bottom: 0.7em;
+  margin: 2em 0 0.7em;
   font-weight: 600;
   position: absolute;
   bottom: 0;
-  width: 100%;
+  width: 95%;
 }
 
 .legend div {
@@ -80,9 +80,35 @@
 
 .widget img {
   position: absolute;
-  width: 40%;
-  height: auto;
+  height: 35%;
+  width: auto;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+}
+
+@media screen and (min-width: 768px) {
+  .widget {
+    margin-bottom: 2em;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .widget {
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .widget {
+    height: 100%;
+    margin-top: 1em;
+  }
+
+  .legend {
+    margin: 0;
+    margin-bottom: 0.7em;
+    bottom: 0;
+    width: 100%;
+  }
 }

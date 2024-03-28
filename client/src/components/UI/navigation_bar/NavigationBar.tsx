@@ -9,15 +9,10 @@ import styles from "./NavigationBar.module.css";
 
 function NavigationBar() {
   const { isMale } = useSelector((state: RootState) => state.userActions);
-  const toggleState = useSelector(
-    (state: RootState) => state.styleManager.toggleState
-  );
 
   return (
     <nav
-      className={`${styles["navigation-bar"]} ${
-        !toggleState ? styles.untoggled : ""
-      }`}
+      className={styles["navigation-bar"]}
       style={
         isMale
           ? { backgroundImage: "linear-gradient(45deg, #29156b, #472ed8)" }

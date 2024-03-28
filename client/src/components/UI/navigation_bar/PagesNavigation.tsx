@@ -11,18 +11,12 @@ import ExploreIcon from "../../../assets/svg_icon_components/ExploreIcon";
 import StatisticsIcon from "../../../assets/svg_icon_components/StatisticsIcon";
 
 const PagesNavigation = () => {
-  const toggleState = useSelector(
-    (state: RootState) => state.styleManager.toggleState
-  );
-
   return (
-    <ul
-      className={`${styles.wrapper} ${!toggleState ? styles.untoggled : ""} `}
-    >
+    <ul className={styles.wrapper}>
       <RouteButton path="dashboard" label="Workouts" icon={<WorkoutIcon />} />
       <RouteButton
-        path="health-essencials"
-        label="Health Essencials"
+        path="health-essentials"
+        label="Health Essentials"
         icon={<HealthEssenscialsIcon />}
       />
       <RouteButton path="explore" label="Explore" icon={<ExploreIcon />} />

@@ -6,6 +6,11 @@ import { RootState } from "../../../features/store";
 import { setWorkoutState } from "../../../features/workout";
 
 import styles from "./RouteButton.module.css";
+import {
+  resetHistoryRecords,
+  setFormVisibility,
+  setRoutinePreviewState,
+} from "../../../features/workout-page-actions";
 
 const RouteButton: React.FC<{
   path: string;
@@ -13,10 +18,6 @@ const RouteButton: React.FC<{
   icon: React.ReactNode;
 }> = (props) => {
   const dispatch = useDispatch();
-
-  const toggleState = useSelector(
-    (state: RootState) => state.styleManager.toggleState
-  );
   const { isMale } = useSelector((state: RootState) => state.userActions);
 
   const { workoutVisibility } = useSelector(
@@ -25,9 +26,6 @@ const RouteButton: React.FC<{
 
   const activeClassSelector = function ({ isActive }: { isActive: boolean }) {
     let classes = styles.wrapper;
-    if (!toggleState) {
-      classes += " " + styles["untoggled-wrapper"];
-    }
     if (isActive) {
       classes += " " + styles["active-route"];
       if (isMale) {
@@ -43,6 +41,9 @@ const RouteButton: React.FC<{
     if (workoutVisibility) {
       dispatch(setWorkoutState({ visibility: false }));
     }
+    dispatch(setRoutinePreviewState({ visibility: false }));
+    dispatch(setFormVisibility(false));
+    dispatch(resetHistoryRecords());
   };
 
   return (
@@ -53,13 +54,6 @@ const RouteButton: React.FC<{
         onClick={onClickHandler}
       >
         <div>{props.icon}</div>
-        <span
-          className={`${styles.label} ${
-            toggleState ? styles["hidden-label"] : ""
-          }`}
-        >
-          {props.label}
-        </span>
       </NavLink>
     </li>
   );

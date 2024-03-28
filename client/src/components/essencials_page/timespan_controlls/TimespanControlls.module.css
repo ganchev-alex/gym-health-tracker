@@ -4,6 +4,8 @@
   align-items: center;
   height: 10%;
   width: 100%;
+  padding: 1em;
+  box-sizing: border-box;
 }
 
 .controlls h4 {
@@ -26,4 +28,16 @@
   outline: none;
   border: none;
   cursor: pointer;
+}
+
+@media screen and (min-width: 1150px) {
+  .controlls {
+    margin-bottom: 1.5em;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .controlls {
+    margin-bottom: 0;
+  }
 }

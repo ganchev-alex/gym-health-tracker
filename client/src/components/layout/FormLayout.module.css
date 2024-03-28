@@ -6,6 +6,10 @@
 }
 
 .image-slot {
+  display: none;
+}
+
+/* Desktop: .image-slot {
   width: 70%;
   height: 97%;
   box-sizing: content-box;
@@ -13,7 +17,7 @@
   border-radius: 30px;
   margin-left: 1em;
   overflow: hidden;
-}
+} */
 
 .image-slot img {
   height: 100%;
@@ -53,10 +57,16 @@
 }
 
 .form-holder {
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+/* Desktop: .form-holder {
   position: relative;
   width: 30%;
   height: 100%;
-}
+} */
 
 .form-holder form {
   display: flex;
@@ -108,12 +118,6 @@
   border-bottom: #472ed8 1.5px solid;
 }
 
-/* .male input[type="text"] .input-error,
-.male input[type="email"] .input-error,
-.male input[type="password"] .input-error {
-  border-bottom: #ef233c 3px solid;
-} */
-
 .male .submit-button {
   background-color: #472ed8;
 }
@@ -153,4 +157,76 @@
 
 .female button[type="submit"] {
   background-color: #e54c60;
+}
+
+/* Hide on desktop mode */
+
+.responsive-background {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  position: fixed;
+  z-index: -2;
+}
+
+.responsive-background img {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  top: 0;
+  left: 0;
+}
+
+@media screen and (min-width: 768px) {
+  .form-holder form {
+    width: 50%;
+    margin: 0 auto;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .image-slot {
+    display: block;
+    width: auto;
+    height: 97%;
+    box-sizing: content-box;
+    position: relative;
+    border-radius: 30px;
+    margin-left: 1em;
+    overflow: hidden;
+  }
+
+  .responsive-background {
+    display: none;
+  }
+
+  .form-holder {
+    position: relative;
+    width: 65%;
+  }
+
+  .form-holder form {
+    width: 60%;
+  }
+}
+
+@media screen and (min-width: 1450px) {
+  .form-holder {
+    width: 40%;
+  }
+
+  .image-slot {
+    width: 60%;
+  }
+}
+
+@media screen and (min-width: 1600px) {
+  .form-holder {
+    width: 35%;
+  }
+
+  .image-slot {
+    width: 65%;
+  }
 }

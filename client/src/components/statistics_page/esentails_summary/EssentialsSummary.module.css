@@ -18,14 +18,24 @@
   font-size: 1.1rem;
   color: #828282;
   background-color: #ededed;
-  height: 100%;
+  height: 30px;
   aspect-ratio: 1/1;
   border: #828282 1px solid;
   border-radius: 50px;
 }
 
+/* .header button {
+  font-size: 1.1rem;
+  color: #828282;
+  background-color: #ededed;
+  height: 100%;
+  aspect-ratio: 1/1;
+  border: #828282 1px solid;
+  border-radius: 50px;
+} */
+
 .slider {
-  height: 18%;
+  height: 150px;
   width: 100%;
   display: flex;
   gap: 1.5em;
@@ -34,6 +44,18 @@
   box-sizing: border-box;
   padding: 0.5em;
 }
+
+/* 
+Desktop: .slider {
+  height: 18%;
+  width: 100%;
+  display: flex;
+  gap: 1.5em;
+  align-items: center;
+  overflow-x: scroll;
+  box-sizing: border-box;
+  padding: 0.5em;
+} */
 
 .slider::-webkit-scrollbar {
   height: 9px;
@@ -58,7 +80,7 @@
 }
 
 .slider div {
-  height: 100%;
+  height: 85%;
   width: fit-content;
   display: flex;
   align-items: center;
@@ -71,6 +93,36 @@
   box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
   flex-shrink: 0;
 }
+
+/* Desktop: .slider div {
+  height: 100%;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  padding: 0.5em 1.5em;
+  box-sizing: border-box;
+  border-radius: 15px;
+  font-size: 1.1rem;
+  font-weight: 550;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+} */
+
+/* Desktop: .slider div {
+  height: 100%;
+  width: fit-content;
+  display: flex;
+  align-items: center;
+  gap: 1em;
+  padding: 0.5em 1.5em;
+  box-sizing: border-box;
+  border-radius: 15px;
+  font-size: 1.1rem;
+  font-weight: 550;
+  box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.25);
+  flex-shrink: 0;
+} */
 
 .slider div span {
   height: fit-content;

@@ -27,7 +27,7 @@
   background-color: transparent;
   border: none;
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center;
   gap: 0.3em;
   width: 10%;

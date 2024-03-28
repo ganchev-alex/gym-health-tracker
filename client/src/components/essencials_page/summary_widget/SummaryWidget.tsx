@@ -112,7 +112,6 @@ const SummaryWidget = function () {
           options={hydrationData.options}
         />
       </div>
-
       <div className={styles.legend}>
         <span>
           <div />

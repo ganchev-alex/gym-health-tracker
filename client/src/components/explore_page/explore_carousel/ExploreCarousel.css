@@ -172,3 +172,13 @@
   font-weight: 500;
   width: fit-content;
 }
+
+@media screen and (max-width: 1150px) {
+  .main-wrapper .swiperParallax .image-wrapper {
+    width: 110%;
+  }
+
+  .main-wrapper .swiperParallax .description {
+    width: 105%;
+  }
+}

@@ -10,6 +10,8 @@ const FilterOption: React.FC<{ optionData: { label: string; img: string } }> =
       return state.workoutState.filterState.type;
     });
 
+    const { isMale } = useSelector((state: RootState) => state.userActions);
+
     const { equipment: keyEquipment, muscle: keyMuscle } = useSelector(
       (state: RootState) => {
         return state.workoutState.filterValue;
@@ -41,6 +43,13 @@ const FilterOption: React.FC<{ optionData: { label: string; img: string } }> =
             ? styles.active
             : ""
         }`}
+        style={
+          isMale &&
+          (keyEquipment === props.optionData.label ||
+            keyMuscle === props.optionData.label)
+            ? { background: "#472ed8" }
+            : {}
+        }
         onClick={() => selectingFilter(props.optionData.label)}
       >
         <img

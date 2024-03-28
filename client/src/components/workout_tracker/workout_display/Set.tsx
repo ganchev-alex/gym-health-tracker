@@ -15,8 +15,6 @@ import setStyles from "./Set.module.css";
 import CheckBoxIcon from "../../../assets/svg_icon_components/CheckboxIcon";
 import RemoveIcon from "../../../assets/svg_icon_components/RemoveIcon";
 
-let referenceValues = { state: false, kg: 0, reps: 0 };
-
 const Set: React.FC<{
   exerciseId: string;
   setIndex: number;
@@ -37,14 +35,14 @@ const Set: React.FC<{
   const { isMale } = useSelector((state: RootState) => state.userActions);
 
   let setState = { state: false, kg: 0, reps: 0 };
-  if (!props.staticMode) {
-    setState = exercise?.setsData
+  if (!props.staticMode && exercise) {
+    setState = exercise.setsData
       ? exercise.setsData[props.setIndex - 1]
       : { state: false, kg: 0, reps: 0 };
   }
 
-  const [reps, setReps] = useState(setState.reps);
-  const [kg, setKg] = useState(setState.kg);
+  const [reps, setReps] = useState(setState?.reps || 0);
+  const [kg, setKg] = useState(setState?.kg || 0);
 
   useEffect(() => {
     if (!props.staticMode && props.exerciseIndex != undefined) {
@@ -61,7 +59,7 @@ const Set: React.FC<{
 
   const onCheck = function () {
     if (!props.staticMode) {
-      if (setState.state) {
+      if (setState?.state) {
         dispatch(setRestTimerState({ activity: false }));
       } else {
         dispatch(
@@ -79,7 +77,7 @@ const Set: React.FC<{
         setSetState({
           exerciseIndex: props.exerciseIndex || 0,
           setIndex: props.setIndex - 1,
-          setState: !setState.state,
+          setState: !setState?.state,
         })
       );
 
@@ -90,7 +88,7 @@ const Set: React.FC<{
 
       dispatch(
         setTotalValues({
-          increasment: !setState.state,
+          increasment: !setState?.state,
           volume: dispatchedValues.kg * dispatchedValues.reps,
         })
       );
@@ -100,7 +98,7 @@ const Set: React.FC<{
   return (
     <tr
       className={`${isMale ? styles.male : styles.female} ${
-        setState.state ? styles["checked-row"] : ""
+        setState?.state ? styles["checked-row"] : ""
       }`}
     >
       <td className={setStyles["cell-wrapper"]}>
@@ -111,7 +109,13 @@ const Set: React.FC<{
           <button
             className={setStyles["remove-button"]}
             type="button"
-            onClick={() => props.setRemover(props.setIndex - 1)}
+            style={
+              setState?.state === true ? { filter: "invert(0.3)" } : undefined
+            }
+            onClick={() => {
+              if (setState?.state !== true)
+                props.setRemover(props.setIndex - 1);
+            }}
           >
             <RemoveIcon />
           </button>
@@ -123,12 +127,12 @@ const Set: React.FC<{
           type="number"
           name="kg"
           id="kg"
-          value={kg == 0 ? "" : kg}
+          value={kg || ""}
           onChange={(e) => {
             setKg(Number.parseFloat(e.target.value));
           }}
           placeholder={props.kg.toString()}
-          disabled={props.staticMode || setState.state}
+          disabled={props.staticMode || setState?.state}
           autoComplete="off"
         />
       </td>
@@ -137,10 +141,10 @@ const Set: React.FC<{
           type="number"
           name="reps"
           id="reps"
-          value={reps == 0 ? "" : reps}
+          value={reps || ""}
           onChange={(e) => setReps(Number.parseInt(e.target.value))}
           placeholder={props.reps.toString()}
-          disabled={props.staticMode || setState.state}
+          disabled={props.staticMode || setState?.state}
           autoComplete="off"
         />
       </td>
@@ -152,7 +156,7 @@ const Set: React.FC<{
             (props.kg === 0 || props.reps === 0) && (kg === 0 || reps === 0)
           }
         />
-        <CheckBoxIcon checkState={setState.state} />
+        <CheckBoxIcon checkState={setState?.state} />
       </td>
     </tr>
   );

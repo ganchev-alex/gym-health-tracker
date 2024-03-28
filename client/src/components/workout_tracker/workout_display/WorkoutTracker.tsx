@@ -12,6 +12,7 @@ import {
 import { RootState } from "../../../features/store";
 import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
 import {
+  operateOnRestTimer,
   restoreWorkoutInitialState,
   setWorkoutState,
 } from "../../../features/workout";
@@ -40,6 +41,7 @@ import {
   appendWorkoutsData,
 } from "../../../features/health-essentials-actions";
 import { useNavigate } from "react-router-dom";
+import { secondsConverter } from "../../essencials_page/activities_widget/ActivitiesWidget";
 
 const WorkoutTracker: React.FC = () => {
   const dispatch = useDispatch();
@@ -57,6 +59,11 @@ const WorkoutTracker: React.FC = () => {
   const timer = useSelector((state: RootState) => {
     return state.workoutState.duration;
   });
+
+  const restTimer = useSelector(
+    (state: RootState) => state.workoutState.restTimer
+  );
+
   const userWeigth = useSelector((state: RootState) => {
     return state.userActions.loadedUserData.personalDetails.weight;
   });
@@ -77,6 +84,9 @@ const WorkoutTracker: React.FC = () => {
   const hours = Math.floor(timer / 3600);
   const minutes = Math.floor((timer % 3600) / 60);
   const remainingSeconds = timer % 60;
+
+  const restMinutes = Math.floor((restTimer.timer % 3600) / 60);
+  const restSeconds = restTimer.timer % 60;
 
   useEffect(() => {
     if (sessionActivity) {
@@ -387,6 +397,25 @@ const WorkoutTracker: React.FC = () => {
           </div>
         ) : (
           <React.Fragment>
+            <div
+              className={styles["mini-header"]}
+              style={
+                isMale
+                  ? {
+                      background:
+                        "linear-gradient(-125deg, #472ED8 20.25%, #29156B 100%)",
+                    }
+                  : undefined
+              }
+            >
+              <p>
+                Duration:{" "}
+                {`${String(hours).padStart(2, "0")}:${String(minutes).padStart(
+                  2,
+                  "0"
+                )}:${String(remainingSeconds).padStart(2, "0")}`}
+              </p>
+            </div>
             <WorkoutDisplay />
             <div className={styles.sidebar}>
               <Timer />
@@ -401,6 +430,39 @@ const WorkoutTracker: React.FC = () => {
                 </button>
               </div>
             </div>
+            {restTimer.active && (
+              <div
+                className={styles["mini-controller"]}
+                style={
+                  isMale
+                    ? {
+                        background:
+                          "linear-gradient(-125deg, #472ED8 20.25%, #29156B 100%)",
+                      }
+                    : undefined
+                }
+              >
+                <button
+                  onClick={() =>
+                    dispatch(
+                      operateOnRestTimer({ increment: false, value: 15 })
+                    )
+                  }
+                >
+                  -15
+                </button>
+                <p>{`${String(restMinutes).padStart(2, "0")}:${String(
+                  restSeconds
+                ).padStart(2, "0")}`}</p>
+                <button
+                  onClick={() =>
+                    dispatch(operateOnRestTimer({ increment: true, value: 15 }))
+                  }
+                >
+                  +15
+                </button>
+              </div>
+            )}
           </React.Fragment>
         )}
       </div>

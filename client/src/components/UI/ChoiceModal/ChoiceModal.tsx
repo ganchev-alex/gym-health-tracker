@@ -15,6 +15,7 @@ const ModalOverlay: React.FC<{
     noButtonLable: string;
     yesButtonLable: string;
     acceptAction: () => void;
+    declineActionModification?: () => void;
   };
 }> = function (props) {
   const dispatch = useDispatch();
@@ -32,7 +33,7 @@ const ModalOverlay: React.FC<{
       <p>{props.properties.description || ""}</p>
       <div className={styles.buttons}>
         <button
-          onClick={onCloseModal}
+          onClick={props.properties.declineActionModification || onCloseModal}
           style={
             isMale ? { color: "#472ed8", borderColor: "#472ed8" } : undefined
           }
@@ -63,6 +64,7 @@ const ChoiceModal: React.FC<{
   noButtonLable: string;
   yesButtonLable: string;
   acceptAction: () => void;
+  declineActionModification?: () => void;
 }> = function (props) {
   const backdropRoot = document.getElementById("backdrop-root");
   const overlayRoot = document.getElementById("overlay-root");

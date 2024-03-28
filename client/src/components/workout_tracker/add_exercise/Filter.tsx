@@ -29,7 +29,7 @@ import triceps from "../../../assets/images/triceps.png";
 
 const equimpent = [
   { label: "Barbell", img: barbell },
-  { label: "Dumbbells", img: dumbbell },
+  { label: "Dumbbell", img: dumbbell },
   { label: "Machine", img: machine },
   { label: "Suspension Band", img: band },
   { label: "Bodyweight", img: bodyWeight },

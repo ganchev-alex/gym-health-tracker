@@ -1,11 +1,7 @@
 .backdrop {
   width: 100%;
   height: 100%;
-  background: radial-gradient(
-    50% 50% at 50% 50%,
-    rgba(0, 0, 0, 0.36) 58.33%,
-    rgba(0, 0, 0, 0.54) 100%
-  );
+  background: rgba(0, 0, 0, 0.4);
   position: fixed;
   top: 0;
   left: 0;
@@ -18,7 +14,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 100;
-  width: 500px;
+  width: 80%;
   height: fit-content;
   background-color: white;
   padding: 2em;
@@ -73,4 +69,10 @@
   background-color: #e54c60;
   border: #e54c60 2px solid;
   color: white;
+}
+
+@media screen and (min-width: 768px) {
+  .modal {
+    width: 50vh;
+  }
 }

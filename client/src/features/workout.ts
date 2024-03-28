@@ -220,10 +220,12 @@ const workoutState = createSlice({
         setState: boolean;
       }>
     ) => {
-      if (state.exercises[action.payload.exerciseIndex].setsData) {
-        const setsData = state.exercises[action.payload.exerciseIndex].setsData;
-        if (setsData) {
-          setsData[action.payload.setIndex].state = action.payload.setState;
+      const exercise = state.exercises[action.payload.exerciseIndex];
+      if (exercise && exercise.setsData) {
+        const setsData = exercise.setsData;
+        const setToUpdate = setsData[action.payload.setIndex];
+        if (setToUpdate) {
+          setToUpdate.state = action.payload.setState;
         }
       }
     },
@@ -236,11 +238,13 @@ const workoutState = createSlice({
         volume: number;
       }>
     ) => {
-      if (state.exercises[action.payload.exerciseIndex].setsData) {
-        const setsData = state.exercises[action.payload.exerciseIndex].setsData;
-        if (setsData) {
-          setsData[action.payload.setIndex].kg = action.payload.volume;
-          setsData[action.payload.setIndex].reps = action.payload.reps;
+      const exercise = state.exercises[action.payload.exerciseIndex];
+      if (exercise && exercise.setsData) {
+        const setsData = exercise.setsData;
+        const setToUpdate = setsData[action.payload.setIndex];
+        if (setToUpdate) {
+          setToUpdate.kg = action.payload.volume;
+          setToUpdate.reps = action.payload.reps;
         }
       }
     },
@@ -264,13 +268,11 @@ const workoutState = createSlice({
       state,
       action: PayloadAction<{ exerciseIndex: number; setIndex: number }>
     ) => {
-      const currantSetData =
-        state.exercises[action.payload.exerciseIndex].setsData;
-      if (currantSetData) {
+      const exercise = state.exercises[action.payload.exerciseIndex];
+      if (exercise && exercise.setsData) {
+        const currantSetData = [...exercise.setsData];
         currantSetData.splice(action.payload.setIndex, 1);
-        state.exercises[action.payload.exerciseIndex].setsData = [
-          ...currantSetData,
-        ];
+        state.exercises[action.payload.exerciseIndex].setsData = currantSetData;
       }
     },
     setTotalValues: (

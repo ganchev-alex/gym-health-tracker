@@ -1,33 +1,44 @@
 .modal {
   display: flex;
+  flex-direction: column;
   height: 100%;
   width: 100%;
   justify-content: space-around;
 }
 
+/* Dekstop: .modal {
+  flex-direction: row;
+} */
+
 .sidebar {
-  width: 35%;
+  width: 100%;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  margin: 2em 0;
+  margin: 3em auto 17em;
 }
+
+/* Desktop:
+.sidebar {
+  width: 35%;
+  margin: 2em 0;
+} */
 
 .buttons-wrapper {
   display: flex;
   width: 100%;
   align-items: center;
+  justify-content: space-evenly;
 }
 
 .buttons-wrapper button {
   font-size: 1.1rem;
-  width: 40%;
+  width: 45%;
   height: fit-content;
   font-weight: 600;
   border-radius: 10px;
   padding: 0.5em 2em;
-  margin-right: 1em;
 }
 
 .buttons-wrapper button:first-child {
@@ -44,27 +55,40 @@
 
 .session-wrapper {
   width: 100%;
-  height: 100%;
+  height: 95vh;
   box-sizing: border-box;
   position: relative;
 }
+
+/* Desktop: .session-wrapper {
+  height: 100%;
+} */
 
 .session-wrapper img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
-  border-radius: 10px;
+  box-sizing: border-box;
 }
+
+/* .session-wrapper img {
+  border-radius: 10px;
+} */
 
 .filter {
   width: 100%;
   height: 100%;
+  box-sizing: border-box;
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 10px;
 }
+
+/* .filter {
+ 
+  border-radius: 10px;
+} */
 
 .male.filter {
   background: radial-gradient(
@@ -87,13 +111,17 @@
   position: absolute;
   bottom: 0;
   left: 50%;
-  bottom: 2%;
+  bottom: 15%;
   transform: translate(-50%);
   padding: 1em 1.5em;
   display: flex;
   gap: 1em;
   border-radius: 20px;
 }
+
+/* .controlls {
+  bottom: 2%;
+} */
 
 .controlls button {
   font-size: 1.5rem;
@@ -153,4 +181,103 @@
   position: absolute;
   top: 0;
   left: 0;
+}
+
+.mini-header {
+  width: 100%;
+  background: linear-gradient(-125deg, #e54c60 20.25%, #d385e6 100%);
+}
+
+.mini-header p {
+  font-size: 1.5rem;
+  font-weight: 600;
+  padding: 1em;
+  color: white;
+}
+
+.mini-controller {
+  display: flex;
+  width: 90%;
+  justify-content: space-evenly;
+  align-items: center;
+  height: fit-content;
+  position: fixed;
+  bottom: 15%;
+  left: 50%;
+  transform: translate(-50%);
+  padding: 1.5em;
+  border-radius: 15px;
+  box-sizing: border-box;
+  background: linear-gradient(-125deg, #e54c60 20.25%, #d385e6 100%);
+  box-shadow: 0px 0px 10px 2px rgba(0, 0, 0, 0.25);
+  z-index: 6;
+}
+
+.mini-controller p {
+  font-size: 1.2rem;
+  color: white;
+}
+
+.mini-controller button {
+  font-size: 1.2rem;
+  height: fit-content;
+  padding: 0.5em 1em;
+  border-radius: 10px;
+  border: white 2px solid;
+  background: transparent;
+  color: white;
+  font-weight: 600;
+}
+
+@media screen and (min-width: 768px) {
+  .mini-header {
+    display: none;
+  }
+
+  .mini-controller {
+    display: none;
+  }
+
+  .sidebar {
+    margin: 2em 0;
+  }
+
+  .buttons-wrapper {
+    justify-content: flex-start;
+  }
+
+  .buttons-wrapper button {
+    width: 40%;
+    margin-right: 1em;
+  }
+
+  .controlls {
+    bottom: 5%;
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .modal {
+    flex-direction: row;
+  }
+
+  .sidebar {
+    width: 35%;
+  }
+
+  .session-wrapper {
+    height: 100%;
+  }
+
+  .session-wrapper img {
+    border-radius: 10px;
+  }
+
+  .filter {
+    border-radius: 10px;
+  }
+
+  .controlls {
+    bottom: 2%;
+  }
 }

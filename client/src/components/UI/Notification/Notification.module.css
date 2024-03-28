@@ -1,5 +1,5 @@
 .container {
-  width: fit-content;
+  width: 90%;
   height: fit-content;
   padding: 1em 2em;
   position: absolute;
@@ -31,4 +31,10 @@
   border: #e0e0e0 2px solid;
   padding: 0 0.5em 0.1em;
   margin-left: 1rem;
+}
+
+@media screen and (min-width: 768px) {
+  .container {
+    width: fit-content;
+  }
 }

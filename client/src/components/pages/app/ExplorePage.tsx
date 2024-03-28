@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import ExploreCarousel from "../../explore_page/explore_carousel/ExploreCarousel";
 
 import styles from "./ExplorePage.module.css";
@@ -29,6 +29,8 @@ function ExplorePage() {
   const loadingState = useSelector(
     (state: RootState) => state.loadingManager.isLoading
   );
+
+  const { isMale } = useSelector((state: RootState) => state.userActions);
 
   useEffect(() => {
     dispatch(
@@ -74,7 +76,15 @@ function ExplorePage() {
         {fetchEnd && loadedCards.length == 0 && (
           <p>No records match this criteria!</p>
         )}
-        {fetchError && <button>Load more workouts</button>}
+        {fetchError && (
+          <button
+            style={
+              isMale ? { borderColor: "#472ed8", color: "#472ed8" } : undefined
+            }
+          >
+            Load more workouts
+          </button>
+        )}
       </div>
     </React.Fragment>
   );

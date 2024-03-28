@@ -40,9 +40,9 @@ const WeekDays = function () {
         </button>
       </div>
       <div className={styles["days-holder"]}>
-        {weekDates.reverse().map((date) => {
+        {weekDates.reverse().map((date, index) => {
           return (
-            <div className={styles["day-slot"]}>
+            <div key={index} className={styles["day-slot"]}>
               <p
                 style={
                   date.getDate() === new Date().getDate()

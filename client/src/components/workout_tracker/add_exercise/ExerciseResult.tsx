@@ -112,7 +112,6 @@ export const fetchBestSet = async function (exerciseId: string) {
     if (response.ok) {
       const data: { bestSet: { kg: number; reps: number } } =
         await response.json();
-      console.log(data.bestSet);
       return data.bestSet;
     } else {
       return { kg: 0, reps: 0 };

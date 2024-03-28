@@ -1,7 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
 const navigation = {
-  toggleState: true,
   explorePreviewVisibility: false,
   headers: {
     centered: false,
@@ -14,9 +13,6 @@ const styleManager = createSlice({
   name: "navigation",
   initialState: navigation,
   reducers: {
-    toggleNavigation: (state) => {
-      state.toggleState = !state.toggleState;
-    },
     setHeadersState: (
       state,
       action: PayloadAction<{
@@ -39,9 +35,6 @@ const styleManager = createSlice({
   },
 });
 
-export const {
-  toggleNavigation,
-  setHeadersState,
-  setExplorePreviewVisibility,
-} = styleManager.actions;
+export const { setHeadersState, setExplorePreviewVisibility } =
+  styleManager.actions;
 export default styleManager.reducer;

@@ -14,9 +14,6 @@ import {
 import enheritedStyles from "./SignInForm.module.css";
 import styles from "./ProfileForm.module.css";
 
-// TODO: Wait for the images to load up before showing the form for a better experience.
-// You will achieve that by tracking the onLoad state of each of the default profile pics and
-// combine it with the loading spinner from the previous form.
 import defaultPic1 from "../../../assets/images/default_pic_1.png";
 import defaultPic2 from "../../../assets/images/default_pic_2.png";
 import defaultPic3 from "../../../assets/images/default_pic_3.png";
@@ -229,7 +226,7 @@ const ProfileForm: React.FC = function () {
       <header className={enheritedStyles["header-wrapper"]}>
         <h3>Create Profile</h3>
         <p>
-          Changed your mind?
+          Changed your mind?{" "}
           <Link
             to={"/auth"}
             onClick={() => {

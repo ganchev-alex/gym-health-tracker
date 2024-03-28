@@ -6,7 +6,6 @@ import {
   Filler,
   Tooltip,
   Legend,
-  ChartConfiguration,
 } from "chart.js";
 import { Radar } from "react-chartjs-2";
 

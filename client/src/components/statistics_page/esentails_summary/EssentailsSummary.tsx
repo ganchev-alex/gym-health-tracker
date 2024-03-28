@@ -108,7 +108,6 @@ const EssentialsSummary = function () {
       if (response.ok) {
         const data: { statsData: { date: string; value: number }[] } =
           await response.json();
-        console.log(data.statsData);
         dispatch(setEssentailGraph(data.statsData));
       } else {
         dispatch(setEssentailGraph([]));

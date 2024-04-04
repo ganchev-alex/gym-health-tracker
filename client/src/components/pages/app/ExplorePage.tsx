@@ -17,7 +17,7 @@ import {
 } from "../../../features/explore-actions";
 import { getToken } from "../../../util/auth";
 import { useLoaderData } from "react-router-dom";
-import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
+import LoadingPlane from "../../UI/loading_plane/LoadingPlane";
 
 function ExplorePage() {
   const dispatch = useDispatch();

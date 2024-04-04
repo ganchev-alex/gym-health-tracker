@@ -12,10 +12,10 @@ const workoutValidator = [
   check("category").notEmpty(),
   check("exercises.*.exerciseId").isMongoId(),
   check("exercises.*.name").notEmpty(),
-  check("exercises.*.sets.*.reps").isInt({ min: 1 }),
-  check("exercises.*.sets.*.kg").isInt({ min: 0 }),
+  check("exercises.*.sets.*.reps").isDecimal({ min: 1 }),
+  check("exercises.*.sets.*.kg").isDecimal({ min: 0 }),
   check("duration").isInt(),
-  check("volume").isInt(),
+  check("volume").isDecimal(),
   check("sets").isInt(),
 ];
 

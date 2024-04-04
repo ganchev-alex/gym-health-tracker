@@ -76,7 +76,7 @@ const LogInForm: React.FC = function () {
         if (response.status === 200) {
           const token = data.token;
           setToken(token);
-          navigate("/app");
+          navigate("/app/dashboard");
         } else if (response.status === 401) {
           setCredentialsError("Wrong email or password! Please try again.");
           resetPassword();

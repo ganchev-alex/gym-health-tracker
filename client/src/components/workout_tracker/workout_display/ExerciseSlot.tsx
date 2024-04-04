@@ -15,6 +15,7 @@ const ExerciseSlot: React.FC<{
   previewMode?: boolean;
   historyMode?: boolean;
 }> = function (props) {
+  console.log(props);
   return (
     <div className={styles.slot}>
       <ExerciseHeader
@@ -34,6 +35,7 @@ const ExerciseSlot: React.FC<{
         previewMode={props.previewMode}
         kg={props.exerciseData.bestSet?.kg}
         reps={props.exerciseData.bestSet?.reps}
+        setsData={props.exerciseData.setsData}
       />
     </div>
   );

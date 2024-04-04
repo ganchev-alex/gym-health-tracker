@@ -11,6 +11,7 @@ import applicationRouter from "./routes/application";
 import essentialsRouter from "./routes/essentials";
 import exploreRouter from "./routes/explore";
 import statsRouter from "./routes/statistics";
+import accountRouter from "./routes/account";
 
 import ResError from "./util/ResError";
 
@@ -69,6 +70,7 @@ app.use("/ess", essentialsRouter);
 app.use("/exercise", exerciseRouter);
 app.use("/explore", exploreRouter);
 app.use("/stats", statsRouter);
+app.use("/account", accountRouter);
 
 app.use((error: ResError, req: express.Request, res: express.Response) => {
   if (error.message) {

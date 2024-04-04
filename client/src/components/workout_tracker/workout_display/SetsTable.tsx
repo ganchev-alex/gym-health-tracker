@@ -23,6 +23,11 @@ const SetTable: React.FC<{
   reps?: number;
   staticMode?: boolean;
   previewMode?: boolean;
+  setsData?: {
+    state: boolean;
+    reps: number;
+    kg: number;
+  }[];
 }> = function (props) {
   const dispatch = useDispatch();
 
@@ -91,11 +96,31 @@ const SetTable: React.FC<{
           exerciseId={props._id}
           exerciseIndex={props.index}
           setIndex={index + 1}
-          previos={`${props.kg ? props.kg : 0}kg x ${
-            props.reps ? props.reps : 0
-          }`}
-          kg={props.kg ? props.kg : 0}
-          reps={props.reps ? props.reps : 0}
+          previos={
+            props.previewMode
+              ? `${props.setsData ? props.setsData[index].kg : 0}kg x ${
+                  props.setsData ? props.setsData[index].reps : 0
+                }`
+              : `${props.kg ? props.kg : 0}kg x ${props.reps ? props.reps : 0}`
+          }
+          kg={
+            props.previewMode
+              ? props.setsData
+                ? props.setsData[index].kg
+                : 0
+              : props.kg
+              ? props.kg
+              : 0
+          }
+          reps={
+            props.previewMode
+              ? props.setsData
+                ? props.setsData[index].reps
+                : 0
+              : props.reps
+              ? props.reps
+              : 0
+          }
           setRemover={() => removeSet(index)}
           staticMode={props.staticMode}
           previewMode={props.previewMode}
@@ -144,7 +169,7 @@ const SetTable: React.FC<{
         <thead>
           <tr>
             <th>Set</th>
-            <th>BEST</th>
+            <th>{props.previewMode ? "TOTAL" : "BEST"}</th>
             <th>KG</th>
             <th>Reps</th>
             <th>✓</th>

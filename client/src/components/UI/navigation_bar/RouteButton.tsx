@@ -11,11 +11,12 @@ import {
   setFormVisibility,
   setRoutinePreviewState,
 } from "../../../features/workout-page-actions";
+import { setAccountModalVisibility } from "../../../features/modals";
 
 const RouteButton: React.FC<{
   path: string;
-  label: string;
   icon: React.ReactNode;
+  isAccount?: boolean;
 }> = (props) => {
   const dispatch = useDispatch();
   const { isMale } = useSelector((state: RootState) => state.userActions);
@@ -44,6 +45,7 @@ const RouteButton: React.FC<{
     dispatch(setRoutinePreviewState({ visibility: false }));
     dispatch(setFormVisibility(false));
     dispatch(resetHistoryRecords());
+    dispatch(setAccountModalVisibility(false));
   };
 
   return (

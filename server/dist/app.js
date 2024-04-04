@@ -15,6 +15,7 @@ const application_1 = __importDefault(require("./routes/application"));
 const essentials_1 = __importDefault(require("./routes/essentials"));
 const explore_1 = __importDefault(require("./routes/explore"));
 const statistics_1 = __importDefault(require("./routes/statistics"));
+const account_1 = __importDefault(require("./routes/account"));
 const app = express();
 const fileStorage = multer.diskStorage({
     destination: (req, file, callback) => {
@@ -56,6 +57,7 @@ app.use("/ess", essentials_1.default);
 app.use("/exercise", exercises_1.default);
 app.use("/explore", explore_1.default);
 app.use("/stats", statistics_1.default);
+app.use("/account", account_1.default);
 app.use((error, req, res) => {
     if (error.message) {
         console.log(error.message);

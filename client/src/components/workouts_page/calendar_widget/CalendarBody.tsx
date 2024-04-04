@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../features/store";
 import { showHistoryRecords } from "../../../features/workout-page-actions";
 
-import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
+import LoadingPlane from "../../UI/loading_plane/LoadingPlane";
 
 import styles from "./CalendarBody.module.css";
 

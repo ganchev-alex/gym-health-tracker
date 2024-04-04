@@ -14,7 +14,7 @@ import { setRoutinesData } from "../../../features/user-actions";
 import CardsHolder from "./CardsHolder";
 import CategoriesFilter from "./CategoriesFilter";
 import RoutinePreviewModal from "../routine_manager/RoutinePreview";
-import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
+import ChoiceModal from "../../UI/choice_modal/ChoiceModal";
 
 import { mainAPIPath } from "../../../App";
 import { getToken } from "../../../util/auth";
@@ -36,8 +36,8 @@ const Routines: React.FC = () => {
     return state.widgetsManager.routinesWidget.routineOptions;
   });
 
-  const modalVisibilitity = useSelector((state: RootState) => {
-    return state.modalsManager.choiceModal.visibility;
+  const { choiceModal, accountModal } = useSelector((state: RootState) => {
+    return state.modalsManager;
   });
 
   const routinePreviewVisibility = useSelector((state: RootState) => {
@@ -125,7 +125,7 @@ const Routines: React.FC = () => {
 
   return (
     <React.Fragment>
-      {modalVisibilitity && (
+      {choiceModal.visibility && !accountModal.visibility && (
         <ChoiceModal
           message="Are you sure you want to delete this routine?"
           description={`By saying yes you will delete "${
@@ -203,11 +203,7 @@ const Routines: React.FC = () => {
               type="button"
               className={optionsStyle["close-button"]}
               onClick={closeOptions}
-              style={
-                isMale
-                  ? { color: "#472ed8", marginBottom: "1.2em" }
-                  : { marginBottom: "1.2em" }
-              }
+              style={isMale ? { color: "#472ed8" } : {}}
             >
               Close
             </button>

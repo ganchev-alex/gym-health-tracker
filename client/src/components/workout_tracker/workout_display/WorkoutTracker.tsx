@@ -10,7 +10,7 @@ import {
   finishedWorkoutData,
 } from "../../../features/modals";
 import { RootState } from "../../../features/store";
-import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
+import ChoiceModal from "../../UI/choice_modal/ChoiceModal";
 import {
   operateOnRestTimer,
   restoreWorkoutInitialState,
@@ -31,7 +31,7 @@ import cyclingBackground from "../../../assets/images/cycling_background.jpg";
 import meditationBackground from "../../../assets/images/meditation_background.jpg";
 import swimmingBackground from "../../../assets/images/swimming_background.jpg";
 import walkingBackground from "../../../assets/images/walking_background.jpg";
-import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
+import LoadingPlane from "../../UI/loading_plane/LoadingPlane";
 import {
   Session,
   Workout,

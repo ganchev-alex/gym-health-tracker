@@ -5,6 +5,7 @@ import { Schema } from "mongoose";
 interface IUser {
   auth: {
     email: string;
+    verification: boolean;
     password: string;
   };
   personalDetails: {
@@ -37,6 +38,7 @@ interface IUser {
 const userSchema = new Schema<IUser>({
   auth: {
     email: { type: String, required: true },
+    verification: { type: Boolean, required: true },
     password: { type: String, required: true },
   },
   personalDetails: {

@@ -1,13 +1,15 @@
 import React from "react";
 
 import LogOutIcon from "../../../assets/svg_icon_components/LogOutIcon";
-import ThemeIcon from "../../../assets/svg_icon_components/ThemeIcon";
+import AccountIcon from "../../../assets/svg_icon_components/AccountIcon";
 
 import styles from "./BottomSettings.module.css";
 import { useState } from "react";
-import ChoiceModal from "../ChoiceModal/ChoiceModal";
+import ChoiceModal from "../choice_modal/ChoiceModal";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { setAccountModalVisibility } from "../../../features/modals";
+import { deleteToken } from "../../../util/auth";
 
 function BottomSettings() {
   const navigate = useNavigate();
@@ -24,8 +26,7 @@ function BottomSettings() {
           noButtonLable="Cancel"
           yesButtonLable="Log Out"
           acceptAction={() => {
-            localStorage.removeItem("token");
-            localStorage.removeItem("expiration");
+            deleteToken();
             navigate("/auth/login");
             window.location.reload();
           }}
@@ -36,8 +37,13 @@ function BottomSettings() {
       )}
       <div className={styles.wrapper}>
         <div className={styles["set-wrapper"]}>
-          <button className={styles["theme-button"]}>
-            <ThemeIcon selectedTheme={true} />
+          <button
+            className={styles["account-button"]}
+            onClick={() => {
+              dispatch(setAccountModalVisibility(true));
+            }}
+          >
+            <AccountIcon />
           </button>
         </div>
         <div className={styles["set-wrapper"]}>

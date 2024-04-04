@@ -30,7 +30,7 @@ import {
   setChoiceModalVisibility,
   setErrorModalState,
 } from "../../../features/modals";
-import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
+import LoadingPlane from "../../UI/loading_plane/LoadingPlane";
 import { setLoadingState } from "../../../features/loading-actions";
 import {
   Routine,
@@ -38,7 +38,7 @@ import {
   updateRoutinesData,
 } from "../../../features/user-actions";
 import { fetchRoutines } from "../routines_widget/Routines";
-import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
+import ChoiceModal from "../../UI/choice_modal/ChoiceModal";
 
 const Backdrop = function () {
   const dispatch = useDispatch();
@@ -49,7 +49,7 @@ const Backdrop = function () {
     <div
       onClick={clickHandler}
       className={modalStyles.backdrop}
-      style={{ zIndex: 4 }}
+      style={{ zIndex: 52 }}
     />
   );
 };

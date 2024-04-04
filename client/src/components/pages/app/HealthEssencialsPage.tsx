@@ -82,10 +82,10 @@ function HealthEssencialsPage() {
   useEffect(() => {
     if (!loadedState) {
       loadEssentialsData();
-
-      dispatch(calculateActiveTime());
-      dispatch(calculateBurntCalories());
     }
+
+    dispatch(calculateActiveTime());
+    dispatch(calculateBurntCalories());
   }, []);
 
   return (

@@ -14,7 +14,7 @@ import TotalWorkouts from "./TotalWorkouts";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../features/store";
 import React from "react";
-import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
+import LoadingPlane from "../../UI/loading_plane/LoadingPlane";
 
 ChartJS.register(
   RadialLinearScale,

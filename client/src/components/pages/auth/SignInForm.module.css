@@ -96,7 +96,8 @@
   margin-bottom: 1.5em;
 } */
 
-.submit-button {
+.submit-button,
+.cancel-button {
   border-radius: 30px;
   border: none;
   font-size: 1rem;
@@ -106,6 +107,21 @@
   width: 90%;
   font-weight: 500;
   color: white;
+}
+
+.cancel-button {
+  margin-top: 1em;
+  background-color: transparent;
+}
+
+.male.cancel-button {
+  border: #472ed8 2px solid;
+  color: #472ed8;
+}
+
+.female.cancel-button {
+  border: #e54c60 2px solid;
+  color: #e54c60;
 }
 
 .input-error {

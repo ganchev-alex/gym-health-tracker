@@ -24,7 +24,10 @@ export interface Routine {
 }
 
 interface loadedUserData {
-  email: string;
+  auth: {
+    email: string;
+    verification: boolean;
+  };
   personalDetails: {
     firstName: string;
     lastName: string;
@@ -64,7 +67,10 @@ const initialUser: {
   sex: "male",
   isMale: true,
   loadedUserData: {
-    email: "",
+    auth: {
+      email: "",
+      verification: false,
+    },
     personalDetails: {
       firstName: "",
       lastName: "",

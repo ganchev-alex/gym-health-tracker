@@ -33,12 +33,17 @@ interface SummaryPreviewModal {
   color: string;
 }
 
+interface AccountModal {
+  visibility: boolean;
+}
+
 const initialState: {
   choiceModal: ChoiceModal;
   helpModal: HelpModal;
   errorModal: ErrorModal;
   workoutFinishedModal: WorkoutFinishedModal;
   summaryPreviewModal: SummaryPreviewModal;
+  accountModal: AccountModal;
 } = {
   choiceModal: {
     visibility: false,
@@ -67,6 +72,9 @@ const initialState: {
     essential: "",
     metrix: "",
     color: "",
+  },
+  accountModal: {
+    visibility: false,
   },
 };
 
@@ -127,6 +135,9 @@ const modalsState = createSlice({
         state.summaryPreviewModal.color = action.payload.color;
       }
     },
+    setAccountModalVisibility: (state, action: PayloadAction<boolean>) => {
+      state.accountModal.visibility = action.payload;
+    },
   },
 });
 
@@ -138,5 +149,6 @@ export const {
   changeFinishedWorkoutVisibility,
   finishedWorkoutData,
   setEssentialPreviewModalState,
+  setAccountModalVisibility,
 } = modalsState.actions;
 export default modalsState.reducer;

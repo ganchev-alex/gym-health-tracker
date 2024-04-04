@@ -56,7 +56,11 @@ const signIn = async (req, res, next) => {
         const { email, password } = req.body;
         const { firstName, lastName, age, sex, weight, height } = req.body;
         const hashedPassword = await bcrypt.hash(password, 12);
-        const userAuthData = { email, password: hashedPassword };
+        const userAuthData = {
+            email,
+            verification: false,
+            password: hashedPassword,
+        };
         const userData = {
             auth: userAuthData,
             personalDetails: {
@@ -116,7 +120,16 @@ const setPreferences = async (req, res, next) => {
         const result = await user_1.default.updateOne({ _id: new ObjectId(userId) }, {
             $set: {
                 preferences: {
-                    selectedActivities,
+                    selectedActivities: selectedActivities.length === 0
+                        ? [
+                            "Gym & Weightlifting",
+                            "Cardio",
+                            "Yoga",
+                            "Stretching",
+                            "Meditation",
+                            "Cross Fit",
+                        ]
+                        : selectedActivities,
                     fitnessLevel,
                     frequencyStatus,
                     fitnessGoal,

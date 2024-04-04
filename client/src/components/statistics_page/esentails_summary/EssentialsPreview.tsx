@@ -20,7 +20,7 @@ import { Line } from "react-chartjs-2";
 
 import styles from "./EssentialsPreview.module.css";
 import { RootState } from "../../../features/store";
-import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
+import LoadingPlane from "../../UI/loading_plane/LoadingPlane";
 
 ChartJS.register(
   CategoryScale,

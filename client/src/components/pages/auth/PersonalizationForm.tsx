@@ -137,7 +137,7 @@ const PersonalDetails: React.FC = function () {
         });
 
         if (response.status == 204) {
-          navigate("/app");
+          navigate("/app/dashboard");
           localStorage.removeItem("userSex");
         } else if (response.status == 404) {
           dispatch(

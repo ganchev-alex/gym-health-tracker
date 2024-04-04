@@ -1,5 +1,4 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../../features/store";
+import { useState, useEffect } from "react";
 
 import RouteButton from "./RouteButton";
 
@@ -13,18 +12,10 @@ import StatisticsIcon from "../../../assets/svg_icon_components/StatisticsIcon";
 const PagesNavigation = () => {
   return (
     <ul className={styles.wrapper}>
-      <RouteButton path="dashboard" label="Workouts" icon={<WorkoutIcon />} />
-      <RouteButton
-        path="health-essentials"
-        label="Health Essentials"
-        icon={<HealthEssenscialsIcon />}
-      />
-      <RouteButton path="explore" label="Explore" icon={<ExploreIcon />} />
-      <RouteButton
-        path="statistics"
-        label="Statistics"
-        icon={<StatisticsIcon />}
-      />
+      <RouteButton path="dashboard" icon={<WorkoutIcon />} />
+      <RouteButton path="health-essentials" icon={<HealthEssenscialsIcon />} />
+      <RouteButton path="explore" icon={<ExploreIcon />} />
+      <RouteButton path="statistics" icon={<StatisticsIcon />} />
     </ul>
   );
 };

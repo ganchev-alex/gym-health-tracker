@@ -6,6 +6,11 @@
   height: 45px;
 }
 
+.button svg {
+  width: 45px;
+  height: 45px;
+}
+
 .wrapper {
   display: flex;
   justify-content: center;

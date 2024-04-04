@@ -3,21 +3,12 @@
   align-items: center;
   width: 100%;
   height: 100%;
+  background-color: rgba(255, 255, 255, 0);
 }
 
 .image-slot {
   display: none;
 }
-
-/* Desktop: .image-slot {
-  width: 70%;
-  height: 97%;
-  box-sizing: content-box;
-  position: relative;
-  border-radius: 30px;
-  margin-left: 1em;
-  overflow: hidden;
-} */
 
 .image-slot img {
   height: 100%;
@@ -61,12 +52,6 @@
   height: 100%;
   background-color: rgba(255, 255, 255, 0.85);
 }
-
-/* Desktop: .form-holder {
-  position: relative;
-  width: 30%;
-  height: 100%;
-} */
 
 .form-holder form {
   display: flex;
@@ -186,6 +171,10 @@
 }
 
 @media screen and (min-width: 1200px) {
+  .wrapper {
+    background-color: rgba(255, 255, 255, 0.85);
+  }
+
   .image-slot {
     display: block;
     width: auto;

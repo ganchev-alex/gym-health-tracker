@@ -18,6 +18,12 @@ import CardPreview, {
   previewLoader,
 } from "./components/explore_page/explore_card/CardPreviewPage";
 import LandingPage from "./components/pages/landing/base/LandingPage";
+import ChangeEmail from "./components/pages/auth/ChangeEmail";
+import ChangePassword from "./components/pages/auth/ChangePassword";
+import DeleteAccount from "./components/pages/auth/DeleteAccount";
+import EmailVerification, {
+  verificationLoader,
+} from "./components/pages/auth/EmailVerification";
 
 export const mainAPIPath = "http://localhost:8080";
 
@@ -48,6 +54,23 @@ const router = createBrowserRouter([
           {
             path: "login",
             element: <LogInForm />,
+          },
+          {
+            path: "verify-email/:userId",
+            element: <EmailVerification />,
+            loader: verificationLoader,
+          },
+          {
+            path: "change-email",
+            element: <ChangeEmail />,
+          },
+          {
+            path: "change-password/:userId",
+            element: <ChangePassword />,
+          },
+          {
+            path: "delete-account/:userId",
+            element: <DeleteAccount />,
           },
         ],
       },

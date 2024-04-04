@@ -27,7 +27,7 @@ const userData = async (req, res, next) => {
         });
         if (user) {
             const userData = {
-                email: user.auth.email,
+                auth: { email: user.auth.email, verification: user.auth.verification },
                 personalDetails: {
                     firstName: user.personalDetails.firstName,
                     lastName: user.personalDetails.lastName,

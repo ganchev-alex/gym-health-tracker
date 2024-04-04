@@ -18,10 +18,14 @@
   align-items: center;
 }
 
-.theme-button {
+.account-button {
   border-radius: 50%;
   border: none;
   background-color: white;
+}
+
+.account-button svg {
+  margin: 0.3em;
 }
 
 .logout-button {

@@ -12,10 +12,10 @@ import { setRoutinesData } from "../../../features/user-actions";
 import { setNotificationState } from "../../../features/workout-page-actions";
 import { setLoadingState } from "../../../features/loading-actions";
 import { RootState } from "../../../features/store";
-import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
+import LoadingPlane from "../../UI/loading_plane/LoadingPlane";
 import { setExploreInitialState } from "../../../features/explore-actions";
 import { setChoiceModalVisibility } from "../../../features/modals";
-import ChoiceModal from "../../UI/ChoiceModal/ChoiceModal";
+import ChoiceModal from "../../UI/choice_modal/ChoiceModal";
 
 const CardPreview = function () {
   const dispatch = useDispatch();

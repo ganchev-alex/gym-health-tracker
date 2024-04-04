@@ -15,7 +15,7 @@ import {
 import TimerIcon from "../../../assets/svg_icon_components/TimerIcon";
 import ExerciseSlot from "../../workout_tracker/workout_display/ExerciseSlot";
 import { setLoadingState } from "../../../features/loading-actions";
-import LoadingPlane from "../../UI/LoadingPlane/LoadingPlane";
+import LoadingPlane from "../../UI/loading_plane/LoadingPlane";
 import RunningIcon from "../../../assets/svg_icon_components/RunningIcon";
 import ByciclingIcon from "../../../assets/svg_icon_components/ByciclingIcon";
 import MeditationIcon from "../../../assets/svg_icon_components/MeditationIcon";
@@ -186,27 +186,6 @@ const HistoryPreview = function () {
   }, [index]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
-
-  let activityPreview: JSX.Element | null = null;
-  if (historyRecords.sessionRecords.length > 0) {
-    switch (historyRecords.sessionRecords[0].category) {
-      case "Activity Session: RUN":
-        activityPreview = <RunningIcon />;
-        break;
-      case "Activity Session: BIKE":
-        activityPreview = <ByciclingIcon />;
-        break;
-      case "Activity Session: MEDITATE":
-        activityPreview = <MeditationIcon />;
-        break;
-      case "Activity Session: SWIM":
-        activityPreview = <SwimmingIcon />;
-        break;
-      case "Activity Session: WALK":
-        activityPreview = <WalkingIcon />;
-        break;
-    }
-  }
 
   return (
     <div

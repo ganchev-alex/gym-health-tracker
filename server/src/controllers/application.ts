@@ -68,7 +68,7 @@ const userData = async (
 
     if (user) {
       const userData: any = {
-        email: user.auth.email,
+        auth: { email: user.auth.email, verification: user.auth.verification },
         personalDetails: {
           firstName: user.personalDetails.firstName,
           lastName: user.personalDetails.lastName,

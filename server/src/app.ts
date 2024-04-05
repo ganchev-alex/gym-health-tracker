@@ -5,6 +5,9 @@ import multer = require("multer");
 import crypto = require("crypto");
 import path = require("path");
 
+import helmet from "helmet";
+import compression from "compression";
+
 import exerciseRouter from "./routes/exercises";
 import authRouter from "./routes/auth";
 import applicationRouter from "./routes/application";
@@ -43,7 +46,11 @@ const fileFilter = (req, file, callback) => {
   }
 };
 
+app.use(helmet());
+app.use(compression());
+
 app.use(bodyParser.json());
+
 app.use(
   "/profilePictures",
   express.static(path.join(__dirname, "../profilePictures"))
@@ -86,14 +93,14 @@ app.use((error: ResError, req: express.Request, res: express.Response) => {
 
 mongoose
   .connect(
-    "mongodb+srv://aganchev:rwUBOOO79gI3DeN7@projectmanager.jjnszh2.mongodb.net/WorkoutTrackerApplication?retryWrites=true&w=majority"
+    `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@projectmanager.jjnszh2.mongodb.net/WorkoutTrackerApplication?retryWrites=true&w=majority`
   )
   .then((connectionResult) => {
     if (!connectionResult) {
       throw new Error("The server is not working at the moment.");
     }
     console.log("Succesfull connection to the database!");
-    app.listen(8080);
+    app.listen(process.env.PORT);
   })
   .catch((error) => {
     console.log("Couldn't connect to the database. \nError: ", error);

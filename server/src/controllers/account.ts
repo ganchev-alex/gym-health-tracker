@@ -1,6 +1,4 @@
 import express = require("express");
-import mongoodb = require("mongodb");
-import mongoose = require("mongoose");
 import bcrypt = require("bcryptjs");
 import fs = require("fs");
 import { validationResult } from "express-validator";
@@ -16,18 +14,10 @@ import ActivitySession from "../models/activity-session";
 import Essential from "../models/essentials";
 import Statistic from "../models/statistic";
 
-// Create an environment variable
-// echo "export SENDGRID_API_KEY='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'" > sendgrid.env
-// echo "sendgrid.env" >> .gitignore
-// source ./sendgrid.env
-
-const API_KEY =
-  "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";
-
-const transporter = nodemailer.createTransport(
+export const transporter = nodemailer.createTransport(
   sendgridTransport({
     auth: {
-      api_key: API_KEY,
+      api_key: process.env.MAIL_API_KEY,
     },
   })
 );
@@ -330,7 +320,7 @@ const deleteAccount = async (
   }
 };
 
-const composeEmail = function (
+export const composeEmail = function (
   title: string,
   content: string[],
   actionLink: string,

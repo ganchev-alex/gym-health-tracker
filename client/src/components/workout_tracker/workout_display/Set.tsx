@@ -106,9 +106,8 @@ const Set: React.FC<{
           {props.setIndex}
         </span>
         {!props.previewMode && (
-          <button
+          <span
             className={setStyles["remove-button"]}
-            type="button"
             style={
               setState?.state === true ? { filter: "invert(0.3)" } : undefined
             }
@@ -118,7 +117,7 @@ const Set: React.FC<{
             }}
           >
             <RemoveIcon />
-          </button>
+          </span>
         )}
       </td>
       <td>{props.previos}</td>

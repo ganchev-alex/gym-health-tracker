@@ -1,5 +1,4 @@
 import express = require("express");
-import mongoodb = require("mongodb");
 import mongoose = require("mongoose");
 
 import User from "../models/user";

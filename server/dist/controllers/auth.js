@@ -11,6 +11,7 @@ const { ObjectId } = require("mongodb");
 const user_1 = __importDefault(require("../models/user"));
 const authValidation_1 = require("../middleware/authValidation");
 const ResError_1 = __importDefault(require("../util/ResError"));
+const account_1 = require("./account");
 const checkEmail = async (req, res, next) => {
     try {
         const { email } = req.body;
@@ -92,7 +93,16 @@ const signIn = async (req, res, next) => {
             email: result.auth.email,
             userId: result._id.toString(),
         }, authValidation_1.TOKEN_SECRET_KEY, {
-            expiresIn: "1h",
+            expiresIn: "10h",
+        });
+        await account_1.transporter.sendMail({
+            to: user.auth.email,
+            from: "health.tracker.ag@gmail.com",
+            subject: "Email Verification",
+            html: (0, account_1.composeEmail)("Welcome to our Health Tracking Family!", [
+                "Let's verify your email so you can manage your account better.",
+                "By verifying your email you add security to your data.",
+            ], `http://localhost:3000/auth/verify-email/${user._id}`, "Verify Email", 48, "Your link is active for 48 hours. After that, you will need to resend the verification email."),
         });
         return res.status(201).json({
             message: "User was successfully added and created!",

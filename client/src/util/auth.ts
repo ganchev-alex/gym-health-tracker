@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 export const setToken = function (token: string) {
   localStorage.setItem("token", token);
   const expiration = new Date();
-  expiration.setHours(expiration.getHours() + 1);
+  expiration.setHours(expiration.getHours() + 10);
   localStorage.setItem("expiration", expiration.toISOString());
 };
 

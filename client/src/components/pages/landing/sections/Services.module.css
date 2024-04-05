@@ -10,12 +10,6 @@
   align-items: center;
 }
 
-/* Desktop: .main {
-  width: 100vw;
-  padding: 7em 0 0;
-  margin-bottom: 10em;
-} */
-
 .main h2 {
   font-size: 3rem;
   width: 100%;
@@ -46,13 +40,6 @@
   margin: 0;
 }
 
-/* Desktop: .background-header {
-  top: -1%;
-  left: 10%;
-  font-size: 10em;
-  line-height: 1.2em;
-} */
-
 .article {
   width: 100%;
   display: flex;
@@ -62,13 +49,6 @@
 
   gap: 2em;
 }
-
-/* .article {
-  width: 80%;
-  margin: 0 auto;
-  flex-direction: row;
-  padding: 0;
-} */
 
 .left,
 .middle,
@@ -85,20 +65,9 @@
   gap: 2em;
 }
 
-/* Desktop: .left,
-.rigth {
-  width: 30%;
-  justify-content: space-evenly;
-} */
-
 .middle {
   display: none;
 }
-
-/* Destkop: .middle {
-  width: 30%;
-  justify-content: end;
-} */
 
 .middle img {
   width: 100%;
@@ -117,11 +86,6 @@
   margin: 0;
 }
 
-/* Destkop: .article section h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-} */
-
 .article section p {
   font-size: 1.1rem;
   text-align: justify;
@@ -130,10 +94,6 @@
   font-weight: 500;
   margin: 0;
 }
-
-/* Destkop: .article section p {
-  font-size: 1.1rem;
-} */
 
 @media screen and (min-width: 768px) {
   .article {

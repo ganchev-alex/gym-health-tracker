@@ -6,9 +6,9 @@ const { validationResult } = require("express-validator");
 const { ObjectId } = require("mongodb");
 
 import User from "../models/user";
-import { TOKEN_SECRET_KEY } from "../middleware/authValidation";
 
 import ResError from "../util/ResError";
+import { composeEmail, transporter } from "./account";
 
 interface checkEmailRequest {
   email: string;
@@ -139,11 +139,28 @@ export const signIn = async (
         email: result.auth.email,
         userId: result._id.toString(),
       },
-      TOKEN_SECRET_KEY,
+      process.env.TOKEN_SECRET_KEY,
       {
-        expiresIn: "1h",
+        expiresIn: "10h",
       }
     );
+
+    await transporter.sendMail({
+      to: user.auth.email,
+      from: "health.tracker.ag@gmail.com",
+      subject: "Email Verification",
+      html: composeEmail(
+        "Welcome to our Health Tracking Family!",
+        [
+          "Let's verify your email so you can manage your account better.",
+          "By verifying your email you add security to your data.",
+        ],
+        `http://localhost:3000/auth/verify-email/${user._id}`,
+        "Verify Email",
+        48,
+        "Your link is active for 48 hours. After that, you will need to resend the verification email."
+      ),
+    });
 
     return res.status(201).json({
       message: "User was successfully added and created!",
@@ -259,8 +276,8 @@ const login = async (
         email: userMatch.auth.email,
         userId: userMatch._id.toString(),
       },
-      TOKEN_SECRET_KEY,
-      { expiresIn: "1h" }
+      process.env.TOKEN_SECRET_KEY,
+      { expiresIn: "12h" }
     );
     return res.status(200).json({
       token: token,

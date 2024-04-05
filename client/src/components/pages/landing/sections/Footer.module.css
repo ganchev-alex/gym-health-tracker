@@ -1,0 +1,28 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: #2e2e2e;
+  width: 100vw;
+  height: fit-content;
+  text-align: center;
+  color: white;
+  padding: 2em;
+}
+
+.footer h5 {
+  width: 90%;
+  font-size: 1.1rem;
+  margin: 3em 0 1.5em;
+}
+
+.footer p {
+  margin: 0.5em;
+  font-size: 0.9rem;
+  width: 90%;
+}
+
+.footer a {
+  text-decoration: underline;
+}

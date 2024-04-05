@@ -7,23 +7,12 @@
   gap: 3.5em;
 }
 
-/* Desktop: .section {
-  flex-direction: row;
-  margin: 15em 0;
-} */
-
 .left {
   width: 100%;
   height: fit-content;
   min-height: 300px;
   position: relative;
 }
-
-/* Desktop: .left {
-  width: 60%;
-  height: fit-content;
-  position: relative;
-} */
 
 .left img {
   width: 70%;
@@ -33,13 +22,6 @@
   right: 10%;
   top: -25%;
 }
-
-/* Desktop: .left img {
-  width: 50%;
-  position: absolute;
-  z-index: 1;
-  left: 15%;
-} */
 
 .circle {
   border-radius: 50%;
@@ -59,12 +41,6 @@
   margin: 0;
 }
 
-/* Desktop: .circle {
-  height: 550px;
-  top: 0;
-  left: -5%;
-} */
-
 .rigth {
   width: 100%;
   height: fit-content;
@@ -78,20 +54,11 @@
   box-sizing: border-box;
 }
 
-/* Desktop: .rigth {
-  width: 40%;
-} */
-
 .rigth h3 {
   font-size: 3rem;
   width: 100%;
   text-align: center;
 }
-
-/* Desktop: .rigth h3 {
-  font-size: 3rem;
-  width: 70%;
-} */
 
 .rigth p {
   font-size: 1.1rem;
@@ -101,11 +68,6 @@
   padding: 0.5em;
   box-sizing: border-box;
 }
-
-/* Desktop: .rigth p {
-  font-size: 1.1rem;
-  font-weight: 500;
-} */
 
 .background-header {
   position: absolute;
@@ -120,12 +82,6 @@
 
   text-align: center;
 }
-
-/* Desktop: .background-header {
-  top: 15%;
-  right: 0;
-  font-size: 8em;
-} */
 
 @media screen and (min-width: 768px) {
   .left img {

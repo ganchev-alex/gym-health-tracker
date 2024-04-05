@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import styles from "./JoinReferences.module.css";
 
 import imagePath from "../../../../assets/images/section3_image.jpg";
 
 const JoinReference = function () {
+  const navigate = useNavigate();
+
   return (
     <section className={styles.section}>
       <img src={imagePath} />
@@ -23,7 +26,9 @@ const JoinReference = function () {
           Together, let's rewrite the narrative of what's possible and unlock
           the extraordinary within you. So what are you waiting for?
         </p>
-        <button className={styles.button}>Join Now</button>
+        <button className={styles.button} onClick={() => navigate("/auth")}>
+          Join Now
+        </button>
       </main>
     </section>
   );

@@ -11,14 +11,6 @@
   margin-bottom: 5em;
 }
 
-/* Desktop: .grid {
-  display: grid; -
-  grid-template-columns: repeat(4, 1fr);
-  grid-auto-rows: 30vh; -
-  gap: 2.5em; -
-  margin-bottom: 2em; ~
-} */
-
 .load-button {
   width: 100%;
   display: flex;

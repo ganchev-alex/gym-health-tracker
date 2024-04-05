@@ -141,7 +141,7 @@ function RootLayout() {
     }, getExpiryRate());
   }, []);
 
-  // useEffect: Timers & Duration Management + Workout Autosaver
+  // useEffect: Timers & Duration Management
   const workoutState = useSelector((state: RootState) => state.workoutState);
 
   const { workoutActivity, workoutVisibility } = workoutState;
@@ -432,6 +432,26 @@ function RootLayout() {
       dispatch(setLoadingState(false));
     }
   };
+
+  // useEffect: Locking in scroll bar when in the application
+  function isLandingPage(pathname: string) {
+    return !pathname.includes("app") && !pathname.includes("auth");
+  }
+
+  function setOverflowHidden(pathname: string) {
+    const rootElement = document.getElementById("root");
+    if (rootElement) {
+      if (isLandingPage(pathname)) {
+        rootElement.style.overflow = "";
+      } else {
+        rootElement.style.overflow = "hidden";
+      }
+    }
+  }
+
+  useEffect(() => {
+    setOverflowHidden(location.pathname);
+  }, [location.pathname]);
 
   return (
     <div className={styles["display-wrapper"]}>

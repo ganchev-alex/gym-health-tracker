@@ -9,6 +9,8 @@ const bodyParser = require("body-parser");
 const multer = require("multer");
 const crypto = require("crypto");
 const path = require("path");
+const helmet_1 = __importDefault(require("helmet"));
+const compression_1 = __importDefault(require("compression"));
 const exercises_1 = __importDefault(require("./routes/exercises"));
 const auth_1 = __importDefault(require("./routes/auth"));
 const application_1 = __importDefault(require("./routes/application"));
@@ -42,6 +44,8 @@ const fileFilter = (req, file, callback) => {
         return callback(null, false);
     }
 };
+app.use((0, helmet_1.default)());
+app.use((0, compression_1.default)());
 app.use(bodyParser.json());
 app.use("/profilePictures", express.static(path.join(__dirname, "../profilePictures")));
 app.use(multer({ storage: fileStorage, fileFilter: fileFilter }).single("profilePicture"));
@@ -69,7 +73,7 @@ app.use((error, req, res) => {
     }
 });
 mongoose
-    .connect("mongodb+srv://aganchev:rwUBOOO79gI3DeN7@projectmanager.jjnszh2.mongodb.net/WorkoutTrackerApplication?retryWrites=true&w=majority")
+    .connect(`mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@projectmanager.jjnszh2.mongodb.net/WorkoutTrackerApplication?retryWrites=true&w=majority`)
     .then((connectionResult) => {
     if (!connectionResult) {
         throw new Error("The server is not working at the moment.");

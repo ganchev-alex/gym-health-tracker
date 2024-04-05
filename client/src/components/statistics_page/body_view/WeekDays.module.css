@@ -5,13 +5,6 @@
   height: fit-content;
 }
 
-/* Desktop: .days-holder {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  height: 16%;
-} */
-
 .day-slot {
   display: flex;
   flex-direction: column;
@@ -26,21 +19,6 @@
   padding: 1em 0;
   color: #828282;
 }
-
-/* Desktop: .day-slot {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-around;
-  width: 11%;
-  height: 100%;
-  font-size: 1.1rem;
-  background-color: #ededed;
-  border-radius: 10px;
-  box-sizing: border-box;
-  padding: 1em 0;
-  color: #828282;
-} */
 
 .day-slot p {
   margin: 0;
@@ -94,15 +72,3 @@
   font-size: 1.1rem;
   font-weight: 500;
 }
-
-/* Desktop: .header button {
-  background-color: #ededed;
-  color: #828282;
-  border-radius: 50px;
-  height: 100%;
-  aspect-ratio: 1/1;
-  outline: 0;
-  border: #828282 1px solid;
-  font-size: 1.1rem;
-  font-weight: 500;
-} */

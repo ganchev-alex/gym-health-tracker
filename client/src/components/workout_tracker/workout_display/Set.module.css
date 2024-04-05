@@ -19,8 +19,8 @@
 
 .remove-button {
   display: none;
-  width: 100%;
-  height: 100%;
+  width: 75%;
+  height: 75%;
   position: absolute;
   top: 50%;
   left: 50%;

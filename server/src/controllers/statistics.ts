@@ -1,13 +1,14 @@
 import express = require("express");
-import mongoodb = require("mongodb");
 import mongoose = require("mongoose");
-import ResError from "../util/ResError";
+
 import Statistic from "../models/statistic";
 import User from "../models/user";
-import { getWeekNumber } from "../util/dateModification";
 import Essential from "../models/essentials";
 import Workout from "../models/workout";
 import Exercise from "../models/exercise";
+
+import { getWeekNumber } from "../util/dateModification";
+import ResError from "../util/ResError";
 
 interface IDistributionStats {
   back: number;

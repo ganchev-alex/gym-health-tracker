@@ -8,10 +8,11 @@ import AboutUs from "../sections/AboutUs";
 import Services from "../sections/Services";
 import Features from "../sections/Features";
 import JoinReference from "../sections/JoinReference";
+import Footer from "../sections/Footer";
 
 const LandingPage = function () {
   return (
-    <main className={style.main}>
+    <main className={`${style.main} ${style["appear-animation"]}`}>
       <div className={style.limit}>
         <Navigation />
         <div>
@@ -23,6 +24,7 @@ const LandingPage = function () {
         <Services />
         <Features />
         <JoinReference />
+        <Footer />
       </div>
     </main>
   );

@@ -21,6 +21,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+button {
+  cursor: pointer;
+  transition: transform 0.25s;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
 @media screen and (min-width: 768px) {
   html {
     font-size: 15px;

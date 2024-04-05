@@ -2,8 +2,6 @@ import jwt = require("jsonwebtoken");
 import express = require("express");
 import ResError from "../util/ResError";
 
-const TOKEN_SECRET_KEY = "c!q1^g5Zt%y@r*3B";
-
 const authValidation = (
   req: express.Request,
   res: express.Response,
@@ -22,7 +20,7 @@ const authValidation = (
   let decodedToken;
 
   try {
-    decodedToken = jwt.verify(token, TOKEN_SECRET_KEY);
+    decodedToken = jwt.verify(token, process.env.TOKEN_SECRET_KEY);
   } catch (err) {
     const error = new ResError(
       "\n- func. decodingToken (authValidation): Token was not decoded properly.\nError: " +
@@ -42,4 +40,3 @@ const authValidation = (
 };
 
 export default authValidation;
-export { TOKEN_SECRET_KEY };

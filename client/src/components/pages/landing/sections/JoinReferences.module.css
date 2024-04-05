@@ -7,7 +7,7 @@
   );
   display: flex;
   justify-content: space-between;
-  margin: 6em;
+  margin: 6em 0 1em;
   gap: 3em;
 }
 
@@ -42,13 +42,6 @@
   text-align: justify;
 }
 
-/* Desktop: .content p {
-  color: white;
-  font-size: 1.1rem;
-  font-weight: 500;
-  margin: 0;
-} */
-
 .button {
   font-size: 1.5rem;
   font-weight: 600;
@@ -61,13 +54,6 @@
   margin: 0 auto;
   width: 85%;
 }
-
-/* Dekstop: .button {
-  width: fit-content;
-  height: fit-content;
-  padding: 0.3em 2em;
-  border: none;
-} */
 
 @media screen and (min-width: 768px) {
   .content {

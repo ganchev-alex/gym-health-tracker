@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.composeEmail = exports.transporter = void 0;
 const bcrypt = require("bcryptjs");
 const fs = require("fs");
 const express_validator_1 = require("express-validator");
@@ -20,7 +21,7 @@ const statistic_1 = __importDefault(require("../models/statistic"));
 // echo "sendgrid.env" >> .gitignore
 // source ./sendgrid.env
 const API_KEY = "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";
-const transporter = nodemailer.createTransport(sendgridTransport({
+exports.transporter = nodemailer.createTransport(sendgridTransport({
     auth: {
         api_key: API_KEY,
     },
@@ -33,11 +34,11 @@ const sendVerificationEmail = async (req, res, next) => {
             const error = new ResError_1.default("\n- func. sendVerificationEmail (account router): User was not found.", 404);
             return next(error);
         }
-        await transporter.sendMail({
+        await exports.transporter.sendMail({
             to: user.auth.email,
             from: "health.tracker.ag@gmail.com",
             subject: "Email Verification",
-            html: composeEmail("Email Verification", [
+            html: (0, exports.composeEmail)("Email Verification", [
                 "Let's verify your email so you can manage your account better.",
                 "By verifying your email you add security to your data.",
             ], `http://localhost:3000/auth/verify-email/${user._id}`, "Verify Email", 48, "Your link is active for 48 hours. After that, you will need to resend the verification email."),
@@ -104,11 +105,11 @@ const changePasswordEmail = async (req, res, next) => {
             const error = new ResError_1.default("\n- func. changePasswordEmail (account router): User was not found.", 404);
             return next(error);
         }
-        await transporter.sendMail({
+        await exports.transporter.sendMail({
             to: user.auth.email,
             from: "health.tracker.ag@gmail.com",
             subject: "Change Password Request",
-            html: composeEmail("Change Password", [
+            html: (0, exports.composeEmail)("Change Password", [
                 "A change of the password for you account has been requested.",
                 "If you haven't made this request please contact us as soon as possible and DO NOT follow the provided link.",
             ], `http://localhost:3000/auth/change-password/${user._id}`, "Change Password", 1, "Your link is active for 1 hour. After that, you will need to make an additional change pasword request."),
@@ -170,11 +171,11 @@ const deleteAccountEmail = async (req, res, next) => {
             const error = new ResError_1.default("\n- func. changePasswordEmail (account router): User was not found.", 404);
             return next(error);
         }
-        await transporter.sendMail({
+        await exports.transporter.sendMail({
             to: user.auth.email,
             from: "health.tracker.ag@gmail.com",
             subject: "Account Deletion",
-            html: composeEmail("Delete Account", [
+            html: (0, exports.composeEmail)("Delete Account", [
                 "Are you really sure you want to delete your account? By agreeing to do so, you will delete all of your cuurant data that later on you won't be able to retrive.",
                 "If you haven't made this request please contact us as soon as possible and DO NOT follow the provided link.",
             ], `http://localhost:3000/auth/delete-account/${user._id}`, "Delete Account", 0.5, "Your link is active for 30 minutes. After that, you will need to make an additional delete account request."),
@@ -237,6 +238,7 @@ const composeEmail = function (title, content, actionLink, actionLable, expirati
           </footer>
       </body>`;
 };
+exports.composeEmail = composeEmail;
 const account = {
     sendVerificationEmail,
     verifyEmail,

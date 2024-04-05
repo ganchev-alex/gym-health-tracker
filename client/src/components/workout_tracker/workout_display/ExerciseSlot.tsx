@@ -15,7 +15,6 @@ const ExerciseSlot: React.FC<{
   previewMode?: boolean;
   historyMode?: boolean;
 }> = function (props) {
-  console.log(props);
   return (
     <div className={styles.slot}>
       <ExerciseHeader

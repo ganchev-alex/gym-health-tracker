@@ -1,37 +1,20 @@
-import { useEffect } from "react";
-import { Outlet } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
-import { RootState } from "../../features/store";
-import { deleteToken, getExpiryRate, getToken } from "../../util/auth";
+import { RootState } from "../../../features/store";
 
-import styles from "./FormLayout.module.css";
+// import styles from "./FormLayout.module.css";
+import styles from "../../layout/FormLayout.module.css";
+import inheritedStyles from "../../pages/auth/SignInForm.module.css";
 
-import ErrorModal from "../UI/error_modal/ErrorModal";
+import maleBackground from "../../../assets/images/male_background_signin_form.jpg";
+import femaleBackground from "../../../assets/images/female_background_signin_form.jpg";
 
-import maleBackground from "../../assets/images/male_background_signin_form.jpg";
-import femaleBackground from "../../assets/images/female_background_signin_form.jpg";
-import LoadingPlane from "../UI/loading_plane/LoadingPlane";
-
-const FormLayout: React.FC = function () {
-  const token = getToken();
-  useEffect(() => {
-    const expiryRate = getExpiryRate();
-    setTimeout(() => {
-      deleteToken();
-    }, expiryRate);
-  }, [token]);
+const ErrorPage: React.FC = function () {
+  const navigate = useNavigate();
 
   const selectedMode = useSelector((state: RootState) => state.userActions.sex);
   const styleChecker = localStorage.getItem("userSex") || selectedMode;
-
-  const loadingState = useSelector(
-    (state: RootState) => state.loadingManager.isLoading
-  );
-
-  const errorModalState = useSelector(
-    (state: RootState) => state.modalsManager.errorModal
-  );
 
   const mainClasses = `${styles["wrapper"]} ${
     styleChecker === "male" ? styles.male : styles.female
@@ -45,9 +28,6 @@ const FormLayout: React.FC = function () {
 
   return (
     <main className={mainClasses}>
-      {errorModalState.visibility && (
-        <ErrorModal properties={errorModalState} />
-      )}
       <div className={styles["image-slot"]}>
         <img
           src={maleBackground}
@@ -70,11 +50,23 @@ const FormLayout: React.FC = function () {
             className={styleChecker == "female" ? "" : styles.hidden}
           />
         </div>
-        {loadingState && <LoadingPlane />}
-        <Outlet />
+        <form onSubmit={(e) => e.preventDefault()}>
+          <header className={inheritedStyles["header-wrapper"]}>
+            <h3 style={{ marginTop: "3em" }}>404.</h3>
+            <p>It seems like you tried to open a page that does not exist.</p>
+          </header>
+          <p className={inheritedStyles.divider}>page not found</p>
+          <button
+            type="submit"
+            className={inheritedStyles["submit-button"]}
+            onClick={() => navigate("/auth/login")}
+          >
+            Take me back
+          </button>
+        </form>
       </div>
     </main>
   );
 };
 
-export default FormLayout;
+export default ErrorPage;

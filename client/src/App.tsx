@@ -18,6 +18,7 @@ import CardPreview, {
   previewLoader,
 } from "./components/explore_page/explore_card/CardPreviewPage";
 import LandingPage from "./components/pages/landing/base/LandingPage";
+
 import ChangeEmail from "./components/pages/auth/ChangeEmail";
 import ChangePassword from "./components/pages/auth/ChangePassword";
 import DeleteAccount from "./components/pages/auth/DeleteAccount";
@@ -25,16 +26,21 @@ import EmailVerification, {
   verificationLoader,
 } from "./components/pages/auth/EmailVerification";
 
-export const mainAPIPath = "http://localhost:8080";
+import ErrorPage from "./components/UI/page_not_found/ErrorPage";
+
+export const mainAPIPath =
+  "https://health-tracker-ag-c6df73fe12d6.herokuapp.com";
 
 const router = createBrowserRouter([
   {
     path: "",
     element: <LandingPage />,
+    errorElement: <ErrorPage />,
   },
   {
     path: "/auth",
     element: <FormLayout />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "",
@@ -80,6 +86,7 @@ const router = createBrowserRouter([
     path: "/app",
     element: <RootLayout />,
     loader: appDataLoader,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "dashboard",

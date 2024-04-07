@@ -153,7 +153,7 @@ const SignInForm: React.FC = function () {
           Already have an account? <Link to="/auth/login">Log in</Link>
         </p>
       </header>
-      <button className={styles["google-button"]}>
+      <button className={styles["google-button"]} type="button" disabled={true}>
         <GoogleIcon /> Sign in with Google
       </button>
       <p className={styles.divider}>or sign in with email</p>

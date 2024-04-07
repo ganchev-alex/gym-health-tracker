@@ -34,6 +34,7 @@
   width: fit-content;
   display: flex;
   flex-direction: column;
+  margin-bottom: 2em;
 }
 
 .headings h1 {
@@ -88,6 +89,7 @@
 @media screen and (min-width: 768px) {
   .headings {
     padding: 0;
+    margin-bottom: 0em;
   }
 
   .display-wrapper {

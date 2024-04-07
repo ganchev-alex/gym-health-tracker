@@ -64,8 +64,10 @@
 
 .inputs-wrapper {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr);
+  /* Change */
+  /* grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr); */
+  grid-template-columns: repeat(1, 1fr);
   gap: 2em;
 
   width: 100%;
@@ -154,6 +156,7 @@ input[type="number"]::-webkit-inner-spin-button {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  order: 1;
 }
 
 .toggle-wrapper {
@@ -163,4 +166,17 @@ input[type="number"]::-webkit-inner-spin-button {
   width: 50%;
   font-weight: 600;
   color: #828282;
+}
+/* 
+Changes */
+@media screen and (min-width: 768px) {
+  .sex-wrapper {
+    order: 0;
+  }
+
+  .inputs-wrapper {
+    /* Change */
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
 }

@@ -109,6 +109,10 @@
   color: white;
 }
 
+.submit-button {
+  transition: background 0.4s;
+}
+
 .cancel-button {
   margin-top: 1em;
   background-color: transparent;

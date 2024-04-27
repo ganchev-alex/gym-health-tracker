@@ -27,7 +27,7 @@
   left: 0;
 }
 
-@media screen and (min-width: 1345px) {
+@media screen and (min-width: 1350px) {
   .plane {
     height: 70%;
     flex: 0 0 70%;

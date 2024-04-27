@@ -26,6 +26,8 @@
 
 .account-button svg {
   margin: 0.3em;
+  width: 45px;
+  height: 45px;
 }
 
 .logout-button {

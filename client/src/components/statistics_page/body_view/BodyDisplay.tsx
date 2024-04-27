@@ -54,8 +54,7 @@ const BodyDisplay = function () {
     (state: RootState) => state.statsData.muscleGraph
   );
 
-  const { sex } = useSelector((state: RootState) => state.userActions);
-  const isMale = sex === "male";
+  const { isMale } = useSelector((state: RootState) => state.userActions);
 
   return (
     <div className={styles.plane}>

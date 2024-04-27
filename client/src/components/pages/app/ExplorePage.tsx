@@ -76,15 +76,6 @@ function ExplorePage() {
         {fetchEnd && loadedCards.length == 0 && (
           <p>No records match this criteria!</p>
         )}
-        {fetchError && (
-          <button
-            style={
-              isMale ? { borderColor: "#472ed8", color: "#472ed8" } : undefined
-            }
-          >
-            Load more workouts
-          </button>
-        )}
       </div>
     </React.Fragment>
   );

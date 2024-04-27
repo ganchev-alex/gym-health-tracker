@@ -64,9 +64,6 @@
 
 .inputs-wrapper {
   display: grid;
-  /* Change */
-  /* grid-template-columns: repeat(2, 1fr);
-  grid-template-rows: repeat(2, 1fr); */
   grid-template-columns: repeat(1, 1fr);
   gap: 2em;
 
@@ -96,6 +93,10 @@
   font-weight: 600;
   text-align: center;
   padding: 0.3em 0;
+}
+
+.inputs-wrapper input {
+  transition: background 0.4s;
 }
 
 input[type="number"]::-webkit-outer-spin-button,
@@ -167,15 +168,13 @@ input[type="number"]::-webkit-inner-spin-button {
   font-weight: 600;
   color: #828282;
 }
-/* 
-Changes */
+
 @media screen and (min-width: 768px) {
   .sex-wrapper {
     order: 0;
   }
 
   .inputs-wrapper {
-    /* Change */
     grid-template-columns: repeat(2, 1fr);
     grid-template-rows: repeat(2, 1fr);
   }

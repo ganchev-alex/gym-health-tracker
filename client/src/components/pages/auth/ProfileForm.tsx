@@ -19,6 +19,7 @@ import defaultPic2 from "../../../assets/images/default_pic_2.png";
 import defaultPic3 from "../../../assets/images/default_pic_3.png";
 import defaultPic4 from "../../../assets/images/default_pic_4.png";
 import { deleteToken, setToken } from "../../../util/auth";
+import { mainAPIPath } from "../../../App";
 
 const defaultPictures = [defaultPic1, defaultPic2, defaultPic3, defaultPic4];
 
@@ -163,7 +164,7 @@ const ProfileForm: React.FC = function () {
     const createAcount = async function () {
       dispatch(setLoadingState(true));
       try {
-        const response = await fetch("http://localhost:8080/auth/sign-in", {
+        const response = await fetch(`${mainAPIPath}/auth/sign-in`, {
           method: "POST",
           body: userData,
         });

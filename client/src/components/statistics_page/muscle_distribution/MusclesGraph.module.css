@@ -30,3 +30,9 @@
   margin: 0;
   margin-top: 0.7em;
 }
+
+@media screen and (min-width: 768px) {
+  .widget {
+    min-height: auto;
+  }
+}

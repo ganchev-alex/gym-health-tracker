@@ -37,7 +37,7 @@
   }
 }
 
-@media screen and (min-width: 1200px) {
+@media screen and (min-width: 1350px) {
   .wrapper {
     flex-direction: row;
     height: 100%;

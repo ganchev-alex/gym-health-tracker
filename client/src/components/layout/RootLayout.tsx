@@ -23,7 +23,6 @@ import MinimizeIcon from "../../assets/svg_icon_components/MinimizeIcon";
 import {
   decreaseRestTimer,
   incrementWorkoutDuration,
-  restoreWorkoutState,
   setRestTimerState,
   setWorkoutState,
 } from "../../features/workout";

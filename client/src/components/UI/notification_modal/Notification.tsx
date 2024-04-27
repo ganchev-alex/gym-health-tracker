@@ -36,4 +36,6 @@ const NotificationBar = function () {
   }
 };
 
+
+
 export default NotificationBar;

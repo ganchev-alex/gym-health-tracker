@@ -38,7 +38,7 @@ const WorkoutsButton: React.FC = () => {
         onClick={startWorkout}
         disabled={workoutActivity}
       >
-        Start Empty Workout
+        Empty Workout
       </button>
       <button
         className={`${isMale ? styles.male : styles.female} ${

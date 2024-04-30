@@ -43,8 +43,8 @@ While the application is fully responsive, minor layout bugs may be present in t
 
 The application includes fundamental account management functionalities, showcasing my skills in user authentication:
 
-- [Registration & Login](documentation/pages/Account%20Management#🔑%20Registration%20&%20Login)
-- [Email Verification & Account Actions](documentation/pages/Account%20Management#🔐%20Account%20Management)
+- [Registration & Login](documentation/pages/Account%20Management.md#🔑%20Registration%20&%20Login)
+- [Email Verification & Account Actions](documentation/pages/Account%20Management.md#🔐%20Account%20Management)
 
 #### Features & How To Use
 

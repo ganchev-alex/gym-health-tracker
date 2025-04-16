@@ -1,8 +1,6 @@
-# 👟 AG Health Tracker
+# 🏃‍♂️‍➡️ Health Tracker
 
-The primary goal of this web application is to showcase the skills I've independently acquired over the past two years. Through its development, I aim to demonstrate my proficiency in various technologies and methodologies. Your feedback is highly valued; please feel free to provide it through any of the contact links provided below.
-
-### 💁🏻‍♂️ Project Introduction
+### 👟 Project Introduction
 
 AG Health Tracker is an all-in-one application designed to be your personal companion on the journey to a healthier and more active lifestyle. With this app, you can effortlessly track your workouts and monitor your progress, stay up-to-date on essential health metrics, access thousands of tailored workouts, and, most importantly, stay motivated throughout your journey.
 
